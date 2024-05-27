@@ -1,18 +1,65 @@
-import React from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
+    const [formData, setFormData] = useState({
+        username: '',
+        password: '',
+    });
+
+    const navigate = useNavigate()
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value,
+        });
+    };
+
+    const registerUserAPI = async (formData) => {
+        try {
+            const response = await axios.post('http://localhost:8000/api/token', formData);
+            if (response.status === 200 || response.status === 201) {
+                return true
+            }
+        }
+        catch (error) {
+            console.error('Error logging user', error);
+            return false;
+        }
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        //if (validateForm()) {
+            // Here you would usually send formData to the server
+            console.log('Form submitted', formData);
+            
+            const success = await registerUserAPI(formData)
+            if(success) {
+                // Przekierowanie na ekran logowania
+                navigate("/")
+            }
+        //}
+    };
+
     return (
-        <form>
+        <form onSubmit={handleSubmit}>
             <div>
                 <label>
-                    Email:
-                    <input type="email" name="email" required />
+                    Username:
+                    <input type="username" name="username" value={formData.username}
+                        onChange={handleChange} required />
                 </label>
             </div>
             <div>
                 <label>
                     Hasło:
-                    <input type="password" name="password" required />
+                    <input type="password" name="password" value={formData.password}
+                        onChange={handleChange} required />
                 </label>
             </div>
             <button type="submit">Zaloguj się</button>

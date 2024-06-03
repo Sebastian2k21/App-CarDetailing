@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { ENDPOINTS } from './api/Endpoints';
 
 const RegisterForm = () => {
     const [formData, setFormData] = useState({
@@ -63,7 +64,7 @@ const RegisterForm = () => {
 
     const registerUserAPI = async (formData) => {
         try {
-            const response = await axios.post('http://localhost:8000/api/register', formData);
+            const response = await axios.post(ENDPOINTS.Register, formData);
             if (response.status === 200 || response.status === 201) {
                 return true
             }

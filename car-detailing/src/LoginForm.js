@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { ENDPOINTS } from './api/Endpoints';
+import TokenContext from './context/TokenContext';
+
 
 const LoginForm = () => {
+    const {setAccess, setRefresh} = useContext(TokenContext); 
+
     const [formData, setFormData] = useState({
         username: '',
         password: '',
@@ -18,10 +23,12 @@ const LoginForm = () => {
         });
     };
 
-    const registerUserAPI = async (formData) => {
+    const loginUserApi = async (formData) => {
         try {
-            const response = await axios.post('http://localhost:8000/api/token', formData);
+            const response = await axios.post(ENDPOINTS.Login, formData);
             if (response.status === 200 || response.status === 201) {
+                setAccess(response.data.access)
+                setRefresh(response.data.refresh)
                 return true
             }
         }
@@ -38,7 +45,7 @@ const LoginForm = () => {
             // Here you would usually send formData to the server
             console.log('Form submitted', formData);
             
-            const success = await registerUserAPI(formData)
+            const success = await loginUserApi(formData)
             if(success) {
                 // Przekierowanie na ekran logowania
                 navigate("/")

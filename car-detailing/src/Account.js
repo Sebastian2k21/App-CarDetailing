@@ -1,25 +1,10 @@
-import { useContext, useState } from "react";
-import { ENDPOINTS } from "./api/Endpoints";
-import TokenContext from "./context/TokenContext";
-import axios from 'axios';
+import { useState } from "react";
+import { useApiClient } from "./api/ApiClientContext";
 
 
 const Account = () => {
     const [formData, setFormData] = useState({password: '', passwordConfirm: ''});
-    const { access } = useContext(TokenContext);
-    
-    const changePasswordAPI = async (formData) => { 
-        try {
-            const response = await axios.post(ENDPOINTS.ChangePassword, formData, {headers: {Authorization: `Bearer ${access}`}});
-            if (response.status === 200 || response.status === 201) {
-                return true
-            }
-        }
-        catch (error) {
-            console.error('Error changing password', error);
-            return false;
-        }
-    }
+    const apiClient = useApiClient()
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -36,7 +21,7 @@ const Account = () => {
             // Here you would usually send formData to the server
             console.log('Form submitted', formData);
             
-            const success = await changePasswordAPI(formData)
+            const success = await apiClient.changePassword(formData)
             if(success) {
                 // Przekierowanie na ekran logowania
                 alert("Hasło zmienione")

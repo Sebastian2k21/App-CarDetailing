@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { ENDPOINTS } from './api/Endpoints';
+import { useApiClient } from './api/ApiClientContext';
 
 const RegisterForm = () => {
     const [formData, setFormData] = useState({
@@ -16,6 +15,7 @@ const RegisterForm = () => {
     });
 
     const navigate = useNavigate();
+    const apiClient = useApiClient()
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -62,19 +62,6 @@ const RegisterForm = () => {
         return valid;
     };
 
-    const registerUserAPI = async (formData) => {
-        try {
-            const response = await axios.post(ENDPOINTS.Register, formData);
-            if (response.status === 200 || response.status === 201) {
-                return true
-            }
-        }
-        catch (error) {
-            console.error('Error registering user', error);
-            return false;
-        }
-    }
-
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -82,7 +69,7 @@ const RegisterForm = () => {
             // Here you would usually send formData to the server
             console.log('Form submitted', formData);
             
-            const success = await registerUserAPI(formData)
+            const success = await apiClient.registerUser(formData)
             if(success) {
                 // Przekierowanie na ekran logowania
                 navigate('/login');

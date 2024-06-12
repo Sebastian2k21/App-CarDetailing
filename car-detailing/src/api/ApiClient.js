@@ -24,9 +24,20 @@ class ApiClient {
         }
     }
 
+    async getService(id) { 
+        try {
+            const response = await this.client.get(ENDPOINTS.ServiceDetails.replace('{id}', id));
+            return response.data
+        }
+        catch (error) {
+            console.error('Error getting service', error);
+            return null
+        }
+    }
+
     async registerUser(formData) {
         try {
-            const response = await axios.post(ENDPOINTS.Register, formData);
+            const response = await this.client.post(ENDPOINTS.Register, formData);
             if (response.status === 200 || response.status === 201) {
                 return true
             }
@@ -37,10 +48,22 @@ class ApiClient {
         }
     }
 
+    async loginUser(formData) {
+        try {
+            const response = await this.client.post(ENDPOINTS.Login, formData);
+            if (response.status === 200 || response.status === 201) {
+                return response.data
+            }
+        }
+        catch (error) {
+            console.error('Error logging user', error);
+            return null;
+        }
+    }
+
     async changePassword(formData) { 
         try {
-            const access = localStorage.getItem('access'); //TODO: to powinno byc ustawiane globalnie
-            const response = await axios.post(ENDPOINTS.ChangePassword, formData, {headers: {Authorization: `Bearer ${access}`}});
+            const response = await this.client.post(ENDPOINTS.ChangePassword, formData);
             if (response.status === 200 || response.status === 201) {
                 return true
             }
@@ -49,6 +72,10 @@ class ApiClient {
             console.error('Error changing password', error);
             return false;
         }
+    }
+
+    setToken(access) {
+        this.client.defaults.headers['Authorization'] = `Bearer ${access}`
     }
 }
 

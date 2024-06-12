@@ -1,8 +1,18 @@
 import { useState } from "react";
-import { useApiClient } from "./api/ApiClientContext";
+import { useApiClient } from "../api/ApiClientContext";
 
 
-const Account = () => {
+const UserDetailsForm = () => {
+    const FORM_FIELDS = [
+        {"name": "first_name", "label": "First name", "type": "text"},
+        {"name": "last_name", "label": "Last name", "type": "text"},
+        {"name": "email", "label": "Email", "type": "email"},
+        {"name": "phone", "label": "Phone", "type": "tel"},
+        {"name": "street", "label": "Street", "type": "text"},
+        {"name": "city", "label": "City", "type": "text"},
+        {"name": "zip_code", "label": "Zip code", "type": "text"},
+    ]
+
     const [formData, setFormData] = useState({password: '', passwordConfirm: ''});
     const apiClient = useApiClient()
 
@@ -21,11 +31,11 @@ const Account = () => {
             // Here you would usually send formData to the server
             console.log('Form submitted', formData);
             
-            const success = await apiClient.changePassword(formData)
-            if(success) {
-                // Przekierowanie na ekran logowania
-                alert("Hasło zmienione")
-            }
+            // const success = await apiClient.changePassword(formData)
+            // if(success) {
+            //     // Przekierowanie na ekran logowania
+            //     alert("Hasło zmienione")
+            // }
         }
     };
 
@@ -60,28 +70,21 @@ const Account = () => {
 
     return (
         <div>
-            <h1>Account</h1>
+            <h3>User data</h3>
 
 
         <form onSubmit={handleSubmit}>
-            <div>
+            {FORM_FIELDS.map(field =>  <div>
                 <label>
-                    Nowe hasło:
-                    <input type="password" name="password" value={formData.username}
+                    {field.label}:
+                    <input type={field.type} name={field.name} value={formData[field.name]}
                         onChange={handleChange} required />
                 </label>
-            </div>
-            <div>
-                <label>
-                    Powtórz nowe hasło:
-                    <input type="passwordConfirm" name="passwordConfirm" value={formData.passwordConfirm}
-                        onChange={handleChange} required />
-                </label>
-            </div>
-            <button type="submit">Zmień hasło</button>
+            </div> )}
+            <button type="submit">Change data</button>
         </form>
         </div>
     );
 }
 
-export default Account;
+export default UserDetailsForm;

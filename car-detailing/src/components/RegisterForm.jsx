@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useApiClient } from './api/ApiClientContext';
+import { useApiClient } from '../api/ApiClientContext';
 
 const RegisterForm = () => {
     const [formData, setFormData] = useState({

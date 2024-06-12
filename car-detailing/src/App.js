@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import './App.css';
-import RegisterForm from './RegisterForm';
-import LoginForm from './LoginForm'; 
+import RegisterForm from './components/RegisterForm';
+import LoginForm from './components/LoginForm'; 
 import { Route, Routes, Link, useNavigate } from 'react-router-dom';
 import TokenContext from './context/TokenContext';
-import Account from './Account';
+import Account from './components/Account';
 import ApiClientWrapper from './api/ApiClientContext';
-import Services from './Services';
+import Services from './components/Services';
+import ServiceDetails from './components/ServiceDetails';
+
 
 function App() {
     const [access, setAccessState] = useState(localStorage.getItem('access'));
@@ -67,6 +69,7 @@ function App() {
                             <Route path="/login" element={<LoginForm />} />
                             <Route path="/account" element={<Account />} />
                             <Route path="/services" element={<Services/>} />
+                            <Route path="/services/:id" element={<ServiceDetails/>} />
                             <Route path="/" element={<h1> CarDetailing </h1>} />
                         </Routes>
                     </header>

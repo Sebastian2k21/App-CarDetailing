@@ -5,4 +5,5 @@ export const ENDPOINTS = {
     Register: BASE_URL + '/register',
     ChangePassword: BASE_URL + '/change-password',
     Services: BASE_URL + '/services',
+    ServiceDetails: BASE_URL + '/services/{id}',
 }

@@ -8,7 +8,7 @@ class ApiClient {
             baseURL: ENDPOINTS.BASE_URL,
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${access}`, //TODO: dorobic zeby podczas logowania tez ustawial ten token
+                'Authorization': `Bearer ${access}`,
             },
         });
     }

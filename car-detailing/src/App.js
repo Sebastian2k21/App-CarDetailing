@@ -8,6 +8,7 @@ import Account from './components/Account';
 import ApiClientWrapper from './api/ApiClientContext';
 import Services from './components/Services';
 import ServiceDetails from './components/ServiceDetails';
+import Logout from './components/Logout';
 
 
 function App() {
@@ -36,9 +37,7 @@ function App() {
     }
 
     const logoutUser = () => {
-        setAccess(null);
-        setRefresh(null);
-        navigate("/login")
+        navigate('/logout')
     }
 
     return (
@@ -70,6 +69,7 @@ function App() {
                             <Route path="/account" element={<Account />} />
                             <Route path="/services" element={<Services/>} />
                             <Route path="/services/:id" element={<ServiceDetails/>} />
+                            <Route path="/logout" element={<Logout/>} />
                             <Route path="/" element={<h1> CarDetailing </h1>} />
                         </Routes>
                     </header>

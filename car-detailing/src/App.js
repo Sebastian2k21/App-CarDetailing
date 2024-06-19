@@ -9,6 +9,7 @@ import ApiClientWrapper from './api/ApiClientContext';
 import Services from './components/Services';
 import ServiceDetails from './components/ServiceDetails';
 import Logout from './components/Logout';
+import {Toaster} from 'react-hot-toast';
 
 
 function App() {
@@ -36,10 +37,6 @@ function App() {
         }
     }
 
-    const logoutUser = () => {
-        navigate('/logout')
-    }
-
     return (
         <div className="App">
             <TokenContext.Provider value={{ access, refresh, setAccess, setRefresh }}>
@@ -52,7 +49,7 @@ function App() {
                                 <>
                                     <li><Link to="/">Home</Link></li> 
                                     <li><Link to="/account">Account</Link></li> 
-                                    <li><Link onClick={logoutUser} to="/login">Logout</Link></li> 
+                                    <li><Link to="/logout">Logout</Link></li> 
                                 </>
                                 :
                                 <>
@@ -73,6 +70,7 @@ function App() {
                             <Route path="/" element={<h1> CarDetailing </h1>} />
                         </Routes>
                     </header>
+                    <Toaster/>
                 </ApiClientWrapper>
             </TokenContext.Provider>
         </div>

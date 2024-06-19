@@ -66,8 +66,6 @@ const Services = () => {
             <div>
                 <span>Order</span>
                 <CommonSelect name="order" options={orderOptions} onSelect={setOrder} />
-            </div>
-            <div>
                 <span>Price from</span>
                 <input type="number" value={priceFrom} onInput={e => setPriceFrom(e.target.value)} />
                 <span>Price to</span>

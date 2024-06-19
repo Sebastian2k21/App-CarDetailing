@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApiClient } from '../api/ApiClientContext';
+import toast from 'react-hot-toast';
 
 const RegisterForm = () => {
     const [formData, setFormData] = useState({
         username: '',
         email: '',
         password: '',
+        role: ''
     });
     const [errors, setErrors] = useState({
         username: '',
         email: '',
         password: '',
+        role: ''
     });
 
     const navigate = useNavigate();
@@ -58,6 +61,11 @@ const RegisterForm = () => {
             valid = false;
         }
 
+        if(!formData.role) {
+            errors.role = 'Role is required';
+            valid = false;
+        }
+
         setErrors(errors);
         return valid;
     };
@@ -69,10 +77,13 @@ const RegisterForm = () => {
             // Here you would usually send formData to the server
             console.log('Form submitted', formData);
             
-            const success = await apiClient.registerUser(formData)
+            const {success, message} = await apiClient.registerUser(formData)
             if(success) {
                 // Przekierowanie na ekran logowania
+                toast.success('User registered successfully');
                 navigate('/login');
+            } else {
+                toast.error(message);
             }
         }
     };
@@ -101,7 +112,7 @@ const RegisterForm = () => {
                         value={formData.email}
                         onChange={handleChange}
                         required
-                    />
+                    /> 
                 </label>
                 {errors.email && <p style={{ color: 'red' }}>{errors.email}</p>}
             </div>
@@ -117,6 +128,15 @@ const RegisterForm = () => {
                     />
                 </label>
                 {errors.password && <p style={{ color: 'red' }}>{errors.password}</p>}
+            </div>
+            <div>
+                <label>I am: 
+                    <input type="radio" name="role" value="client" id="client_role"  onChange={handleChange} />
+                    <label for="client_role">client</label>
+                    <input type="radio" name="role" value="detailer" id="detailer_role"  onChange={handleChange} />
+                    <label for="detailer_role">detailer</label>
+                </label>
+                {errors.role && <p style={{ color: 'red' }}>{errors.role}</p>}
             </div>
             <button type="submit">Zarejestruj się</button>
         </form>

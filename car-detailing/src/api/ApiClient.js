@@ -39,12 +39,12 @@ class ApiClient {
         try {
             const response = await this.client.post(ENDPOINTS.Register, formData);
             if (response.status === 200 || response.status === 201) {
-                return true
+                return {success: true, message: null};
             }
         }
         catch (error) {
             console.error('Error registering user', error);
-            return false;
+            return {success: false, message: error.response.data.message}
         }
     }
 

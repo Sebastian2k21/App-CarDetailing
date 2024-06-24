@@ -26,6 +26,7 @@ const ServiceDetails = () => {
             <h1>{service.name}</h1>
             <p>{service.description}</p>
             <p>{service.price}zł</p>
+            <p>{service.detailer.username}</p>
             <img src={service.image} alt="service logo"></img>
         </div>
     );

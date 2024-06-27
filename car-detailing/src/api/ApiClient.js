@@ -74,6 +74,17 @@ class ApiClient {
         }
     }
 
+    async availableSchedules(serviceId, dateFrom, dateTo) {
+        try {
+            const response = await this.client.get(ENDPOINTS.AvailableSchedules.replace('{id}', serviceId).replace('{dateFrom}', dateFrom).replace('{dateTo}', dateTo));
+            return response.data
+        }
+        catch (error) {
+            console.error('Error getting available schedules', error);
+            return {}
+        }
+    }
+
     setToken(access) {
         this.client.defaults.headers['Authorization'] = `Bearer ${access}`
     }

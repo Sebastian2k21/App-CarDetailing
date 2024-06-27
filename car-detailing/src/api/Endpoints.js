@@ -6,4 +6,5 @@ export const ENDPOINTS = {
     ChangePassword: BASE_URL + '/change-password',
     Services: BASE_URL + '/services',
     ServiceDetails: BASE_URL + '/services/{id}',
+    AvailableSchedules : BASE_URL + '/services/{id}/available/{dateFrom}/{dateTo}',
 }

@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useApiClient } from "../api/ApiClientContext";
 import { useEffect, useState } from "react";
+import ServiceCalendar from "./ServiceCalendar";
 
 
 const ServiceDetails = () => {
@@ -28,6 +29,7 @@ const ServiceDetails = () => {
             <p>{service.price}zł</p>
             <p>{service.detailer.username}</p>
             <img src={service.image} alt="service logo"></img>
+            <ServiceCalendar serviceId={service._id} />
         </div>
     );
 }

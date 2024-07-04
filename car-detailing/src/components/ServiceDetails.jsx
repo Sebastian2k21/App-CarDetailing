@@ -28,7 +28,7 @@ const ServiceDetails = () => {
             <p>{service.description}</p>
             <p>{service.price}zł</p>
             <p>{service.detailer.username}</p>
-            <img src={service.image} alt="service logo"></img>
+            <img src={service.image} width="30%" alt="service logo"></img>
             <ServiceCalendar serviceId={service._id} />
         </div>
     );

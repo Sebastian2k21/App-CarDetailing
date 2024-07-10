@@ -85,6 +85,19 @@ class ApiClient {
         }
     }
 
+    async submitSchedule(formData) {
+        try {
+            const response = await this.client.post(ENDPOINTS.SubmitSchedule, formData);
+            if (response.status === 200 || response.status === 201) {
+                return {success: true, message: null};
+            }
+        }
+        catch (error) {
+            console.error('Error submitting schedule', error);
+            return {success: false, message: error.response.data.message}
+        }
+    }
+
     setToken(access) {
         this.client.defaults.headers['Authorization'] = `Bearer ${access}`
     }

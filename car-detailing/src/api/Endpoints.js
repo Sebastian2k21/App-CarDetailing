@@ -7,4 +7,5 @@ export const ENDPOINTS = {
     Services: BASE_URL + '/services',
     ServiceDetails: BASE_URL + '/services/{id}',
     AvailableSchedules : BASE_URL + '/services/{id}/available/{dateFrom}/{dateTo}',
+    SubmitSchedule: BASE_URL + 'services/schedule'
 }

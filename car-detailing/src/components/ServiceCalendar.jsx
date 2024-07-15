@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useApiClient } from "../api/ApiClientContext";
 import {DayPilotCalendar} from "@daypilot/daypilot-lite-react";
 import Modal from 'react-modal';
+import toast from 'react-hot-toast';
 
 
 const getCurrentDate = () => {
@@ -88,15 +89,22 @@ const ServiceCalendar = ({ serviceId }) => {
         setSelectedEvent(e.e.data)
     }
 
-    function openModal() {
+    const openModal = () => {
       setIsOpen(true);
     }
-  
-    function afterOpenModal() {
 
+    const onConfirmDate = async () => {
+        const result = await apiClient.submitSchedule({service_id: serviceId, date: selectedEvent.start.value})
+        if(result.success) {
+            toast.success("Success")
+            closeModal()
+            await getAvailableSchedules()
+        } else {
+            toast.error("Failed to confirm date")
+        }
     }
   
-    function closeModal() {
+    const closeModal = () => {
       setIsOpen(false);
       setSelectedEvent({})
     }
@@ -117,14 +125,12 @@ const ServiceCalendar = ({ serviceId }) => {
         <Modal
             ariaHideApp={false}
             isOpen={modalIsOpen}
-            onAfterOpen={afterOpenModal}
-            onRequestClose={closeModal}
             style={customStyles}
-            contentLabel="Example Modal"
         >
             <div>
+                <h1>Book service</h1>
                 <h2>{selectedEvent.text}</h2>
-                <button>Confirm date</button>
+                <button onClick={onConfirmDate}>Confirm date</button>
                 <button onClick={closeModal}>close</button>
             </div>
         </Modal>

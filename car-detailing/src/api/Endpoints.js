@@ -5,7 +5,7 @@ export const ENDPOINTS = {
     Register: BASE_URL + '/register',
     ChangePassword: BASE_URL + '/change-password',
     Services: BASE_URL + '/services',
-    ServiceDetails: BASE_URL + '/services/{id}',
+    ServiceDetails: BASE_URL + '/services/{id}/details',
     AvailableSchedules : BASE_URL + '/services/{id}/available/{dateFrom}/{dateTo}',
-    SubmitSchedule: BASE_URL + 'services/schedule'
+    SubmitSchedule: BASE_URL + '/services/schedule'
 }

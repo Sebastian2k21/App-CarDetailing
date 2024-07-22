@@ -1,3 +1,4 @@
+import { isSuccessResponse } from "./ApiUtils";
 import { ENDPOINTS } from "./Endpoints";
 import axios from 'axios';
 
@@ -38,7 +39,7 @@ class ApiClient {
     async registerUser(formData) {
         try {
             const response = await this.client.post(ENDPOINTS.Register, formData);
-            if (response.status === 200 || response.status === 201) {
+            if (isSuccessResponse(response)) {
                 return {success: true, message: null};
             }
         }
@@ -51,7 +52,7 @@ class ApiClient {
     async loginUser(formData) {
         try {
             const response = await this.client.post(ENDPOINTS.Login, formData);
-            if (response.status === 200 || response.status === 201) {
+            if (isSuccessResponse(response)) {
                 return response.data
             }
         }
@@ -64,7 +65,7 @@ class ApiClient {
     async changePassword(formData) { 
         try {
             const response = await this.client.post(ENDPOINTS.ChangePassword, formData);
-            if (response.status === 200 || response.status === 201) {
+            if (isSuccessResponse(response)) {
                 return true
             }
         }
@@ -88,13 +89,26 @@ class ApiClient {
     async submitSchedule(formData) {
         try {
             const response = await this.client.post(ENDPOINTS.SubmitSchedule, formData);
-            if (response.status === 200 || response.status === 201) {
+            if (isSuccessResponse(response)) {
                 return {success: true, message: null};
             }
         }
         catch (error) {
             console.error('Error submitting schedule', error);
             return {success: false, message: error.response.data.message}
+        }
+    }
+
+    async getUserSubmits() {
+        try {
+            const response = await this.client.get(ENDPOINTS.ProfileSubmits);
+            if (isSuccessResponse(response)) {
+                return response.data
+            }
+        }
+        catch (error) {
+            console.error('Error fetching user submits', error);
+            return []
         }
     }
 

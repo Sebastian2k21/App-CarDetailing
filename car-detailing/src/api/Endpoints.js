@@ -1,4 +1,6 @@
 export const BASE_URL = 'http://localhost:8000/api';
+export const MEDIA_URL = 'http://localhost:8000'
+
 
 export const ENDPOINTS = {
     Login: BASE_URL + '/token',
@@ -7,5 +9,6 @@ export const ENDPOINTS = {
     Services: BASE_URL + '/services',
     ServiceDetails: BASE_URL + '/services/{id}/details',
     AvailableSchedules : BASE_URL + '/services/{id}/available/{dateFrom}/{dateTo}',
-    SubmitSchedule: BASE_URL + '/services/schedule'
+    SubmitSchedule: BASE_URL + '/services/schedule',
+    ProfileSubmits: BASE_URL + '/profile/submits'
 }

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './App.css';
 import RegisterForm from './components/RegisterForm';
 import LoginForm from './components/LoginForm'; 
-import { Route, Routes, Link, useNavigate } from 'react-router-dom';
+import { Route, Routes, Link } from 'react-router-dom';
 import TokenContext from './context/TokenContext';
 import Account from './components/Account';
 import ApiClientWrapper from './api/ApiClientContext';
@@ -10,12 +10,12 @@ import Services from './components/Services';
 import ServiceDetails from './components/ServiceDetails';
 import Logout from './components/Logout';
 import {Toaster} from 'react-hot-toast';
+import Profile from './components/Profile';
 
 
 function App() {
     const [access, setAccessState] = useState(localStorage.getItem('access'));
     const [refresh, setRefreshState] = useState(localStorage.getItem('refresh'));
-    const navigate = useNavigate();
 
     const setAccess = (access) => { 
         if(access == null) {
@@ -49,6 +49,7 @@ function App() {
                                 <>
                                     <li><Link to="/">Home</Link></li> 
                                     <li><Link to="/account">Account</Link></li> 
+                                    <li><Link to="/profile">Profile</Link></li> 
                                     <li><Link to="/logout">Logout</Link></li> 
                                 </>
                                 :
@@ -66,6 +67,7 @@ function App() {
                             <Route path="/account" element={<Account />} />
                             <Route path="/services" element={<Services/>} />
                             <Route path="/services/:id" element={<ServiceDetails/>} />
+                            <Route path='/profile' element={<Profile/>}/>
                             <Route path="/logout" element={<Logout/>} />
                             <Route path="/" element={<h1> CarDetailing </h1>} />
                         </Routes>

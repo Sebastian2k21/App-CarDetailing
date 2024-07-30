@@ -17,7 +17,7 @@ const getCurrentDate = () => {
 const getCurrentDateMonday = () => { 
     var today = new Date();
     var day = today.getDay();
-    var diff = today.getDate() - day + (day == 0 ? -6:1); // adjust when day is sunday
+    var diff = today.getDate() - day + (day === 0 ? -6:1); // adjust when day is sunday
     today = new Date(today.setDate(diff));
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -52,7 +52,6 @@ const customStyles = {
 const ServiceCalendar = ({ serviceId }) => {
     const calendarRef = useRef()
     const apiClient = useApiClient()
-    const [schedules, setSchedules] = useState({})
     const [currentDate, setCurrentDate] = useState(getCurrentDateMonday())
     const [modalIsOpen, setIsOpen] = useState(false);
     const [selectedEvent, setSelectedEvent] = useState({})
@@ -67,11 +66,10 @@ const ServiceCalendar = ({ serviceId }) => {
     const getAvailableSchedules = useCallback(async () => {
         const endDate = getOffsetDate(currentDate, 7)
         const schedules = await apiClient.availableSchedules(serviceId, currentDate, endDate)
-        setSchedules(schedules)
 
         setCalendarConfig({...calendarConfig, startDate: currentDate})
         calendarRef.current.control.update({currentDate, events: schedules});
-    }, [apiClient, serviceId, currentDate])
+    }, [apiClient, serviceId, currentDate]) // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         console.log(currentDate)

@@ -112,6 +112,45 @@ class ApiClient {
         }
     }
 
+    async getProfileDetails() {
+        try {
+            const response = await this.client.get(ENDPOINTS.ProfileDetails);
+            if (isSuccessResponse(response)) {
+                return response.data
+            }
+        }
+        catch (error) {
+            console.error('Error fetching profile details', error);
+            return null
+        }
+    }
+
+    async changeAccountDetails(formData) {
+        try {
+            const response = await this.client.post(ENDPOINTS.ProfileDetails, formData);
+            if (isSuccessResponse(response)) {
+                return true
+            }
+        }
+        catch (error) {
+            console.error('Error changing account details', error);
+            return false;
+        }
+    }
+
+    async deleteSubmit(submitId) {
+        try {
+            const response = await this.client.delete(ENDPOINTS.ProfileSubmitsDelete.replace('{submitId}', submitId));
+            if (isSuccessResponse(response)) {
+                return true
+            }
+        }
+        catch (error) {
+            console.error('Error deleting submit', error);
+            return false;
+        }
+    }
+
     setToken(access) {
         this.client.defaults.headers['Authorization'] = `Bearer ${access}`
     }

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
+import './HomePage.css'; // Import pliku CSS dla HomePage
 import RegisterForm from './components/RegisterForm';
 import LoginForm from './components/LoginForm'; 
 import { Route, Routes, Link } from 'react-router-dom';
@@ -9,26 +10,25 @@ import ApiClientWrapper from './api/ApiClientContext';
 import Services from './components/Services';
 import ServiceDetails from './components/ServiceDetails';
 import Logout from './components/Logout';
-import {Toaster} from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 import Profile from './components/Profile';
-
 
 function App() {
     const [access, setAccessState] = useState(localStorage.getItem('access'));
     const [refresh, setRefreshState] = useState(localStorage.getItem('refresh'));
 
     const setAccess = (access) => { 
-        if(access == null) {
+        if (access == null) {
             setAccessState(null);
             localStorage.removeItem('access');
-        }  else {
+        } else {
             setAccessState(access);
             localStorage.setItem('access', access);
         }
     }
 
     const setRefresh = (refresh) => { 
-        if(refresh == null) { 
+        if (refresh == null) { 
             setRefreshState(null);
             localStorage.removeItem('refresh');
         } else {
@@ -57,7 +57,6 @@ function App() {
                                     <li><Link to="/register">Register</Link></li>
                                     <li><Link to="/login">Login</Link></li>
                                 </>
-
                                 }
                             </ul>
                         </nav>
@@ -67,14 +66,24 @@ function App() {
                             <Route path="/account" element={<Account />} />
                             <Route path="/services" element={<Services/>} />
                             <Route path="/services/:id" element={<ServiceDetails/>} />
-                            <Route path='/profile' element={<Profile/>}/>
+                            <Route path="/profile" element={<Profile/>} />
                             <Route path="/logout" element={<Logout/>} />
-                            <Route path="/" element={<h1> CarDetailing </h1>} />
+                            <Route path="/" element={<HomePage />} /> {/* Użyj komponentu HomePage */}
                         </Routes>
                     </header>
-                    <Toaster/>
+                    <Toaster />
                 </ApiClientWrapper>
             </TokenContext.Provider>
+        </div>
+    );
+}
+
+function HomePage() {
+    return (
+        <div className="home-page">
+            <h1>CarDetailing</h1>
+            <p>Witamy w naszym serwisie CarDetailing, gdzie oferujemy najlepsze usługi detalingowe dla Twojego pojazdu!</p>
+            <Link to="/services" className="cta-button">Nasze usługi</Link>
         </div>
     );
 }

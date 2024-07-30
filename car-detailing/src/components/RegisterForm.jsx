@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApiClient } from '../api/ApiClientContext';
+import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import toast from 'react-hot-toast';
 
 const RegisterForm = () => {
@@ -18,7 +19,7 @@ const RegisterForm = () => {
     });
 
     const navigate = useNavigate();
-    const apiClient = useApiClient()
+    const apiClient = useApiClient();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -44,6 +45,7 @@ const RegisterForm = () => {
             username: '',
             email: '',
             password: '',
+            role: ''
         };
 
         if (!formData.username) {
@@ -61,7 +63,7 @@ const RegisterForm = () => {
             valid = false;
         }
 
-        if(!formData.role) {
+        if (!formData.role) {
             errors.role = 'Role is required';
             valid = false;
         }
@@ -74,12 +76,10 @@ const RegisterForm = () => {
         e.preventDefault();
 
         if (validateForm()) {
-            // Here you would usually send formData to the server
             console.log('Form submitted', formData);
             
-            const {success, message} = await apiClient.registerUser(formData)
-            if(success) {
-                // Przekierowanie na ekran logowania
+            const { success, message } = await apiClient.registerUser(formData);
+            if (success) {
                 toast.success('User registered successfully');
                 navigate('/login');
             } else {
@@ -89,57 +89,85 @@ const RegisterForm = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div>
-                <label>
-                    Imię:
-                    <input
-                        type="text"
-                        name="username"
-                        value={formData.username}
-                        onChange={handleChange}
-                        required
-                    />
-                </label>
-                {errors.username && <p style={{ color: 'red' }}>{errors.username}</p>}
+        <div className="container mt-5">
+            <div className="row justify-content-center">
+                <div className="col-md-8 col-lg-6">
+                    <div className="card bg-dark text-light">
+                        <div className="card-body">
+                            <h5 className="card-title text-center mb-4">Rejestracja</h5>
+                            <form onSubmit={handleSubmit}>
+                                <div className="mb-3">
+                                    <label htmlFor="username" className="form-label">Imię:</label>
+                                    <input
+                                        type="text"
+                                        id="username"
+                                        name="username"
+                                        className="form-control"
+                                        value={formData.username}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                    {errors.username && <div className="text-danger mt-2">{errors.username}</div>}
+                                </div>
+                                <div className="mb-3">
+                                    <label htmlFor="email" className="form-label">Email:</label>
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        name="email"
+                                        className="form-control"
+                                        value={formData.email}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                    {errors.email && <div className="text-danger mt-2">{errors.email}</div>}
+                                </div>
+                                <div className="mb-3">
+                                    <label htmlFor="password" className="form-label">Hasło:</label>
+                                    <input
+                                        type="password"
+                                        id="password"
+                                        name="password"
+                                        className="form-control"
+                                        value={formData.password}
+                                        onChange={handleChange}
+                                        required
+                                    />
+                                    {errors.password && <div className="text-danger mt-2">{errors.password}</div>}
+                                </div>
+                                <div className="mb-3">
+                                    <label className="form-label">I am:</label>
+                                    <div className="form-check">
+                                        <input
+                                            type="radio"
+                                            id="client_role"
+                                            name="role"
+                                            value="client"
+                                            className="form-check-input"
+                                            onChange={handleChange}
+                                        />
+                                        <label htmlFor="client_role" className="form-check-label">Client</label>
+                                    </div>
+                                    <div className="form-check">
+                                        <input
+                                            type="radio"
+                                            id="detailer_role"
+                                            name="role"
+                                            value="detailer"
+                                            className="form-check-input"
+                                            onChange={handleChange}
+                                        />
+                                        <label htmlFor="detailer_role" className="form-check-label">Detailer</label>
+                                    </div>
+                                    {errors.role && <div className="text-danger mt-2">{errors.role}</div>}
+                                </div>
+                                <button type="submit" className="btn btn-primary w-100">Zarejestruj się</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div>
-                <label>
-                    Email:
-                    <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                    /> 
-                </label>
-                {errors.email && <p style={{ color: 'red' }}>{errors.email}</p>}
-            </div>
-            <div>
-                <label>
-                    Hasło:
-                    <input
-                        type="password"
-                        name="password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        required
-                    />
-                </label>
-                {errors.password && <p style={{ color: 'red' }}>{errors.password}</p>}
-            </div>
-            <div>
-                <label>I am: 
-                    <input type="radio" name="role" value="client" id="client_role"  onChange={handleChange} />
-                    <label for="client_role">client</label>
-                    <input type="radio" name="role" value="detailer" id="detailer_role"  onChange={handleChange} />
-                    <label for="detailer_role">detailer</label>
-                </label>
-                {errors.role && <p style={{ color: 'red' }}>{errors.role}</p>}
-            </div>
-            <button type="submit">Zarejestruj się</button>
-        </form>
+        </div>
     );
 };
 

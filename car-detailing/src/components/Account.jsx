@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useApiClient } from "../api/ApiClientContext";
 import UserDetailsForm from "./UserDetailsForm";
-
+import './style/Account.css';  // Import the CSS file
 
 const Account = () => {
-    const [formData, setFormData] = useState({password: '', passwordConfirm: ''});
-    const apiClient = useApiClient()
+    const [formData, setFormData] = useState({ password: '', passwordConfirm: '' });
+    const apiClient = useApiClient();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -19,70 +19,56 @@ const Account = () => {
         e.preventDefault();
 
         if (validateForm()) {
-            // Here you would usually send formData to the server
             console.log('Form submitted', formData);
             
-            const success = await apiClient.changePassword(formData)
-            if(success) {
-                // Przekierowanie na ekran logowania
-                alert("Hasło zmienione")
+            const success = await apiClient.changePassword(formData);
+            if (success) {
+                alert("Hasło zmienione");
             }
         }
     };
 
-    
     const validateForm = () => {
-        // let valid = true;
-        // let errors = {
-        //     username: '',
-        //     email: '',
-        //     password: '',
-        // };
-
-        // if (!formData.username) {
-        //     errors.username = 'Name is required';
-        //     valid = false;
-        // }
-
-        // if (!validateEmail(formData.email)) {
-        //     errors.email = 'Invalid email address';
-        //     valid = false;
-        // }
-
-        // if (!validatePassword(formData.password)) {
-        //     errors.password = 'Password must be at least 8 characters long and contain at least one letter and one number';
-        //     valid = false;
-        // }
-
-        // setErrors(errors);
-        // return valid;
-        return true
+        return formData.password && formData.password === formData.passwordConfirm;
     };
 
     return (
-        <div>
-            <h1>Account</h1>
-
-
-        <form onSubmit={handleSubmit}>
-            <div>
-                <label>
-                    Nowe hasło:
-                    <input type="password" name="password" value={formData.username}
-                        onChange={handleChange} required />
-                </label>
+        <div className="account-container">
+            <div className="columns-wrapper">
+                <div className="column column-left">
+                    <h1>Account</h1>
+                    <form onSubmit={handleSubmit}>
+                        <div>
+                            <label>
+                                Nowe hasło:
+                                <input 
+                                    type="password" 
+                                    name="password" 
+                                    value={formData.password} 
+                                    onChange={handleChange} 
+                                    required 
+                                />
+                            </label>
+                        </div>
+                        <div>
+                            <label>
+                                Powtórz nowe hasło:
+                                <input 
+                                    type="password" 
+                                    name="passwordConfirm" 
+                                    value={formData.passwordConfirm} 
+                                    onChange={handleChange} 
+                                    required 
+                                />
+                            </label>
+                        </div>
+                        <button type="submit">Zmień hasło</button>
+                    </form>
+                </div>
+                <div className="column column-right">
+                    <UserDetailsForm />
+                </div>
             </div>
-            <div>
-                <label>
-                    Powtórz nowe hasło:
-                    <input type="passwordConfirm" name="passwordConfirm" value={formData.passwordConfirm}
-                        onChange={handleChange} required />
-                </label>
-            </div>
-            <button type="submit">Zmień hasło</button>
-        </form>
-
-        <UserDetailsForm/>
         </div>
     );
 }

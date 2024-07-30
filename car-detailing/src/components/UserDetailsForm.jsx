@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useApiClient } from "../api/ApiClientContext";
+import { toast } from 'react-hot-toast';
 
 
 const UserDetailsForm = () => {
@@ -15,6 +16,10 @@ const UserDetailsForm = () => {
 
     const [formData, setFormData] = useState({password: '', passwordConfirm: ''});
     const apiClient = useApiClient()
+    
+    const getProfile = useCallback(async () => {
+        setFormData(await apiClient.getProfileDetails())
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -31,11 +36,10 @@ const UserDetailsForm = () => {
             // Here you would usually send formData to the server
             console.log('Form submitted', formData);
             
-            // const success = await apiClient.changePassword(formData)
-            // if(success) {
-            //     // Przekierowanie na ekran logowania
-            //     alert("Hasło zmienione")
-            // }
+            const success = await apiClient.changeAccountDetails(formData)
+            if(success) {
+                toast.success("Data changed")
+            }
         }
     };
 
@@ -67,6 +71,10 @@ const UserDetailsForm = () => {
         // return valid;
         return true
     };
+
+    useEffect(() => {
+        getProfile()
+    }, [getProfile])
 
     return (
         <div>

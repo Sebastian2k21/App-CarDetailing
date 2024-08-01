@@ -49,7 +49,7 @@ const customStyles = {
   };
 
 
-const ServiceCalendar = ({ serviceId }) => {
+const ServiceCalendar = ({ serviceId, onRequest, isUpdate=false }) => {
     const calendarRef = useRef()
     const apiClient = useApiClient()
     const [currentDate, setCurrentDate] = useState(getCurrentDateMonday())
@@ -92,11 +92,13 @@ const ServiceCalendar = ({ serviceId }) => {
     }
 
     const onConfirmDate = async () => {
-        const result = await apiClient.submitSchedule({service_id: serviceId, date: selectedEvent.start.value})
-        if(result.success) {
+        const result = await onRequest(selectedEvent.start.value)
+        if(result) {
             toast.success("Success")
-            closeModal()
-            await getAvailableSchedules()
+            if(!isUpdate) {
+                closeModal()
+                await getAvailableSchedules()
+            }
         } else {
             toast.error("Failed to confirm date")
         }

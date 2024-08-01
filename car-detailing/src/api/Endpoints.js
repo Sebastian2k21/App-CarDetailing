@@ -12,5 +12,6 @@ export const ENDPOINTS = {
     SubmitSchedule: BASE_URL + '/services/schedule',
     ProfileSubmits: BASE_URL + '/profile/submits',
     ProfileSubmitsDelete: BASE_URL + '/profile/submits/{submitId}/delete',
+    ProfileSubmitsChangeDate: BASE_URL + '/profile/submits/{submitId}/change',
     ProfileDetails: BASE_URL + '/profile/details',
 }

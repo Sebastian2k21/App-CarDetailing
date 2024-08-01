@@ -151,6 +151,19 @@ class ApiClient {
         }
     }
 
+    async changeSubmitDate(submitId, newDate) {
+        try {
+            const response = await this.client.post(ENDPOINTS.ProfileSubmitsChangeDate.replace('{submitId}', submitId), {date: newDate});
+            if (isSuccessResponse(response)) {
+                return true
+            }
+        }
+        catch (error) {
+            console.error('Error changing submit date', error);
+            return false;
+        }
+    }
+
     setToken(access) {
         this.client.defaults.headers['Authorization'] = `Bearer ${access}`
     }

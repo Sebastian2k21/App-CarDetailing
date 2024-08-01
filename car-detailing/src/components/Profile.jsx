@@ -7,7 +7,7 @@ import Modal from 'react-modal';
 import ServiceCalendar from "./ServiceCalendar"
 
 
-const customStyles = {
+const smallModalStyle = {
     content: {
       top: '50%',
       left: '50%',
@@ -15,6 +15,18 @@ const customStyles = {
       bottom: 'auto',
       marginRight: '-50%',
       transform: 'translate(-50%, -50%)',
+    },
+  };
+
+  const mediumModalStyle = {
+    content: {
+      top: '50%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+      width: '50%',
     },
   };
 
@@ -59,9 +71,19 @@ const Profile = () => {
         setCalendarModalIsOpen(false)
     }
 
-    const openCalendarModal = (serviceId) => {
+    const openCalendarModal = (serviceId, submit_id) => {
         setSelectedServiceId(serviceId)
+        setSelectedSubmitId(submit_id)
         setCalendarModalIsOpen(true)
+    }
+
+    const onChangeSubmit = async (newDate) => {
+        const result = await apiClinet.changeSubmitDate(selectedSubmitId, newDate)
+        if(result) {
+            closeCalendarModal()
+            getSubmits()
+        }
+        return result
     }
 
     useEffect(() => {
@@ -87,7 +109,7 @@ const Profile = () => {
                 <p>
                     <button onClick={e => navigate(`/services/${sub.service_id}`)}>Details</button>
                     <button onClick={e => openDeleteConfirmation(sub.submit_id)}>Cancel</button>
-                    <button onClick={e => openCalendarModal(sub.service_id)}>Change date</button>
+                    <button onClick={e => openCalendarModal(sub.service_id, sub.submit_id)}>Change date</button>
                 </p>
             </div>)}
         </div>
@@ -95,7 +117,7 @@ const Profile = () => {
         <Modal
             ariaHideApp={false}
             isOpen={modalIsOpen}
-            style={customStyles}
+            style={smallModalStyle}
         >
             <div>
                 <h1>Delete confirmation</h1>
@@ -110,13 +132,12 @@ const Profile = () => {
         <Modal
             ariaHideApp={false}
             isOpen={calendarModalIsOpen}
-            style={customStyles}
+            style={mediumModalStyle}
         >   
             <div>
                 <h1>Change service date</h1>
-                <ServiceCalendar serviceId={selectedServiceId} />
-                <button onClick={null}>Yes</button>
-                <button onClick={closeCalendarModal}>No</button>
+                <ServiceCalendar serviceId={selectedServiceId} onRequest={onChangeSubmit} isUpdate={true}/>
+                <button onClick={closeCalendarModal}>Cancel</button>
             </div>
         </Modal> }
     </div>

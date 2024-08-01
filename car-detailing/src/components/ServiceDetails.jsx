@@ -13,8 +13,12 @@ const ServiceDetails = () => {
         const service = await apiClient.getService(id)
         setService(service)
     }
-    useEffect(() => {
 
+    const submitService = async (date) => {
+        return await apiClient.submitSchedule({service_id: service._id, date: date})
+    }
+
+    useEffect(() => {
         getService()
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -29,7 +33,7 @@ const ServiceDetails = () => {
             <p>{service.price}zł</p>
             <p>{service.detailer.username}</p>
             <img src={service.image} width="30%" alt="service logo"></img>
-            <ServiceCalendar serviceId={service._id} />
+            <ServiceCalendar serviceId={service._id} onRequest={submitService}/>
         </div>
     );
 }

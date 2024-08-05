@@ -164,6 +164,19 @@ class ApiClient {
         }
     }
 
+    async getUserRole() {
+        try {
+            const response = await this.client.get(ENDPOINTS.UserRole);
+            if (isSuccessResponse(response)) {
+                return response.data
+            }
+        }
+        catch (error) {
+            console.error('Error fetching user role', error);
+            return null
+        }
+    }
+
     setToken(access) {
         this.client.defaults.headers['Authorization'] = `Bearer ${access}`
     }

@@ -12,6 +12,9 @@ import ServiceDetails from './components/ServiceDetails';
 import Logout from './components/Logout';
 import { Toaster } from 'react-hot-toast';
 import Profile from './components/Profile';
+import Home from './components/Home';
+import Navbar from './components/Navbar';
+
 
 function App() {
     const [access, setAccessState] = useState(localStorage.getItem('access'));
@@ -42,24 +45,7 @@ function App() {
             <TokenContext.Provider value={{ access, refresh, setAccess, setRefresh }}>
                 <ApiClientWrapper>
                     <header className="App-header">
-                        <nav>
-                            <ul>
-                                <li><Link to="/services">Services</Link></li> 
-                                {access != null ?
-                                <>
-                                    <li><Link to="/">Home</Link></li> 
-                                    <li><Link to="/account">Account</Link></li> 
-                                    <li><Link to="/profile">Profile</Link></li> 
-                                    <li><Link to="/logout">Logout</Link></li> 
-                                </>
-                                :
-                                <>
-                                    <li><Link to="/register">Register</Link></li>
-                                    <li><Link to="/login">Login</Link></li>
-                                </>
-                                }
-                            </ul>
-                        </nav>
+                        <Navbar access={access} />
                         <Routes>
                             <Route path="/register" element={<RegisterForm />} />
                             <Route path="/login" element={<LoginForm />} />
@@ -68,7 +54,7 @@ function App() {
                             <Route path="/services/:id" element={<ServiceDetails/>} />
                             <Route path="/profile" element={<Profile/>} />
                             <Route path="/logout" element={<Logout/>} />
-                            <Route path="/" element={<HomePage />} /> {/* Użyj komponentu HomePage */}
+                            <Route path="/" element={<Home />} /> {/* Użyj komponentu HomePage */}
                         </Routes>
                     </header>
                     <Toaster />
@@ -78,14 +64,5 @@ function App() {
     );
 }
 
-function HomePage() {
-    return (
-        <div className="home-page">
-            <h1>CarDetailing</h1>
-            <p>Witamy w naszym serwisie CarDetailing, gdzie oferujemy najlepsze usługi detalingowe dla Twojego pojazdu!</p>
-            <Link to="/services" className="cta-button">Nasze usługi</Link>
-        </div>
-    );
-}
 
 export default App;

@@ -14,4 +14,5 @@ export const ENDPOINTS = {
     ProfileSubmitsDelete: BASE_URL + '/profile/submits/{submitId}/delete',
     ProfileSubmitsChangeDate: BASE_URL + '/profile/submits/{submitId}/change',
     ProfileDetails: BASE_URL + '/profile/details',
+    UserRole: BASE_URL + '/profile/role',
 }

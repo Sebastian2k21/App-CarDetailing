@@ -14,6 +14,7 @@ import { Toaster } from 'react-hot-toast';
 import Profile from './components/Profile';
 import Home from './components/Home';
 import Navbar from './components/Navbar';
+import Detailer from './components/Detailer';
 
 
 function App() {
@@ -53,6 +54,7 @@ function App() {
                             <Route path="/services" element={<Services/>} />
                             <Route path="/services/:id" element={<ServiceDetails/>} />
                             <Route path="/profile" element={<Profile/>} />
+                            <Route path="/detailer" element={<Detailer/>} />
                             <Route path="/logout" element={<Logout/>} />
                             <Route path="/" element={<Home />} /> {/* Użyj komponentu HomePage */}
                         </Routes>

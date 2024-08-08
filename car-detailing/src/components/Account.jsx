@@ -32,6 +32,7 @@ const Account = () => {
         return formData.password && formData.password === formData.passwordConfirm;
     };
 
+
     return (
         <div className="account-container">
             <div className="columns-wrapper">

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom"
 import toast from "react-hot-toast"
 import Modal from 'react-modal';
 import ServiceCalendar from "./ServiceCalendar"
+import LoadingSpinner from "./common/LoadingSpinner"
 
 
 const smallModalStyle = {
@@ -91,7 +92,10 @@ const Profile = () => {
         getProfile()
     }, [getSubmits, getProfile])
 
-    return <div>
+
+    return(<LoadingSpinner statement={profile}>
+    
+    <div>
 
         <div>
             <h1>Profile</h1>
@@ -140,7 +144,7 @@ const Profile = () => {
                 <button onClick={closeCalendarModal}>Cancel</button>
             </div>
         </Modal> }
-    </div>
+    </div></LoadingSpinner> )
 }
 
 export default Profile

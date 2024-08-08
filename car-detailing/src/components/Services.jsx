@@ -72,9 +72,9 @@ const Services = () => {
                 <input type="number" value={priceTo} onInput={e => setPriceTo(e.target.value)} />
             </div>
             
-            <ul>
+            <div>
                 <CommonList items={filteredServices.map(service => <ServiceItem key={service._id} service={service}/>)} />
-            </ul>
+            </div>
         </div>
     );
 }

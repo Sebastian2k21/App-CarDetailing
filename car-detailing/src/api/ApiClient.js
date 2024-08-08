@@ -118,6 +118,7 @@ class ApiClient {
             if (isSuccessResponse(response)) {
                 return response.data
             }
+            return null
         }
         catch (error) {
             console.error('Error fetching profile details', error);
@@ -174,6 +175,19 @@ class ApiClient {
         catch (error) {
             console.error('Error fetching user role', error);
             return null
+        }
+    }
+
+    async getDetailerServices() {
+        try {
+            const response = await this.client.get(ENDPOINTS.DetailerServices);
+            if (isSuccessResponse(response)) {
+                return response.data
+            }
+        }
+        catch (error) {
+            console.error('Error fetching detailer services', error);
+            return []
         }
     }
 

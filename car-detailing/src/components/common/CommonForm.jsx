@@ -4,24 +4,21 @@ import { toast } from 'react-hot-toast';
 import LoadingSpinner from "./common/LoadingSpinner";
 
 
-const UserDetailsForm = () => {
-    const FORM_FIELDS = [
-        {"name": "first_name", "label": "First name", "type": "text"},
-        {"name": "last_name", "label": "Last name", "type": "text"},
-        {"name": "email", "label": "Email", "type": "email"},
-        {"name": "phone", "label": "Phone", "type": "tel"},
-        {"name": "street", "label": "Street", "type": "text"},
-        {"name": "city", "label": "City", "type": "text"},
-        {"name": "zip_code", "label": "Zip code", "type": "text"},
-    ]
+//fields structure
+// [
+//     {"name": "first_name", "label": "First name", "type": "text"},
+//     {"name": "last_name", "label": "Last name", "type": "text"},
+//     {"name": "email", "label": "Email", "type": "email"},
+//     {"name": "phone", "label": "Phone", "type": "tel"},
+//     {"name": "street", "label": "Street", "type": "text"},
+//     {"name": "city", "label": "City", "type": "text"},
+//     {"name": "zip_code", "label": "Zip code", "type": "text"},
+// ]
 
+const CommonForm = ({fields, data, onSubmit}) => {
     const [formData, setFormData] = useState(null);
     const apiClient = useApiClient()
     
-    const getProfile = useCallback(async () => {
-        setFormData(await apiClient.getProfileDetails())
-    }, []) // eslint-disable-line react-hooks/exhaustive-deps
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -37,12 +34,13 @@ const UserDetailsForm = () => {
             // Here you would usually send formData to the server
             console.log('Form submitted', formData);
             
-            const success = await apiClient.changeAccountDetails(formData)
-            if(success) {
-                toast.success("Data changed")
-            }
+            await onSubmit()
         }
     };
+
+    useEffect(() => {
+        setFormData(data)
+    }, [data])
 
     
     const validateForm = () => {
@@ -85,7 +83,7 @@ const UserDetailsForm = () => {
 
 
             <form onSubmit={handleSubmit}>
-                {formData && FORM_FIELDS.map(field =>  <div>
+                {formData && fields.map(field =>  <div>
                     <label>
                         {field.label}:
                         <input type={field.type} name={field.name} value={formData[field.name]}
@@ -99,4 +97,4 @@ const UserDetailsForm = () => {
     );
 }
 
-export default UserDetailsForm;
+export default CommonForm;

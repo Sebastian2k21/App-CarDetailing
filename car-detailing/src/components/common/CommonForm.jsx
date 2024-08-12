@@ -1,7 +1,6 @@
-import { useCallback, useEffect, useState } from "react";
-import { useApiClient } from "../api/ApiClientContext";
-import { toast } from 'react-hot-toast';
-import LoadingSpinner from "./common/LoadingSpinner";
+import { useEffect, useState } from "react";
+import LoadingSpinner from "./LoadingSpinner";
+import toast from "react-hot-toast";
 
 
 //fields structure
@@ -15,12 +14,31 @@ import LoadingSpinner from "./common/LoadingSpinner";
 //     {"name": "zip_code", "label": "Zip code", "type": "text"},
 // ]
 
-const CommonForm = ({fields, data, onSubmit}) => {
+
+const CommonForm = ({fields, data, onSubmit, title="", validator=null}) => {
     const [formData, setFormData] = useState(null);
-    const apiClient = useApiClient()
     
+    const convertToBase64 = (fieldName, file) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => {
+            setFormData({
+                ...formData,
+                [fieldName + "_file"]: reader.result,
+            });
+        };
+        reader.onerror = (error) => {
+          console.log("Error: ", error);
+        };
+      };
+
     const handleChange = (e) => {
-        const { name, value } = e.target;
+        const { name, value, type } = e.target;
+        if (type === 'file') {
+            convertToBase64(name, e.target.files[0]);
+            return;
+        }
+
         setFormData({
             ...formData,
             [name]: value,
@@ -30,56 +48,24 @@ const CommonForm = ({fields, data, onSubmit}) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (validateForm()) {
-            // Here you would usually send formData to the server
-            console.log('Form submitted', formData);
-            
-            await onSubmit()
+        if (validator && !validator(formData)) {
+            toast.error("Invalid data")
+            return;
         }
+
+        console.log('Form submitted', formData);
+        await onSubmit(formData)
     };
 
     useEffect(() => {
         setFormData(data)
     }, [data])
 
-    
-    const validateForm = () => {
-        // let valid = true;
-        // let errors = {
-        //     username: '',
-        //     email: '',
-        //     password: '',
-        // };
-
-        // if (!formData.username) {
-        //     errors.username = 'Name is required';
-        //     valid = false;
-        // }
-
-        // if (!validateEmail(formData.email)) {
-        //     errors.email = 'Invalid email address';
-        //     valid = false;
-        // }
-
-        // if (!validatePassword(formData.password)) {
-        //     errors.password = 'Password must be at least 8 characters long and contain at least one letter and one number';
-        //     valid = false;
-        // }
-
-        // setErrors(errors);
-        // return valid;
-        return true
-    };
-
-    useEffect(() => {
-        getProfile()
-    }, [getProfile])
-
 
     return (
         <LoadingSpinner statement={formData}>
             <div>
-                <h3>User data</h3>
+                <h3>{title}</h3>
 
 
             <form onSubmit={handleSubmit}>

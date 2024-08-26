@@ -15,7 +15,7 @@ import toast from "react-hot-toast";
 // ]
 
 
-const CommonForm = ({fields, data, onSubmit, title="", validator=null}) => {
+const CommonForm = ({fields, data, onSubmit, title="", validator=null, otherComponents=[]}) => {
     const [formData, setFormData] = useState(null);
     
     const convertToBase64 = (fieldName, file) => {
@@ -64,18 +64,21 @@ const CommonForm = ({fields, data, onSubmit, title="", validator=null}) => {
 
     return (
         <LoadingSpinner statement={formData}>
-            <div>
-                <h3>{title}</h3>
+            <div key="common_form">
+                <h3 key={"form_title"}>{title}</h3>
 
 
             <form onSubmit={handleSubmit}>
-                {formData && fields.map(field =>  <div>
+                {formData && fields.map(field =>  <div key={field.name}>
                     <label>
                         {field.label}:
                         <input type={field.type} name={field.name} value={formData[field.name]}
                             onChange={handleChange} required />
                     </label>
                 </div> )}
+                {formData && otherComponents.map(Comp => <div>
+                    {<Comp onChange={handleChange}/>}
+                </div>)}
                 <button type="submit">Change data</button>
             </form>
             </div>      

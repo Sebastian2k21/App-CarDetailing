@@ -16,4 +16,5 @@ export const ENDPOINTS = {
     ProfileDetails: BASE_URL + '/profile/details',
     UserRole: BASE_URL + '/profile/role',
     DetailerServices: BASE_URL + '/detailer/services',
+    AddService: BASE_URL + '/detailer/services/add',
 }

@@ -191,6 +191,19 @@ class ApiClient {
         }
     }
 
+    async addService(formData) {
+        try {
+            const response = await this.client.post(ENDPOINTS.AddService, formData);
+            if (isSuccessResponse(response)) {
+                return true
+            }
+        }
+        catch (error) {
+            console.error('Error add service', error);
+            return false
+        }
+    }
+
     setToken(access) {
         this.client.defaults.headers['Authorization'] = `Bearer ${access}`
     }

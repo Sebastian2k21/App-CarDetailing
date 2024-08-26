@@ -4,6 +4,7 @@ import CommonList from "./common/CommonList";
 import ServiceItem from "./ServiceItem";
 import LoadingSpinner from "./common/LoadingSpinner";
 import CommonForm from "./common/CommonForm";
+import ServiceDaysInput from "./ServiceDaysInput";
 
 
 const ADD_SERVICE_FORM_FIELDS = [
@@ -24,7 +25,7 @@ const Detailer = () => {
         if(services) {
             setServices(services)
         }
-    }, [setServices])
+    }, [setServices]) // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         getServices()
@@ -48,11 +49,13 @@ const Detailer = () => {
             <h1>Detailer</h1>
             <h2>Services</h2>
             <div>
-                <CommonForm fields={ADD_SERVICE_FORM_FIELDS}
+                <CommonForm key="add_service_form"
+                            fields={ADD_SERVICE_FORM_FIELDS}
                             data={{}} 
                             title="Add service" 
                             onSubmit={onAddService} 
-                            validator={validateServiceForm}/>
+                            validator={validateServiceForm}
+                            otherComponents={[ServiceDaysInput]}/>
             </div>
             <div>
                 <LoadingSpinner statement={services}>

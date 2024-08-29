@@ -15,25 +15,11 @@ class ApiClient {
     }
 
     async getServices() {
-        try {
-            const response = await this.client.get(ENDPOINTS.Services);
-            return response.data
-        }
-        catch (error) {
-            console.error('Error getting services', error);
-            return []
-        }
+        return await this.getList(ENDPOINTS.Services, 'Error getting services')
     }
 
     async getService(id) { 
-        try {
-            const response = await this.client.get(ENDPOINTS.ServiceDetails.replace('{id}', id));
-            return response.data
-        }
-        catch (error) {
-            console.error('Error getting service', error);
-            return null
-        }
+        return await this.get(ENDPOINTS.ServiceDetails.replace('{id}', id), 'Error getting service')
     }
 
     async registerUser(formData) {
@@ -63,16 +49,7 @@ class ApiClient {
     }
 
     async changePassword(formData) { 
-        try {
-            const response = await this.client.post(ENDPOINTS.ChangePassword, formData);
-            if (isSuccessResponse(response)) {
-                return true
-            }
-        }
-        catch (error) {
-            console.error('Error changing password', error);
-            return false;
-        }
+        return await this.post(ENDPOINTS.ChangePassword, formData, 'Error changing password')
     }
 
     async availableSchedules(serviceId, dateFrom, dateTo) {
@@ -100,43 +77,15 @@ class ApiClient {
     }
 
     async getUserSubmits() {
-        try {
-            const response = await this.client.get(ENDPOINTS.ProfileSubmits);
-            if (isSuccessResponse(response)) {
-                return response.data
-            }
-        }
-        catch (error) {
-            console.error('Error fetching user submits', error);
-            return []
-        }
+        return await this.getList(ENDPOINTS.ProfileSubmits, 'Error fetching user submits')
     }
 
     async getProfileDetails() {
-        try {
-            const response = await this.client.get(ENDPOINTS.ProfileDetails);
-            if (isSuccessResponse(response)) {
-                return response.data
-            }
-            return null
-        }
-        catch (error) {
-            console.error('Error fetching profile details', error);
-            return null
-        }
+        return await this.get(ENDPOINTS.ProfileDetails, 'Error fetching profile details')
     }
 
     async changeAccountDetails(formData) {
-        try {
-            const response = await this.client.post(ENDPOINTS.ProfileDetails, formData);
-            if (isSuccessResponse(response)) {
-                return true
-            }
-        }
-        catch (error) {
-            console.error('Error changing account details', error);
-            return false;
-        }
+        return await this.post(ENDPOINTS.ProfileDetails, formData, 'Error changing account details')
     }
 
     async deleteSubmit(submitId) {
@@ -153,59 +102,69 @@ class ApiClient {
     }
 
     async changeSubmitDate(submitId, newDate) {
-        try {
-            const response = await this.client.post(ENDPOINTS.ProfileSubmitsChangeDate.replace('{submitId}', submitId), {date: newDate});
-            if (isSuccessResponse(response)) {
-                return true
-            }
-        }
-        catch (error) {
-            console.error('Error changing submit date', error);
-            return false;
-        }
+        return await this.post(ENDPOINTS.ProfileSubmitsChangeDate.replace('{submitId}', submitId), {date: newDate}, 'Error changing submit date')
     }
 
     async getUserRole() {
-        try {
-            const response = await this.client.get(ENDPOINTS.UserRole);
-            if (isSuccessResponse(response)) {
-                return response.data
-            }
-        }
-        catch (error) {
-            console.error('Error fetching user role', error);
-            return null
-        }
+        return await this.get(ENDPOINTS.UserRole, 'Error fetching user role')
     }
 
     async getDetailerServices() {
-        try {
-            const response = await this.client.get(ENDPOINTS.DetailerServices);
-            if (isSuccessResponse(response)) {
-                return response.data
-            }
-        }
-        catch (error) {
-            console.error('Error fetching detailer services', error);
-            return []
-        }
+        return await this.getList(ENDPOINTS.DetailerServices, 'Error fetching detailer services')
     }
 
     async addService(formData) {
+        return await this.post(ENDPOINTS.AddService, formData, 'Error add service')
+    }
+
+    async getServiceSchedules(serviceId) {
+        return await this.getList(ENDPOINTS.ServiceSchedules.replace("{id}", serviceId), 'Error fetching detailer services')
+    }
+
+    //----------------------------------------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------------------------------------
+
+    async getList(url, errorMsg="") {
         try {
-            const response = await this.client.post(ENDPOINTS.AddService, formData);
-            if (isSuccessResponse(response)) {
-                return true
-            }
+            const response = await this.client.get(url);
+            return response.data
         }
         catch (error) {
-            console.error('Error add service', error);
-            return false
+            console.error(errorMsg, error);
+            return []
         }
     }
 
     setToken(access) {
         this.client.defaults.headers['Authorization'] = `Bearer ${access}`
+    }
+
+    async post(url, formData, errorMsg="") { 
+        try {
+            const response = await this.client.post(url, formData);
+            if (isSuccessResponse(response)) {
+                return true
+            }
+        }
+        catch (error) {
+            console.error(errorMsg, error);
+            return false;
+        }
+    }
+
+    
+    async get(url, errorMsg="") {
+        try {
+            const response = await this.client.get(url);
+            if (isSuccessResponse(response)) {
+                return response.data
+            }
+        }
+        catch (error) {
+            console.error(errorMsg, error);
+            return null
+        }
     }
 }
 

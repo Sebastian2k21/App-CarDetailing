@@ -8,6 +8,7 @@ export const ENDPOINTS = {
     ChangePassword: BASE_URL + '/change-password',
     Services: BASE_URL + '/services',
     ServiceDetails: BASE_URL + '/services/{id}/details',
+    ServiceSchedules: BASE_URL + '/services/{id}/days',
     AvailableSchedules : BASE_URL + '/services/{id}/available/{dateFrom}/{dateTo}',
     SubmitSchedule: BASE_URL + '/services/schedule',
     ProfileSubmits: BASE_URL + '/profile/submits',

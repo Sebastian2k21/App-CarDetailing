@@ -15,6 +15,7 @@ import Profile from './components/Profile';
 import Home from './components/Home';
 import Navbar from './components/Navbar';
 import Detailer from './components/Detailer';
+import ServiceUpdate from './components/ServiceUpdate';
 
 
 function App() {
@@ -53,6 +54,7 @@ function App() {
                             <Route path="/account" element={<Account />} />
                             <Route path="/services" element={<Services/>} />
                             <Route path="/services/:id" element={<ServiceDetails/>} />
+                            <Route path="/services/:id/update" element={<ServiceUpdate/>}/>
                             <Route path="/profile" element={<Profile/>} />
                             <Route path="/detailer" element={<Detailer/>} />
                             <Route path="/logout" element={<Logout/>} />

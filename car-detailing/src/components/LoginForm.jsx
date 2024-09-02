@@ -3,6 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import TokenContext from '../context/TokenContext';
 import { useApiClient } from '../api/ApiClientContext';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
+import {toast} from 'react-hot-toast'
+import Button from '@mui/material/Button';
+import { TextField } from '@mui/material';
+
 
 const LoginForm = () => {
     const { setAccess, setRefresh } = useContext(TokenContext); 
@@ -26,13 +30,15 @@ const LoginForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
             
-        const data = await apiClient.loginUser(formData);
-        if (data) {
+        const {success, data, message} = await apiClient.loginUser(formData);
+        if (success) {
             // Przekierowanie na ekran logowania
             setAccess(data.access);
             setRefresh(data.refresh);
             apiClient.setToken(data.access);
             navigate("/");
+        } else {
+            toast.error(message);
         }
     };
 
@@ -42,33 +48,56 @@ const LoginForm = () => {
                 <div className="col-md-6">
                     <div className="card bg-dark text-light">
                         <div className="card-body">
-                            <h5 className="card-title text-center mb-4">Zaloguj się</h5>
                             <form onSubmit={handleSubmit}>
                                 <div className="mb-3">
-                                    <label htmlFor="username" className="form-label">Username</label>
-                                    <input 
+                                    <TextField 
+                                        label="Username" 
+                                        variant="outlined" 
                                         type="text" 
                                         id="username" 
                                         name="username" 
-                                        className="form-control" 
                                         value={formData.username} 
                                         onChange={handleChange} 
-                                        required 
-                                    />
+                                        color="primary"
+                                        sx={{
+                                            width: '100%',
+                                            '& .MuiOutlinedInput-root': {
+                                                color: '#ffffff', // Kolor czcionki
+                                            },
+                                            '& .MuiInputLabel-root': {
+                                                color: '#ffffff', // Kolor etykiety (label)
+                                            },
+                                            '& .MuiOutlinedInput-notchedOutline': {
+                                                borderColor: '#ffffff', // Kolor obramowania
+                                            }
+                                        }}
+                                        required  />
+
                                 </div>
                                 <div className="mb-3">
-                                    <label htmlFor="password" className="form-label">Hasło</label>
-                                    <input 
+                                    <TextField 
+                                        label="Password" 
+                                        variant="outlined" 
                                         type="password" 
                                         id="password" 
                                         name="password" 
-                                        className="form-control" 
                                         value={formData.password} 
                                         onChange={handleChange} 
-                                        required 
-                                    />
+                                        sx={{
+                                            width: '100%',
+                                            '& .MuiOutlinedInput-root': {
+                                                color: '#ffffff', // Kolor czcionki
+                                            },
+                                            '& .MuiInputLabel-root': {
+                                                color: '#ffffff', // Kolor etykiety (label)
+                                            },
+                                            '& .MuiOutlinedInput-notchedOutline': {
+                                                borderColor: '#ffffff', // Kolor obramowania
+                                            }
+                                        }}
+                                        required  />
                                 </div>
-                                <button type="submit" className="btn btn-primary w-100">Zaloguj się</button>
+                                <Button variant="contained" color="primary" type="submit" className="w-100">Zaloguj się</Button>
                             </form>
                         </div>
                     </div>

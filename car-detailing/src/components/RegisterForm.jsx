@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useApiClient } from '../api/ApiClientContext';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import toast from 'react-hot-toast';
+import { TextField } from '@mui/material';
+
 
 const RegisterForm = () => {
     const [formData, setFormData] = useState({
@@ -97,16 +99,29 @@ const RegisterForm = () => {
                             <h5 className="card-title text-center mb-4">Rejestracja</h5>
                             <form onSubmit={handleSubmit}>
                                 <div className="mb-3">
-                                    <label htmlFor="username" className="form-label">Imię:</label>
-                                    <input
-                                        type="text"
-                                        id="username"
-                                        name="username"
-                                        className="form-control"
-                                        value={formData.username}
-                                        onChange={handleChange}
-                                        required
-                                    />
+                                     <TextField 
+                                        label="Username" 
+                                        variant="outlined" 
+                                        type="text" 
+                                        id="username" 
+                                        name="username" 
+                                        value={formData.username} 
+                                        onChange={handleChange} 
+                                        color="primary"
+                                        sx={{
+                                            width: '100%',
+                                            '& .MuiOutlinedInput-root': {
+                                                color: '#ffffff', // Kolor czcionki
+                                            },
+                                            '& .MuiInputLabel-root': {
+                                                color: '#ffffff', // Kolor etykiety (label)
+                                            },
+                                            '& .MuiOutlinedInput-notchedOutline': {
+                                                borderColor: '#ffffff', // Kolor obramowania
+                                            }
+                                        }}
+                                        required  />
+
                                     {errors.username && <div className="text-danger mt-2">{errors.username}</div>}
                                 </div>
                                 <div className="mb-3">

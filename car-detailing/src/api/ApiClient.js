@@ -23,29 +23,11 @@ class ApiClient {
     }
 
     async registerUser(formData) {
-        try {
-            const response = await this.client.post(ENDPOINTS.Register, formData);
-            if (isSuccessResponse(response)) {
-                return {success: true, message: null};
-            }
-        }
-        catch (error) {
-            console.error('Error registering user', error);
-            return {success: false, message: error.response.data.message}
-        }
+        return await this.postWithResult(ENDPOINTS.Register, formData, 'Error registering user')
     }
 
     async loginUser(formData) {
-        try {
-            const response = await this.client.post(ENDPOINTS.Login, formData);
-            if (isSuccessResponse(response)) {
-                return response.data
-            }
-        }
-        catch (error) {
-            console.error('Error logging user', error);
-            return null;
-        }
+        return await this.postWithResult(ENDPOINTS.Login, formData, 'Error logging in user')
     }
 
     async changePassword(formData) { 
@@ -53,27 +35,11 @@ class ApiClient {
     }
 
     async availableSchedules(serviceId, dateFrom, dateTo) {
-        try {
-            const response = await this.client.get(ENDPOINTS.AvailableSchedules.replace('{id}', serviceId).replace('{dateFrom}', dateFrom).replace('{dateTo}', dateTo));
-            return response.data
-        }
-        catch (error) {
-            console.error('Error getting available schedules', error);
-            return {}
-        }
+        return await this.getList(ENDPOINTS.AvailableSchedules.replace('{id}', serviceId).replace('{dateFrom}', dateFrom).replace('{dateTo}', dateTo), 'Error getting available schedules')
     }
 
     async submitSchedule(formData) {
-        try {
-            const response = await this.client.post(ENDPOINTS.SubmitSchedule, formData);
-            if (isSuccessResponse(response)) {
-                return {success: true, message: null};
-            }
-        }
-        catch (error) {
-            console.error('Error submitting schedule', error);
-            return {success: false, message: error.response.data.message}
-        }
+        return await this.post(ENDPOINTS.SubmitSchedule, formData, 'Error submitting schedule')
     }
 
     async getUserSubmits() {
@@ -89,16 +55,7 @@ class ApiClient {
     }
 
     async deleteSubmit(submitId) {
-        try {
-            const response = await this.client.delete(ENDPOINTS.ProfileSubmitsDelete.replace('{submitId}', submitId));
-            if (isSuccessResponse(response)) {
-                return true
-            }
-        }
-        catch (error) {
-            console.error('Error deleting submit', error);
-            return false;
-        }
+        return await this.delete(ENDPOINTS.ProfileSubmitsDelete.replace('{submitId}', submitId), 'Error deleting submit')
     }
 
     async changeSubmitDate(submitId, newDate) {
@@ -125,6 +82,10 @@ class ApiClient {
     //----------------------------------------------------------------------------------------------------------------------------
     //----------------------------------------------------------------------------------------------------------------------------
 
+    setToken(access) {
+        this.client.defaults.headers['Authorization'] = `Bearer ${access}`
+    }
+
     async getList(url, errorMsg="") {
         try {
             const response = await this.client.get(url);
@@ -134,10 +95,6 @@ class ApiClient {
             console.error(errorMsg, error);
             return []
         }
-    }
-
-    setToken(access) {
-        this.client.defaults.headers['Authorization'] = `Bearer ${access}`
     }
 
     async post(url, formData, errorMsg="") { 
@@ -164,6 +121,32 @@ class ApiClient {
         catch (error) {
             console.error(errorMsg, error);
             return null
+        }
+    }
+
+    async postWithResult(url, formData, errorMsg="") {
+        try {
+            const response = await this.client.post(url, formData);
+            if (isSuccessResponse(response)) {
+                return {success: true, data: response.data, message: null}
+            }
+        }
+        catch (error) {
+            console.error(errorMsg, error);
+            return {success: false, data: null, message: error.response.data.message}
+        }
+    }
+
+    async delete(url, errorMsg="") {
+        try {
+            const response = await this.client.delete(url);
+            if (isSuccessResponse(response)) {
+                return true
+            }
+        }
+        catch (error) {
+            console.error(errorMsg, error);
+            return false;
         }
     }
 }

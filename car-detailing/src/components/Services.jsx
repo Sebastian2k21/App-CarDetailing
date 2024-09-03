@@ -3,6 +3,26 @@ import { useApiClient } from "../api/ApiClientContext";
 import CommonList from "./common/CommonList";
 import CommonSelect from "./common/CommonSelect";
 import ServiceItem from "./ServiceItem";
+import InputAdornment from '@mui/material/InputAdornment';
+import { TextField } from "@mui/material";
+import Grid from '@mui/material/Grid2';
+
+
+const INPUT_STYLE = {
+    m: 1, width: '25ch' ,
+    '& .MuiOutlinedInput-root': {
+        color: '#ffffff', // Kolor czcionki
+    },
+    '& .MuiInputLabel-root': {
+        color: '#ffffff', // Kolor etykiety (label)
+    },
+    '& .MuiOutlinedInput-notchedOutline': {
+        borderColor: '#ffffff', // Kolor obramowania
+    },
+    '& .MuiTypography-root': {
+        color: '#ffffff', // Kolor tekstu zł
+    }
+}
 
 
 const Services = () => {
@@ -64,16 +84,41 @@ const Services = () => {
         <div>
             <h1>Services</h1>
             <div>
-                <span>Order</span>
-                <CommonSelect name="order" options={orderOptions} onSelect={setOrder} />
-                <span>Price from</span>
-                <input type="number" value={priceFrom} onInput={e => setPriceFrom(e.target.value)} />
-                <span>Price to</span>
-                <input type="number" value={priceTo} onInput={e => setPriceTo(e.target.value)} />
+                <CommonSelect name="order" label="Order" options={orderOptions} onSelect={setOrder} />
+
+                <TextField
+                    label="Price from"
+                    id="priceFrom"
+                    type="number"
+                    value={priceFrom}
+                    onChange={e => setPriceFrom(e.target.value)}
+                    color="primary"
+                    sx={INPUT_STYLE}
+                    slotProps={{
+                            input: {
+                            startAdornment: <InputAdornment position="start">zł</InputAdornment>,
+                            },
+                        }}
+                />
+                <TextField
+                    label="Price to"
+                    id="priceTo"
+                    type="number"
+                    value={priceTo}
+                    onChange={e => setPriceTo(e.target.value)}
+                    sx={INPUT_STYLE}
+                        slotProps={{
+                            input: {
+                            startAdornment: <InputAdornment position="start">zł</InputAdornment>,
+                            },
+                        }}
+                />
             </div>
             
             <div>
-                <CommonList items={filteredServices.map(service => <ServiceItem key={service._id} service={service}/>)} />
+            <Grid container spacing={2}>
+                {filteredServices.map(service => <ServiceItem key={service._id} service={service}/>)}
+            </Grid>
             </div>
         </div>
     );

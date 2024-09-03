@@ -1,14 +1,34 @@
+import { InputLabel, MenuItem, Select } from "@mui/material";
 
 
-const CommonSelect = ({name, options, onSelect=()=>{}, selectedValue=null}) => {
+const CommonSelect = ({name, label, options, onSelect=()=>{}, selectedValue=null}) => {
+    return (  
+        <>
+            <Select
+                labelId="common-select-label"
+                id={name}
+                value={selectedValue}
+                label={label}
+                color="primary"
+                sx={{
+                    m: 1, minWidth: 240,
+  
+                    '& .MuiSelect-select': {
+                        color: '#ffffff', // Kolor tekstu wybranej wartości na biały
+                    },
+                    '& .MuiOutlinedInput-notchedOutline': {
+                        borderColor: '#ffffff', // Kolor obramowania na biały
+                        color: '#ffffff', // Kolor czcionki
+                    },             
 
-    return (
-        <select id={name} name={name} onChange={e => onSelect(e.target.value)} value={selectedValue}>
-            {options.map(option => (
-                <option key={option.value} value={option.value}>{option.label}</option>
-            ))}
-        </select>
-    );
+                }}
+                onChange={e => onSelect(e.target.value)}
+            >
+                {options.map(option => <MenuItem value={option.value}>{option.label}</MenuItem>)}
+            </Select>
+        </>
+
+      )
 }
 
 export default CommonSelect;

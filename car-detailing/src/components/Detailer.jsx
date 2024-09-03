@@ -5,6 +5,7 @@ import ServiceItem from "./ServiceItem";
 import LoadingSpinner from "./common/LoadingSpinner";
 import CommonForm from "./common/CommonForm";
 import ServiceDaysInput from "./ServiceDaysInput";
+import Grid from '@mui/material/Grid2';
 
 
 const ADD_SERVICE_FORM_FIELDS = [
@@ -66,7 +67,9 @@ const Detailer = () => {
             </div>}
             <div>
                 <LoadingSpinner statement={services}>
-                    <CommonList items={services.map(service => <ServiceItem key={service._id} service={service} editable={true}/>)} />
+                    <Grid container spacing={2}>
+                        {services.map(service => <ServiceItem key={service._id} service={service} editable={true}/>)} 
+                    </Grid>
                 </LoadingSpinner>
                 
             </div>

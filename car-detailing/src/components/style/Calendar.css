@@ -1,0 +1,14 @@
+.calendar_default_cell_inner {
+    border-right: 1px solid rgb(221, 221, 221) !important;
+    border-bottom: 1px solid rgb(141, 141, 141);
+    background: rgb(83, 83, 83) !important;
+}
+
+.calendar_default_rowheader_minutes {
+    color: rgb(255, 255, 255) !important;
+}
+
+.calendar_default_rowheader_inner {
+    background: rgb(83, 83, 83) !important;
+    color: rgb(255, 255, 255) !important;
+}

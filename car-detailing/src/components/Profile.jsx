@@ -1,150 +1,194 @@
-import { useCallback, useEffect, useState } from "react"
-import { useApiClient } from "../api/ApiClientContext"
-import { MEDIA_URL } from "../api/Endpoints"
-import { useNavigate } from "react-router-dom"
-import toast from "react-hot-toast"
+import { useCallback, useEffect, useState } from "react";
+import { useApiClient } from "../api/ApiClientContext";
+import { MEDIA_URL } from "../api/Endpoints";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import Modal from 'react-modal';
-import ServiceCalendar from "./ServiceCalendar"
-import LoadingSpinner from "./common/LoadingSpinner"
-
+import ServiceCalendar from "./ServiceCalendar";
+import LoadingSpinner from "./common/LoadingSpinner";
+import { Button, Typography, Card } from '@mui/material';
+import './style/Profile.css'
 
 const smallModalStyle = {
     content: {
-      top: '50%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '-50%',
-      transform: 'translate(-50%, -50%)',
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        marginRight: '-50%',
+        transform: 'translate(-50%, -50%)',
     },
-  };
+};
 
-  const mediumModalStyle = {
+const mediumModalStyle = {
     content: {
-      top: '50%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '-50%',
-      transform: 'translate(-50%, -50%)',
-      width: '50%',
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        marginRight: '-50%',
+        transform: 'translate(-50%, -50%)',
+        width: '50%',
     },
-  };
-
+};
 
 const Profile = () => {
-    const apiClinet = useApiClient()
-    const [profile, setProfile] = useState(null)
-    const [submits, setSubmits] = useState([])
-    const [modalIsOpen, setModalIsOpen] = useState(false)
-    const [calendarModalIsOpen, setCalendarModalIsOpen] = useState(false)
-    const [selectedSubmitId, setSelectedSubmitId] = useState(null)
-    const [selectedServiceId, setSelectedServiceId] = useState(null)
-    const navigate = useNavigate()
-    
+    const apiClient = useApiClient();
+    const [profile, setProfile] = useState(null);
+    const [submits, setSubmits] = useState([]);
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [calendarModalIsOpen, setCalendarModalIsOpen] = useState(false);
+    const [selectedSubmitId, setSelectedSubmitId] = useState(null);
+    const [selectedServiceId, setSelectedServiceId] = useState(null);
+    const navigate = useNavigate();
+
     const getSubmits = useCallback(async () => {
-        setSubmits(await apiClinet.getUserSubmits())
-    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+        setSubmits(await apiClient.getUserSubmits());
+    }, [apiClient]);
 
     const getProfile = useCallback(async () => {
-        setProfile(await apiClinet.getProfileDetails())
-    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+        setProfile(await apiClient.getProfileDetails());
+    }, [apiClient]);
 
-    const openDeleteConfirmation = async (submitId) => {
-        setSelectedSubmitId(submitId)
-        setModalIsOpen(true)
-    }
+    const openDeleteConfirmation = (submitId) => {
+        setSelectedSubmitId(submitId);
+        setModalIsOpen(true);
+    };
 
     const deleteSubmit = useCallback(async () => {
-        const result = await apiClinet.deleteSubmit(selectedSubmitId)
+        const result = await apiClient.deleteSubmit(selectedSubmitId);
         if (result) {
-            closeModal()
-            toast.success("Submit deleted")
-            getSubmits()
+            closeModal();
+            toast.success("Submit deleted");
+            getSubmits();
         }
-    }, [selectedSubmitId]) // eslint-disable-line react-hooks/exhaustive-deps
+    }, [apiClient, selectedSubmitId, getSubmits]);
 
     const closeModal = () => {
-        setModalIsOpen(false)
-    }
+        setModalIsOpen(false);
+    };
 
     const closeCalendarModal = () => {
-        setCalendarModalIsOpen(false)
-    }
+        setCalendarModalIsOpen(false);
+    };
 
     const openCalendarModal = (serviceId, submit_id) => {
-        setSelectedServiceId(serviceId)
-        setSelectedSubmitId(submit_id)
-        setCalendarModalIsOpen(true)
-    }
+        setSelectedServiceId(serviceId);
+        setSelectedSubmitId(submit_id);
+        setCalendarModalIsOpen(true);
+    };
 
     const onChangeSubmit = async (newDate) => {
-        const result = await apiClinet.changeSubmitDate(selectedSubmitId, newDate)
-        if(result) {
-            closeCalendarModal()
-            getSubmits()
+        const result = await apiClient.changeSubmitDate(selectedSubmitId, newDate);
+        if (result) {
+            closeCalendarModal();
+            getSubmits();
         }
-        return result
-    }
+        return result;
+    };
 
     useEffect(() => {
-        getSubmits()
-        getProfile()
-    }, [getSubmits, getProfile])
+        getSubmits();
+        getProfile();
+    }, [getSubmits, getProfile]);
 
+    return (
+        <LoadingSpinner statement={profile}>
+            <div className="container mt-5">
+                <div className="row justify-content-center">
+                    <div className="col-md-10 col-lg-8">
+                        <Card className="bg-dark text-light">
+                            <div className="card-header">
+                                <Typography variant="h4" component="h1" className="text-center mb-4">
+                                    Profile
+                                </Typography>
+                            </div>
+                            <div className="card-body">
+                                <Typography variant="h6" component="h2" className="mb-3">
+                                    Details
+                                </Typography>
+                                <table className="profile-table">
+                                    <tbody>
+                                        {Object.keys(profile || {}).filter(k => k !== "id").map(key => (
+                                            <tr key={key}>
+                                                <td className="profile-label">{key}:</td>
+                                                <td>{profile[key]}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
 
-    return(<LoadingSpinner statement={profile}>
-    
-    <div>
-
-        <div>
-            <h1>Profile</h1>
-            <h2>Details</h2>
-            {Object.keys(profile || {}).filter(k => k !== "id").map(key => <p>
-                {key}: {profile[key]}
-            </p>)}
-
-            <h2>Submits</h2>
-            {submits.map(sub => <div>
-                <p>{sub.service_name}</p>
-                <p>{sub.service_price}</p>
-                <p><img src={MEDIA_URL + sub.service_image} alt="service" width={"150px"}></img></p>
-                <p>{sub.date}</p>
-                <p>
-                    <button onClick={e => navigate(`/services/${sub.service_id}`)}>Details</button>
-                    <button onClick={e => openDeleteConfirmation(sub.submit_id)}>Cancel</button>
-                    <button onClick={e => openCalendarModal(sub.service_id, sub.submit_id)}>Change date</button>
-                </p>
-            </div>)}
-        </div>
-
-        <Modal
-            ariaHideApp={false}
-            isOpen={modalIsOpen}
-            style={smallModalStyle}
-        >
-            <div>
-                <h1>Delete confirmation</h1>
-                <h2>Are you sure?</h2>
-                <button onClick={deleteSubmit}>Yes</button>
-                <button onClick={closeModal}>No</button>
+                                <Typography variant="h6" component="h2" className="mt-4 mb-3">
+                                    Submits
+                                </Typography>
+                                {submits.length > 0 ? (
+                                    <table className="submits-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Service Name</th>
+                                                <th>Price</th>
+                                                <th>Date</th>
+                                                <th>Image</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {submits.map(sub => (
+                                                <tr key={sub.submit_id}>
+                                                    <td>{sub.service_name}</td>
+                                                    <td>{sub.service_price}</td>
+                                                    <td>{sub.date}</td>
+                                                    <td><img src={MEDIA_URL + sub.service_image} alt="service" width="150px" /></td>
+                                                    <td className="text-center">
+                                                        <Button variant="contained" color="primary" onClick={() => navigate(`/services/${sub.service_id}`)}>
+                                                            Details
+                                                        </Button>
+                                                        <Button variant="contained" color="error" onClick={() => openDeleteConfirmation(sub.submit_id)} className="mx-2">
+                                                            Cancel
+                                                        </Button>
+                                                        <Button variant="contained" color="info" onClick={() => openCalendarModal(sub.service_id, sub.submit_id)}>
+                                                            Change date
+                                                        </Button>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                ) : (
+                                    <Typography variant="body1" className="text-center">No submits found</Typography>
+                                )}
+                            </div>
+                        </Card>
+                    </div>
+                </div>
             </div>
-        </Modal>
 
-        
-        {selectedServiceId && 
-        <Modal
-            ariaHideApp={false}
-            isOpen={calendarModalIsOpen}
-            style={mediumModalStyle}
-        >   
-            <div>
-                <h1>Change service date</h1>
-                <ServiceCalendar serviceId={selectedServiceId} onRequest={onChangeSubmit} isUpdate={true}/>
-                <button onClick={closeCalendarModal}>Cancel</button>
-            </div>
-        </Modal> }
-    </div></LoadingSpinner> )
-}
+            <Modal ariaHideApp={false} isOpen={modalIsOpen} style={smallModalStyle}>
+                <div className="text-center">
+                    <Typography variant="h5">Delete confirmation</Typography>
+                    <Typography variant="h6">Are you sure?</Typography>
+                    <Button variant="contained" color="primary" onClick={deleteSubmit}>
+                        Yes
+                    </Button>
+                    <Button variant="contained" color="secondary" onClick={closeModal} className="mx-2">
+                        No
+                    </Button>
+                </div>
+            </Modal>
 
-export default Profile
+            {selectedServiceId && (
+                <Modal ariaHideApp={false} isOpen={calendarModalIsOpen} style={mediumModalStyle}>
+                    <div className="text-center">
+                        <Typography variant="h5">Change service date</Typography>
+                        <ServiceCalendar serviceId={selectedServiceId} onRequest={onChangeSubmit} isUpdate={true} />
+                        <Button variant="contained" color="secondary" onClick={closeCalendarModal}>
+                            Cancel
+                        </Button>
+                    </div>
+                </Modal>
+            )}
+        </LoadingSpinner>
+    );
+};
+
+export default Profile;

@@ -1,0 +1,53 @@
+* General styling for the profile page */
+.card-header, .card-body {
+  padding: 20px;
+}
+
+/* Table styling for profile details */
+.profile-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.profile-table td {
+  padding: 8px;
+  border-bottom: 1px solid #444;
+}
+
+.profile-label {
+  font-weight: bold;
+  color: #ffffff; /* White text for labels */
+}
+
+/* Table styling for submits */
+.submits-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.submits-table th, .submits-table td {
+  padding: 12px;
+  border-bottom: 1px solid #444;
+  text-align: left;
+}
+
+.submits-table th {
+  font-weight: bold;
+  color: #ffffff; /* White text for headers */
+}
+
+.submits-table td img {
+  max-width: 150px;
+  border-radius: 5px;
+}
+
+.submits-table td .text-center {
+  text-align: center;
+}
+
+/* Modal styling */
+.Modal {
+  background-color: #333;
+  color: #fff;
+}

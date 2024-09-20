@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useApiClient } from "../api/ApiClientContext";
 import {DayPilotCalendar} from "@daypilot/daypilot-lite-react";
-import Modal from 'react-modal';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
 import toast from 'react-hot-toast';
+import "../App.css"
+import "./style/Calendar.css"
 
 
 const getCurrentDate = () => {
@@ -35,106 +37,113 @@ const getOffsetDate = (date, offset) => {
     today =yyyy + '-' + mm + '-' + dd;
     return today
 }
+  
 
-
-const customStyles = {
-    content: {
-      top: '50%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '-50%',
-      transform: 'translate(-50%, -50%)',
-    },
-  };
-
-
-const ServiceCalendar = ({ serviceId, onRequest, isUpdate=false }) => {
-    const calendarRef = useRef()
-    const apiClient = useApiClient()
-    const [currentDate, setCurrentDate] = useState(getCurrentDateMonday())
-    const [modalIsOpen, setIsOpen] = useState(false);
-    const [selectedEvent, setSelectedEvent] = useState({})
+  const ServiceCalendar = ({ serviceId, onRequest, isUpdate = false }) => {
+    const calendarRef = useRef();
+    const apiClient = useApiClient();
+    const [currentDate, setCurrentDate] = useState(getCurrentDateMonday());
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [selectedEvent, setSelectedEvent] = useState({});
     const [calendarConfig, setCalendarConfig] = useState({
-        startDate: getCurrentDate(),  
-        weekStarts: 1, viewType: "Week", 
-        eventMoveHandling: "Disabled", 
-        eventResizeHandling: "Disabled", 
-        timeRangeSelectedHandling: "Disabled", eventDeleteHandling: "Disabled", 
-        eventHoverHandling: "Disabled", eventRightClickHandling: "Disabled", eventDoubleClickHandling: "Disabled"})
-
+      startDate: getCurrentDate(),
+      weekStarts: 1,
+      viewType: "Week",
+      eventMoveHandling: "Disabled",
+      eventResizeHandling: "Disabled",
+      timeRangeSelectedHandling: "Disabled",
+      eventDeleteHandling: "Disabled",
+      eventHoverHandling: "Disabled",
+      eventRightClickHandling: "Disabled",
+      eventDoubleClickHandling: "Disabled",
+    });
+  
     const getAvailableSchedules = useCallback(async () => {
-        const endDate = getOffsetDate(currentDate, 7)
-        const schedules = await apiClient.availableSchedules(serviceId, currentDate, endDate)
-
-        setCalendarConfig({...calendarConfig, startDate: currentDate})
-        calendarRef.current.control.update({currentDate, events: schedules});
-    }, [apiClient, serviceId, currentDate]) // eslint-disable-line react-hooks/exhaustive-deps
-
+      const endDate = getOffsetDate(currentDate, 7);
+      const schedules = await apiClient.availableSchedules(serviceId, currentDate, endDate);
+      setCalendarConfig((prev) => ({ ...prev, startDate: currentDate }));
+      calendarRef.current.control.update({ currentDate, events: schedules });
+    }, [apiClient, serviceId, currentDate]);
+  
     useEffect(() => {
-        console.log(currentDate)
-        getAvailableSchedules()
-    }, [getAvailableSchedules, currentDate])
-
-    const handleWeekChange = async (direction) => {
-        const offset = direction === "next" ? 7 : -7
-        setCurrentDate(getOffsetDate(currentDate, offset))
-    }
-
+      getAvailableSchedules();
+    }, [getAvailableSchedules, currentDate]);
+  
+    const handleWeekChange = (direction) => {
+      const offset = direction === "next" ? 7 : -7;
+      setCurrentDate(getOffsetDate(currentDate, offset));
+    };
+  
     const onEventClick = (e) => {
-        const date = e.e.data.start.value
-        console.log(date)
-        setSelectedEvent(e.e.data)
-    }
-
+      setSelectedEvent(e.e.data);
+    };
+  
     const openModal = () => {
-      setIsOpen(true);
-    }
-
+      setModalIsOpen(true);
+    };
+  
     const onConfirmDate = async () => {
-        const result = await onRequest(selectedEvent.start.value)
-        if(result) {
-            toast.success("Success")
-            if(!isUpdate) {
-                closeModal()
-                await getAvailableSchedules()
-            }
-        } else {
-            toast.error("Failed to confirm date")
+      const result = await onRequest(selectedEvent.start.value);
+      if (result) {
+        toast.success("Success");
+        if (!isUpdate) {
+          closeModal();
+          await getAvailableSchedules();
         }
-    }
+      } else {
+        toast.error("Failed to confirm date");
+      }
+    };
   
     const closeModal = () => {
-      setIsOpen(false);
-      setSelectedEvent({})
-    }
-
+      setModalIsOpen(false);
+      setSelectedEvent({});
+    };
+  
     useEffect(() => {
-        console.log(selectedEvent)
-        if(!selectedEvent.start) 
-        {
-            return
-        }
-        openModal()
-    }, [selectedEvent])
-
-    return <div>
-        <button onClick={() => handleWeekChange("previous")}>Previous</button>
-        <button onClick={() => handleWeekChange("next")}>Next</button>
+      if (selectedEvent.start) {
+        openModal();
+      }
+    }, [selectedEvent]);
+  
+    return (
+      <Box sx={{ p: 2 }}>
+        {/* Navigation Buttons */}
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
+          <Button variant="outlined" onClick={() => handleWeekChange("previous")}>
+            Previous
+          </Button>
+          <Button variant="outlined" onClick={() => handleWeekChange("next")}>
+            Next
+          </Button>
+        </Box>
+  
+        {/* Calendar */}
         <DayPilotCalendar ref={calendarRef} {...calendarConfig} onEventClick={onEventClick} />
-        <Modal
-            ariaHideApp={false}
-            isOpen={modalIsOpen}
-            style={customStyles}
+  
+        {/* Booking Modal */}
+        <Dialog
+          open={modalIsOpen}
+          onClose={closeModal}
+          aria-labelledby="booking-dialog-title"
         >
-            <div>
-                <h1>Book service</h1>
-                <h2>{selectedEvent.text}</h2>
-                <button onClick={onConfirmDate}>Confirm date</button>
-                <button onClick={closeModal}>close</button>
-            </div>
-        </Modal>
-    </div>
-}
-
-export default ServiceCalendar;
+          <DialogTitle id="booking-dialog-title">Book Service</DialogTitle>
+          <DialogContent>
+            <Typography variant="h6">
+              {selectedEvent?.text || "No event selected"}
+            </Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={onConfirmDate} color="primary" variant="contained">
+              Confirm Date
+            </Button>
+            <Button onClick={closeModal} color="secondary" variant="outlined">
+              Close
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Box>
+    );
+  };
+  
+  export default ServiceCalendar;

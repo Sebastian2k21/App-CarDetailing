@@ -3,13 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import TokenContext from '../context/TokenContext';
 import { useApiClient } from '../api/ApiClientContext';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
-import {toast} from 'react-hot-toast'
+import { toast } from 'react-hot-toast';
+import { makeStyles, TextField } from '@mui/material';
 import Button from '@mui/material/Button';
-import { TextField } from '@mui/material';
 
 
 const LoginForm = () => {
-    const { setAccess, setRefresh } = useContext(TokenContext); 
+    const { setAccess, setRefresh } = useContext(TokenContext);
     const apiClient = useApiClient();
 
     const [formData, setFormData] = useState({
@@ -30,9 +30,8 @@ const LoginForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
             
-        const {success, data, message} = await apiClient.loginUser(formData);
+        const { success, data, message } = await apiClient.loginUser(formData);
         if (success) {
-            // Przekierowanie na ekran logowania
             setAccess(data.access);
             setRefresh(data.refresh);
             apiClient.setToken(data.access);
@@ -45,9 +44,10 @@ const LoginForm = () => {
     return (
         <div className="container mt-5">
             <div className="row justify-content-center">
-                <div className="col-md-6">
+                <div className="col-md-8 col-lg-6">
                     <div className="card bg-dark text-light">
                         <div className="card-body">
+                            <h5 className="card-title text-center mb-4">Logowanie</h5>
                             <form onSubmit={handleSubmit}>
                                 <div className="mb-3">
                                     <TextField 
@@ -69,10 +69,22 @@ const LoginForm = () => {
                                             },
                                             '& .MuiOutlinedInput-notchedOutline': {
                                                 borderColor: '#ffffff', // Kolor obramowania
-                                            }
+                                            },
+                                            
+                                                '&:hover fieldset': {
+                                                    borderColor: '#888',  // Kolor ramki przy najechaniu
+                                                },
+                                                '&.Mui-focused fieldset': {
+                                                    borderColor: '#fff',   // Kolor ramki po zaznaczeniu
+                                                },
+                                                // "&:-webkit-autofill": {
+                                                //     // WebkitBoxShadow: "0 0 0 0 100px " + theme.palette.primary.main + " inset",
+                                                //     backgroundColor: "red !important;",
+                                                //     backgroundClip: "content-box !important",
+                                                //   },
                                         }}
-                                        required  />
-
+                                        required
+                                    />
                                 </div>
                                 <div className="mb-3">
                                     <TextField 
@@ -95,9 +107,12 @@ const LoginForm = () => {
                                                 borderColor: '#ffffff', // Kolor obramowania
                                             }
                                         }}
-                                        required  />
+                                        required
+                                    />
                                 </div>
-                                <Button variant="contained" color="primary" type="submit" className="w-100">Zaloguj się</Button>
+                                <Button variant="contained" color="primary" type="submit" className="w-100">
+                                    Zaloguj się
+                                </Button>
                             </form>
                         </div>
                     </div>

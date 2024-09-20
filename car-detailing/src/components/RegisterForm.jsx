@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useApiClient } from '../api/ApiClientContext';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
 import toast from 'react-hot-toast';
-import { TextField } from '@mui/material';
+import { TextField, Radio, FormControlLabel, RadioGroup, Button } from '@mui/material';
 
 
 const RegisterForm = () => {
@@ -99,7 +99,7 @@ const RegisterForm = () => {
                             <h5 className="card-title text-center mb-4">Rejestracja</h5>
                             <form onSubmit={handleSubmit}>
                                 <div className="mb-3">
-                                     <TextField 
+                                    <TextField 
                                         label="Username" 
                                         variant="outlined" 
                                         type="text" 
@@ -107,76 +107,103 @@ const RegisterForm = () => {
                                         name="username" 
                                         value={formData.username} 
                                         onChange={handleChange} 
-                                        color="primary"
                                         sx={{
                                             width: '100%',
                                             '& .MuiOutlinedInput-root': {
-                                                color: '#ffffff', // Kolor czcionki
+                                                color: '#ffffff', // Text color
                                             },
                                             '& .MuiInputLabel-root': {
-                                                color: '#ffffff', // Kolor etykiety (label)
+                                                color: '#ffffff', // Label color
                                             },
                                             '& .MuiOutlinedInput-notchedOutline': {
-                                                borderColor: '#ffffff', // Kolor obramowania
+                                                borderColor: '#ffffff', // Border color
                                             }
                                         }}
-                                        required  />
-
+                                        required  
+                                    />
                                     {errors.username && <div className="text-danger mt-2">{errors.username}</div>}
                                 </div>
+
                                 <div className="mb-3">
-                                    <label htmlFor="email" className="form-label">Email:</label>
-                                    <input
-                                        type="email"
-                                        id="email"
-                                        name="email"
-                                        className="form-control"
-                                        value={formData.email}
-                                        onChange={handleChange}
-                                        required
+                                    <TextField 
+                                        label="Email" 
+                                        variant="outlined" 
+                                        type="email" 
+                                        id="email" 
+                                        name="email" 
+                                        value={formData.email} 
+                                        onChange={handleChange} 
+                                        sx={{
+                                            width: '100%',
+                                            '& .MuiOutlinedInput-root': {
+                                                color: '#ffffff',
+                                            },
+                                            '& .MuiInputLabel-root': {
+                                                color: '#ffffff',
+                                            },
+                                            '& .MuiOutlinedInput-notchedOutline': {
+                                                borderColor: '#ffffff',
+                                            }
+                                        }}
+                                        required  
                                     />
                                     {errors.email && <div className="text-danger mt-2">{errors.email}</div>}
                                 </div>
+
                                 <div className="mb-3">
-                                    <label htmlFor="password" className="form-label">Hasło:</label>
-                                    <input
-                                        type="password"
-                                        id="password"
-                                        name="password"
-                                        className="form-control"
-                                        value={formData.password}
-                                        onChange={handleChange}
-                                        required
+                                    <TextField 
+                                        label="Password" 
+                                        variant="outlined" 
+                                        type="password" 
+                                        id="password" 
+                                        name="password" 
+                                        value={formData.password} 
+                                        onChange={handleChange} 
+                                        sx={{
+                                            width: '100%',
+                                            '& .MuiOutlinedInput-root': {
+                                                color: '#ffffff',
+                                            },
+                                            '& .MuiInputLabel-root': {
+                                                color: '#ffffff',
+                                            },
+                                            '& .MuiOutlinedInput-notchedOutline': {
+                                                borderColor: '#ffffff',
+                                            }
+                                        }}
+                                        required  
                                     />
                                     {errors.password && <div className="text-danger mt-2">{errors.password}</div>}
                                 </div>
-                                <div className="mb-3">
-                                    <label className="form-label">I am:</label>
-                                    <div className="form-check">
-                                        <input
-                                            type="radio"
-                                            id="client_role"
-                                            name="role"
-                                            value="client"
-                                            className="form-check-input"
-                                            onChange={handleChange}
-                                        />
-                                        <label htmlFor="client_role" className="form-check-label">Client</label>
-                                    </div>
-                                    <div className="form-check">
-                                        <input
-                                            type="radio"
-                                            id="detailer_role"
-                                            name="role"
-                                            value="detailer"
-                                            className="form-check-input"
-                                            onChange={handleChange}
-                                        />
-                                        <label htmlFor="detailer_role" className="form-check-label">Detailer</label>
-                                    </div>
-                                    {errors.role && <div className="text-danger mt-2">{errors.role}</div>}
-                                </div>
-                                <button type="submit" className="btn btn-primary w-100">Zarejestruj się</button>
+
+                                <div className="mb-3 text-center">
+    <label className="form-label text-light">I am:</label>
+    <RadioGroup 
+        name="role" 
+        value={formData.role} 
+        onChange={handleChange} 
+        row
+        sx={{ justifyContent: 'center' }} // This will center the radio buttons horizontally
+    >
+        <FormControlLabel 
+            value="client" 
+            control={<Radio sx={{color: '#ffffff'}} />} 
+            label="Client" 
+            sx={{color: '#ffffff'}}
+        />
+        <FormControlLabel 
+            value="detailer" 
+            control={<Radio sx={{color: '#ffffff'}} />} 
+            label="Detailer" 
+            sx={{color: '#ffffff'}}
+        />
+    </RadioGroup>
+    {errors.role && <div className="text-danger mt-2">{errors.role}</div>}
+</div>
+
+                                <Button variant="contained" color="primary" type="submit" className="w-100">
+                                    Zarejestruj się
+                                </Button>
                             </form>
                         </div>
                     </div>

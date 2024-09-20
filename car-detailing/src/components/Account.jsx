@@ -1,88 +1,147 @@
-import { useCallback, useEffect, useState } from "react";
-import { useApiClient } from "../api/ApiClientContext";
-import './style/Account.css';  // Import the CSS file
-import CommonForm from "./common/CommonForm";
-import toast from "react-hot-toast";
-
-
+import React, { useCallback, useEffect, useState } from 'react';
+import { useApiClient } from '../api/ApiClientContext';
+import toast from 'react-hot-toast';
+import { TextField, Button } from '@mui/material';
+import './style/Account.css';
 
 const USER_FORM_FIELDS = [
-    {"name": "first_name", "label": "First name", "type": "text"},
-    {"name": "last_name", "label": "Last name", "type": "text"},
-    {"name": "email", "label": "Email", "type": "email"},
-    {"name": "phone", "label": "Phone", "type": "tel"},
-    {"name": "street", "label": "Street", "type": "text"},
-    {"name": "city", "label": "City", "type": "text"},
-    {"name": "zip_code", "label": "Zip code", "type": "text"},
-]
+  { name: 'first_name', label: 'First name', type: 'text' },
+  { name: 'last_name', label: 'Last name', type: 'text' },
+  { name: 'email', label: 'Email', type: 'email' },
+  { name: 'phone', label: 'Phone', type: 'tel' },
+  { name: 'street', label: 'Street', type: 'text' },
+  { name: 'city', label: 'City', type: 'text' },
+  { name: 'zip_code', label: 'Zip code', type: 'text' },
+];
 
 const CHANGE_PASSWORD_FORM_FIELDS = [
-    {"name": "password", "label": "New password", "type": "password"},
-    {"name": "passwordConfirm", "label": "Repeat new password", "type": "password"},
-]
-
+  { name: 'password', label: 'New password', type: 'password' },
+  { name: 'passwordConfirm', label: 'Repeat new password', type: 'password' },
+];
 
 const Account = () => {
-    const [passwordData] = useState({ password: '', passwordConfirm: '' });
-    const [profile, setProfile] = useState(null);
-    const apiClient = useApiClient();
+  const [passwordData, setPasswordData] = useState({ password: '', passwordConfirm: '' });
+  const [profile, setProfile] = useState({});
+  const apiClient = useApiClient();
 
-    const onSubmitChangePassword = async (formData) => {
-        if (validatePasswordForm(formData)) {
-            console.log('Form submitted', formData);
-            
-            const success = await apiClient.changePassword(formData);
-            if (success) {
-                alert("Hasło zmienione");
-            }
+  const onSubmitChangePassword = async (formData) => {
+    if (validatePasswordForm(formData)) {
+      try {
+        const success = await apiClient.changePassword(formData);
+        if (success) {
+          toast.success('Password changed successfully');
+        } else {
+          toast.error('Error changing password');
         }
-    };
-
-    const onSubmitUserDetailsChange = async (formData) => {
-        const success = await apiClient.changeAccountDetails(formData)
-       if(success) {
-           toast.success("Data changed")
-       }
+      } catch (error) {
+        console.error('Error changing password:', error);
+        toast.error('Error changing password');
+      }
+    } else {
+      toast.error('Passwords do not match or are empty');
     }
+  };
 
-    const validatePasswordForm = (formData) => {
-        return formData.password && formData.password === formData.passwordConfirm;
-    };
-
-    const validateAccountDetailsForm = (formData) => {
-        return formData.first_name && formData.last_name && formData.email && formData.phone && formData.street && formData.city && formData.zip_code;
+  const onSubmitUserDetailsChange = async (formData) => {
+    if (validateAccountDetailsForm(formData)) {
+      try {
+        const success = await apiClient.changeAccountDetails(formData);
+        if (success) {
+          toast.success('Profile updated successfully');
+        } else {
+          toast.error('Error updating profile');
+        }
+      } catch (error) {
+        console.error('Error updating profile:', error);
+        toast.error('Error updating profile');
+      }
+    } else {
+      toast.error('Please fill in all required fields');
     }
+  };
 
-    const getProfile = useCallback(async () => {
-        setProfile(await apiClient.getProfileDetails())
-    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  const validatePasswordForm = (formData) => {
+    return formData.password && formData.password === formData.passwordConfirm;
+  };
 
-    useEffect(() => {
-        getProfile()
-    }, [getProfile])
-    
+  const validateAccountDetailsForm = (formData) => {
+    return USER_FORM_FIELDS.every(field => formData[field.name]);
+  };
 
+  const getProfile = useCallback(async () => {
+    try {
+      const userProfile = await apiClient.getProfileDetails();
+      setProfile(userProfile);
+    } catch (error) {
+      console.error('Error fetching profile details:', error);
+    }
+  }, [apiClient]);
 
-    return (
-        <div className="account-container">
-            <div className="columns-wrapper">
-                <div className="column column-left">
-                    <CommonForm fields={CHANGE_PASSWORD_FORM_FIELDS} 
-                                data={passwordData} 
-                                title="Change password" 
-                                onSubmit={onSubmitChangePassword} 
-                                validator={validatePasswordForm} />
-                </div>
-                <div className="column column-right">
-                    <CommonForm fields={USER_FORM_FIELDS} 
-                                title="User data" 
-                                onSubmit={onSubmitUserDetailsChange} 
-                                data={profile} 
-                                validator={validateAccountDetailsForm}/>
-                </div>
+  useEffect(() => {
+    getProfile();
+  }, [getProfile]);
+
+  return (
+    <div className="container mt-5">
+      <div className="row justify-content-center">
+        <div className="col-md-8">
+          <div className="card bg-dark text-light">
+            <div className="card-body">
+              <h5 className="card-title text-center mb-4">Account Settings</h5>
+
+              <h6 className="text-center mb-4">Change Password</h6>
+              <form onSubmit={(e) => { e.preventDefault(); onSubmitChangePassword(passwordData); }}>
+                {CHANGE_PASSWORD_FORM_FIELDS.map((field) => (
+                  <div className="mb-3" key={field.name}>
+                    <TextField
+                      label={field.label}
+                      type={field.type}
+                      name={field.name}
+                      value={passwordData[field.name]}
+                      onChange={(e) => setPasswordData({ ...passwordData, [e.target.name]: e.target.value })}
+                      sx={{
+                        width: '100%',
+                        '& .MuiOutlinedInput-root': { color: '#ffffff' },
+                        '& .MuiInputLabel-root': { color: '#ffffff' },
+                        '& .MuiOutlinedInput-notchedOutline': { borderColor: '#ffffff' },
+                      }}
+                    />
+                  </div>
+                ))}
+                <Button variant="contained" color="primary" type="submit" className="w-100">
+                  Change Password
+                </Button>
+              </form>
+
+              <h6 className="text-center mt-5 mb-4">Update Profile</h6>
+              <form onSubmit={(e) => { e.preventDefault(); onSubmitUserDetailsChange(profile); }}>
+                {USER_FORM_FIELDS.map((field) => (
+                  <div className="mb-3" key={field.name}>
+                    <TextField
+                      label={field.label}
+                      type={field.type}
+                      name={field.name}
+                      value={profile[field.name] || ''}
+                      onChange={(e) => setProfile({ ...profile, [e.target.name]: e.target.value })}
+                      sx={{
+                        width: '100%',
+                        '& .MuiOutlinedInput-root': { color: '#ffffff' },
+                        '& .MuiInputLabel-root': { color: '#ffffff' },
+                        '& .MuiOutlinedInput-notchedOutline': { borderColor: '#ffffff' },
+                      }}
+                    />
+                  </div>
+                ))}
+                <Button variant="contained" color="primary" type="submit" className="w-100">
+                  Update Profile
+                </Button>
+              </form>
             </div>
+          </div>
         </div>
-    );
-}
+      </div>
+    </div>
+  );
+};
 
 export default Account;

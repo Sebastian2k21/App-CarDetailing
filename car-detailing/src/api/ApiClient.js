@@ -78,6 +78,14 @@ class ApiClient {
         return await this.getList(ENDPOINTS.ServiceSchedules.replace("{id}", serviceId), 'Error fetching detailer services')
     }
 
+    async getCars() {
+        return await this.getList(ENDPOINTS.Cars, 'Error fetching cars')
+    }
+
+    async addCar(formData) {
+        return await this.post(ENDPOINTS.AddCar, formData, 'Error creating car')
+    }
+
     //----------------------------------------------------------------------------------------------------------------------------
     //----------------------------------------------------------------------------------------------------------------------------
     //----------------------------------------------------------------------------------------------------------------------------

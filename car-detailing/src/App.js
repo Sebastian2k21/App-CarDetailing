@@ -20,6 +20,7 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
+import MyCars from './components/MyCars';
 
 
 function App() {
@@ -60,6 +61,7 @@ function App() {
                             <Route path="/services/:id" element={<ServiceDetails/>} />
                             <Route path="/services/:id/update" element={<ServiceUpdate/>}/>
                             <Route path="/profile" element={<Profile/>} />
+                            <Route path="/my-cars" element={<MyCars/>} />
                             <Route path="/detailer" element={<Detailer/>} />
                             <Route path="/logout" element={<Logout/>} />
                             <Route path="/" element={<Home />} /> {/* Użyj komponentu HomePage */}

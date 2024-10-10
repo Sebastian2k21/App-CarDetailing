@@ -58,8 +58,8 @@ class ApiClient {
         return await this.delete(ENDPOINTS.ProfileSubmitsDelete.replace('{submitId}', submitId), 'Error deleting submit')
     }
 
-    async changeSubmitDate(submitId, newDate) {
-        return await this.post(ENDPOINTS.ProfileSubmitsChangeDate.replace('{submitId}', submitId), {date: newDate}, 'Error changing submit date')
+    async changeSubmitDate(submitId, newDate, carId) {
+        return await this.post(ENDPOINTS.ProfileSubmitsChangeDate.replace('{submitId}', submitId), {date: newDate, car_id: carId}, 'Error changing submit date')
     }
 
     async getUserRole() {
@@ -84,6 +84,14 @@ class ApiClient {
 
     async addCar(formData) {
         return await this.post(ENDPOINTS.AddCar, formData, 'Error creating car')
+    }
+
+    async removeCar(carId) {
+        return await this.delete(ENDPOINTS.RemoveCar.replace('{carId}', carId), 'Error removing car')
+    }
+
+    async getDetailerOrders() {
+        return await this.getList(ENDPOINTS.DetailerOrders, 'Error fetching detailer orders')
     }
 
     //----------------------------------------------------------------------------------------------------------------------------
@@ -149,12 +157,12 @@ class ApiClient {
         try {
             const response = await this.client.delete(url);
             if (isSuccessResponse(response)) {
-                return true
+                return {success: true, data: response.data}
             }
         }
         catch (error) {
             console.error(errorMsg, error);
-            return false;
+            return {success: false, data: error.response.data};
         }
     }
 }

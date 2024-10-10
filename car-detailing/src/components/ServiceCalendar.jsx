@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useApiClient } from "../api/ApiClientContext";
 import {DayPilotCalendar} from "@daypilot/daypilot-lite-react";
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography, MenuItem, InputLabel, Select } from '@mui/material';
 import toast from 'react-hot-toast';
 import "../App.css"
 import "./style/Calendar.css"
@@ -45,6 +45,8 @@ const getOffsetDate = (date, offset) => {
     const [currentDate, setCurrentDate] = useState(getCurrentDateMonday());
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [selectedEvent, setSelectedEvent] = useState({});
+    const [cars, setCars] = useState(null);
+    const [selectedCar, setSelectedCar] = useState(null);
     const [calendarConfig, setCalendarConfig] = useState({
       startDate: getCurrentDate(),
       weekStarts: 1,
@@ -64,6 +66,15 @@ const getOffsetDate = (date, offset) => {
       setCalendarConfig((prev) => ({ ...prev, startDate: currentDate }));
       calendarRef.current.control.update({ currentDate, events: schedules });
     }, [apiClient, serviceId, currentDate]);
+
+    const getCars = useCallback(async () => {
+      try {
+        const cars = await apiClient.getCars();
+        setCars(cars);
+      } catch (error) {
+        console.error('Error fetching cars:', error);
+      }
+    }, [apiClient]);
   
     useEffect(() => {
       getAvailableSchedules();
@@ -83,7 +94,7 @@ const getOffsetDate = (date, offset) => {
     };
   
     const onConfirmDate = async () => {
-      const result = await onRequest(selectedEvent.start.value);
+      const result = await onRequest(selectedEvent.start.value, selectedCar._id);
       if (result) {
         toast.success("Success");
         if (!isUpdate) {
@@ -105,6 +116,10 @@ const getOffsetDate = (date, offset) => {
         openModal();
       }
     }, [selectedEvent]);
+
+    useEffect(() => {
+      getCars();
+    }, [getCars]);
   
     return (
       <Box sx={{ p: 2 }}>
@@ -129,12 +144,24 @@ const getOffsetDate = (date, offset) => {
         >
           <DialogTitle id="booking-dialog-title">Book Service</DialogTitle>
           <DialogContent>
+          <InputLabel id="car-select-label">Car</InputLabel>
+          <Select
+          sx={{ width: '100%' }}
+            labelId="car-select-label"
+            id="car-select"
+            value={selectedCar && selectedCar._id}
+            label="Car"
+            onChange={(e) => setSelectedCar(cars.find((car) => car._id === e.target.value))}
+          >
+          
+            {cars && cars.map((car) =>   <MenuItem value={car._id}>{car.manufacturer} {car.model}</MenuItem>)}
+          </Select>
             <Typography variant="h6">
               {selectedEvent?.text || "No event selected"}
             </Typography>
           </DialogContent>
           <DialogActions>
-            <Button onClick={onConfirmDate} color="primary" variant="contained">
+            <Button onClick={onConfirmDate} disabled={selectedCar == null} color="primary" variant="contained">
               Confirm Date
             </Button>
             <Button onClick={closeModal} color="secondary" variant="outlined">

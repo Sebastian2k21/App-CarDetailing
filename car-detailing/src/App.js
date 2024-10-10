@@ -21,6 +21,7 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import MyCars from './components/MyCars';
+import DetailerOrders from './components/DetailerOrders';
 
 
 function App() {
@@ -63,6 +64,7 @@ function App() {
                             <Route path="/profile" element={<Profile/>} />
                             <Route path="/my-cars" element={<MyCars/>} />
                             <Route path="/detailer" element={<Detailer/>} />
+                            <Route path="/detailer/orders" element={<DetailerOrders/>} />
                             <Route path="/logout" element={<Logout/>} />
                             <Route path="/" element={<Home />} /> {/* Użyj komponentu HomePage */}
                         </Routes>

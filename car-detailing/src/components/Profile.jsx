@@ -56,8 +56,8 @@ const Profile = () => {
     };
 
     const deleteSubmit = useCallback(async () => {
-        const result = await apiClient.deleteSubmit(selectedSubmitId);
-        if (result) {
+        const {success, data} = await apiClient.deleteSubmit(selectedSubmitId);
+        if (success) {
             closeModal();
             toast.success("Submit deleted");
             getSubmits();
@@ -78,8 +78,8 @@ const Profile = () => {
         setCalendarModalIsOpen(true);
     };
 
-    const onChangeSubmit = async (newDate) => {
-        const result = await apiClient.changeSubmitDate(selectedSubmitId, newDate);
+    const onChangeSubmit = async (newDate, carId) => {
+        const result = await apiClient.changeSubmitDate(selectedSubmitId, newDate, carId);
         if (result) {
             closeCalendarModal();
             getSubmits();
@@ -129,6 +129,7 @@ const Profile = () => {
                                                 <th>Price</th>
                                                 <th>Date</th>
                                                 <th>Image</th>
+                                                <th>Car</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -139,6 +140,7 @@ const Profile = () => {
                                                     <td>{sub.service_price}</td>
                                                     <td>{sub.date}</td>
                                                     <td><img src={MEDIA_URL + sub.service_image} alt="service" width="150px" /></td>
+                                                    <td>{sub.car_name}</td>
                                                     <td className="text-center">
                                                         <Button variant="contained" color="primary" onClick={() => navigate(`/services/${sub.service_id}`)}>
                                                             Details

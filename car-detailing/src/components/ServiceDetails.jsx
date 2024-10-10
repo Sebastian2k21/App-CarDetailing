@@ -15,8 +15,8 @@ const ServiceDetails = () => {
         setService(service)
     }
 
-    const submitService = async (date) => {
-        return await apiClient.submitSchedule({service_id: service._id, date: date})
+    const submitService = async (date, carId) => {
+        return await apiClient.submitSchedule({service_id: service._id, date: date, car_id: carId})
     }
 
     useEffect(() => {

@@ -3,6 +3,7 @@ import { useApiClient } from '../api/ApiClientContext';
 import toast from 'react-hot-toast';
 import { TextField, Button } from '@mui/material';
 import './style/Account.css';
+import LoadingSpinner from './common/LoadingSpinner';
 
 const USER_FORM_FIELDS = [
   { name: 'first_name', label: 'First name', type: 'text' },
@@ -21,7 +22,7 @@ const CHANGE_PASSWORD_FORM_FIELDS = [
 
 const Account = () => {
   const [passwordData, setPasswordData] = useState({ password: '', passwordConfirm: '' });
-  const [profile, setProfile] = useState({});
+  const [profile, setProfile] = useState(null);
   const apiClient = useApiClient();
 
   const onSubmitChangePassword = async (formData) => {
@@ -88,33 +89,35 @@ const Account = () => {
           <div className="card bg-dark text-light">
             <div className="card-body">
               <h5 className="card-title text-center mb-4">Account Settings</h5>
-
               <h6 className="text-center mb-4">Change Password</h6>
-              <form onSubmit={(e) => { e.preventDefault(); onSubmitChangePassword(passwordData); }}>
-                {CHANGE_PASSWORD_FORM_FIELDS.map((field) => (
-                  <div className="mb-3" key={field.name}>
-                    <TextField
-                      label={field.label}
-                      type={field.type}
-                      name={field.name}
-                      value={passwordData[field.name]}
-                      onChange={(e) => setPasswordData({ ...passwordData, [e.target.name]: e.target.value })}
-                      sx={{
-                        width: '100%',
-                        '& .MuiOutlinedInput-root': { color: '#ffffff' },
-                        '& .MuiInputLabel-root': { color: '#ffffff' },
-                        '& .MuiOutlinedInput-notchedOutline': { borderColor: '#ffffff' },
-                      }}
-                    />
-                  </div>
-                ))}
-                <Button variant="contained" color="primary" type="submit" className="w-100">
-                  Change Password
-                </Button>
-              </form>
+              <LoadingSpinner statement={profile != null}>
+                <form onSubmit={(e) => { e.preventDefault(); onSubmitChangePassword(passwordData); }}>
+                  {CHANGE_PASSWORD_FORM_FIELDS.map((field) => (
+                    <div className="mb-3" key={field.name}>
+                      <TextField
+                        label={field.label}
+                        type={field.type}
+                        name={field.name}
+                        value={passwordData[field.name]}
+                        onChange={(e) => setPasswordData({ ...passwordData, [e.target.name]: e.target.value })}
+                        sx={{
+                          width: '100%',
+                          '& .MuiOutlinedInput-root': { color: '#ffffff' },
+                          '& .MuiInputLabel-root': { color: '#ffffff' },
+                          '& .MuiOutlinedInput-notchedOutline': { borderColor: '#ffffff' },
+                        }}
+                      />
+                    </div>
+                  ))}
+                  <Button variant="contained" color="primary" type="submit" className="w-100">
+                    Change Password
+                  </Button>
+                </form>
+              </LoadingSpinner>
 
               <h6 className="text-center mt-5 mb-4">Update Profile</h6>
-              <form onSubmit={(e) => { e.preventDefault(); onSubmitUserDetailsChange(profile); }}>
+              <LoadingSpinner statement={profile != null}>
+              {profile != null && <form onSubmit={(e) => { e.preventDefault(); onSubmitUserDetailsChange(profile); }}>
                 {USER_FORM_FIELDS.map((field) => (
                   <div className="mb-3" key={field.name}>
                     <TextField
@@ -135,7 +138,8 @@ const Account = () => {
                 <Button variant="contained" color="primary" type="submit" className="w-100">
                   Update Profile
                 </Button>
-              </form>
+              </form>}
+              </LoadingSpinner>
             </div>
           </div>
         </div>

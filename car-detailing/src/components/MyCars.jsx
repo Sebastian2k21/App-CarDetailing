@@ -50,6 +50,21 @@ const MyCars = () => {
     }
   }, [apiClient]);
 
+  const removeCar = async (carId) => {
+    try {
+      const {success, data} = await apiClient.removeCar(carId);
+      if (success) {
+        toast.success('Car removed successfully');
+        getCars();
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.error('Error removing car:', error);
+      toast.error('Error removing car');
+    }
+  }
+
   useEffect(() => {
     getCars();
   }, [getCars]);
@@ -96,7 +111,10 @@ const MyCars = () => {
       </div>
     
     <LoadingSpinner statement={cars != null}>
-        {cars != null && cars.map((car) => <div>{car.manufacturer} {car.model} {car.year_of_production}</div>)}
+        {cars != null && cars.map((car) => <div>{car.manufacturer} {car.model} {car.year_of_production}            
+          <Button variant="contained" color="error" className="w-100" onClick={() => removeCar(car._id)}>
+                  Remove
+                </Button></div>)}
     </LoadingSpinner>
     </div>
   );

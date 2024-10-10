@@ -18,6 +18,8 @@ export const ENDPOINTS = {
     UserRole: BASE_URL + '/profile/role',
     DetailerServices: BASE_URL + '/detailer/services',
     AddService: BASE_URL + '/detailer/services/add',
+    DetailerOrders: BASE_URL + '/detailer/orders',
     Cars: BASE_URL + '/cars',
     AddCar: BASE_URL + '/cars/add',
+    RemoveCar: BASE_URL + '/cars/{carId}/delete',
 }

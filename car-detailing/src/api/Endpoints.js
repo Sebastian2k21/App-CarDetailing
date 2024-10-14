@@ -22,4 +22,6 @@ export const ENDPOINTS = {
     Cars: BASE_URL + '/cars',
     AddCar: BASE_URL + '/cars/add',
     RemoveCar: BASE_URL + '/cars/{carId}/delete',
+    AddEmployee: BASE_URL + "/employees/add",
+    Employees: BASE_URL + "/employees"
 }

@@ -6,8 +6,8 @@ import toast from "react-hot-toast";
 import Modal from 'react-modal';
 import ServiceCalendar from "./ServiceCalendar";
 import LoadingSpinner from "./common/LoadingSpinner";
-import { Button, Typography, Card } from '@mui/material';
-import './style/Profile.css'
+import { Button, Typography, Card, Table } from '@mui/material';
+import './style/Profile.css'; 
 
 const smallModalStyle = {
     content: {
@@ -95,74 +95,72 @@ const Profile = () => {
     return (
         <LoadingSpinner statement={profile}>
             <div className="container mt-5">
-                <div className="row justify-content-center">
-                    <div className="col-md-10 col-lg-8">
-                        <Card className="bg-dark text-light">
-                            <div className="card-header">
-                                <Typography variant="h4" component="h1" className="text-center mb-4">
-                                    Profile
-                                </Typography>
-                            </div>
-                            <div className="card-body">
-                                <Typography variant="h6" component="h2" className="mb-3">
-                                    Details
-                                </Typography>
-                                <table className="profile-table">
-                                    <tbody>
-                                        {Object.keys(profile || {}).filter(k => k !== "id").map(key => (
-                                            <tr key={key}>
-                                                <td className="profile-label">{key}:</td>
-                                                <td>{profile[key]}</td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-
-                                <Typography variant="h6" component="h2" className="mt-4 mb-3">
-                                    Submits
-                                </Typography>
-                                {submits.length > 0 ? (
-                                    <table className="submits-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Service Name</th>
-                                                <th>Price</th>
-                                                <th>Date</th>
-                                                <th>Image</th>
-                                                <th>Car</th>
-                                                <th>Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {submits.map(sub => (
-                                                <tr key={sub.submit_id}>
-                                                    <td>{sub.service_name}</td>
-                                                    <td>{sub.service_price}</td>
-                                                    <td>{sub.date}</td>
-                                                    <td><img src={MEDIA_URL + sub.service_image} alt="service" width="150px" /></td>
-                                                    <td>{sub.car_name}</td>
-                                                    <td className="text-center">
-                                                        <Button variant="contained" color="primary" onClick={() => navigate(`/services/${sub.service_id}`)}>
-                                                            Details
-                                                        </Button>
-                                                        <Button variant="contained" color="error" onClick={() => openDeleteConfirmation(sub.submit_id)} className="mx-2">
-                                                            Cancel
-                                                        </Button>
-                                                        <Button variant="contained" color="info" onClick={() => openCalendarModal(sub.service_id, sub.submit_id)}>
-                                                            Change date
-                                                        </Button>
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                ) : (
-                                    <Typography variant="body1" className="text-center">No submits found</Typography>
-                                )}
-                            </div>
-                        </Card>
+                <Card className="bg-dark text-light">
+                    <div className="card-header text-center">
+                        <Typography variant="h4" component="h1" className="mb-4">
+                            Profile
+                        </Typography>
                     </div>
-                </div>
+                    <div className="card-body">
+                        <Typography variant="h6" component="h2" className="mb-3">
+                            Details
+                        </Typography>
+                        <Table className="profile-table" striped bordered hover>
+                            <tbody>
+                                {Object.keys(profile || {}).filter(k => k !== "id").map(key => (
+                                    <tr key={key}>
+                                        <td className="profile-label">{key}:</td>
+                                        <td>{profile[key]}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </Table>
+
+                        <Typography variant="h6" component="h2" className="mt-4 mb-3">
+                            Submits
+                        </Typography>
+                        {submits.length > 0 ? (
+                            <Table className="submits-table" striped bordered hover>
+                                <thead>
+                                    <tr>
+                                        <th>Service Name</th>
+                                        <th>Price</th>
+                                        <th>Date</th>
+                                        <th>Image</th>
+                                        <th>Car</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {submits.map(sub => (
+                                        <tr key={sub.submit_id}>
+                                            <td>{sub.service_name}</td>
+                                            <td>{sub.service_price}</td>
+                                            <td>{sub.date}</td>
+                                            <td>
+                                                <img src={MEDIA_URL + sub.service_image} alt="service" width="150px" />
+                                            </td>
+                                            <td>{sub.car_name}</td>
+                                            <td className="text-center">
+                                                <Button variant="contained" color="primary" onClick={() => navigate(`/services/${sub.service_id}`)}>
+                                                    Details
+                                                </Button>
+                                                <Button variant="contained" color="error" onClick={() => openDeleteConfirmation(sub.submit_id)} className="mx-2">
+                                                    Cancel
+                                                </Button>
+                                                <Button variant="contained" color="info" onClick={() => openCalendarModal(sub.service_id, sub.submit_id)}>
+                                                    Change date
+                                                </Button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </Table>
+                        ) : (
+                            <Typography variant="body1" className="text-center">No submits found</Typography>
+                        )}
+                    </div>
+                </Card>
             </div>
 
             <Modal ariaHideApp={false} isOpen={modalIsOpen} style={smallModalStyle}>

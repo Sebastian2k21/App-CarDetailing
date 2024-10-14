@@ -94,6 +94,14 @@ class ApiClient {
         return await this.getList(ENDPOINTS.DetailerOrders, 'Error fetching detailer orders')
     }
 
+    async addEmployee(formData) {
+        return await this.post(ENDPOINTS.AddEmployee, formData, 'Error creating employee')
+    }
+
+    async getEmployees() {
+        return await this.get(ENDPOINTS.Employees, "Error fetching employees")
+    }
+
     //----------------------------------------------------------------------------------------------------------------------------
     //----------------------------------------------------------------------------------------------------------------------------
     //----------------------------------------------------------------------------------------------------------------------------

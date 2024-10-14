@@ -5,71 +5,72 @@ import { TextField, Button } from '@mui/material';
 import './style/Account.css'; //TODO: zmienic na nowy plik
 import LoadingSpinner from './common/LoadingSpinner';
 
-const CAR_FORM_FIELDS = [
-  { name: 'manufacturer', label: 'Manufacturer', type: 'text' },
-  { name: 'model', label: 'Model', type: 'text' },
-  { name: 'year_of_production', label: 'Year of production', type: 'number' },
+const EMPLOYEE_FORM_FIELDS = [
+  { name: 'first_name', label: 'First Name', type: 'text' },
+  { name: 'last_name', label: 'Last Name', type: 'text' },
+  { name: 'description', label: 'Description', type: 'text' },
+  { name: 'experience', label: 'Experience', type: 'number'}
 ];
 
-const MyCars = () => {
+const Team = () => {
   const [showForm, setShowForm] = useState(false);
-  const [cars, setCars] = useState(null);
-  const [carData, setCarData] = useState({ manufacturer: '', model: '', year_of_production: '' });
+  const [employees, setEmployees] = useState(null);
+  const [employeeData, setEmployeeData] = useState({ first_name: '', last_name: '', description: '', experience: '' });
   const apiClient = useApiClient();
 
   const onSubmitCreateCar = async (e) => {
     e.preventDefault();
 
-    if (validateCarForm(carData)) {
+    if (validateEmployeeForm(employeeData)) {
       try {
-        const success = await apiClient.addCar(carData);
+        const success = await apiClient.addEmployee(employeeData);
         if (success) {
-          toast.success('Car added successfully');
-          getCars();
-          setCarData({ manufacturer: '', model: '', year_of_production: '' }); // Reset formularza po dodaniu samochodu
+          toast.success('Employee added successfully');
+          getEmployees();
+          setEmployeeData({ first_name: '', last_name: '', description: '', experience: '' }); // Reset formularza po dodaniu samochodu
         } else {
-          toast.error('Error adding car');
+          toast.error('Error adding employee');
         }
       } catch (error) {
-        console.error('Error adding car: ', error);
-        toast.error('Error adding car');
+        console.error('Error adding employee: ', error);
+        toast.error('Error adding employee');
       }
     } else {
       toast.error('Please fill in all required fields');
     }
   };
 
-  const validateCarForm = (formData) => {
-    return CAR_FORM_FIELDS.every(field => formData[field.name]);
+  const validateEmployeeForm = (formData) => {
+    return EMPLOYEE_FORM_FIELDS.every(field => formData[field.name]);
   };
 
-  const getCars = useCallback(async () => {
+  const getEmployees = useCallback(async () => {
     try {
-      const cars = await apiClient.getCars();
-      setCars(cars);
+      const emplpyees = await apiClient.getEmployees();
+      setEmployees(emplpyees);
     } catch (error) {
-      console.error('Error fetching cars:', error);
+      console.error('Error fetching employees:', error);
     }
   }, [apiClient]);
 
-  const removeCar = async (carId) => {
+  const removeEmployee = async (employeesId) => {
     try {
-      const { success, data } = await apiClient.removeCar(carId);
+      const { success, data } = await apiClient.removeEmployee(employeesId);
       if (success) {
-        toast.success('Car removed successfully');
-        getCars();
+        toast.success('Employee removed successfully');
+        getEmployees();
       } else {
         toast.error(data.message);
       }
     } catch (error) {
-      console.error('Error removing car:', error);
-      toast.error('Error removing car');
+      console.error('Error removing employee:', error);
+      toast.error('Error removing employee');
     }
   };
 
   useEffect(() => {
-    getCars();
-  }, [getCars]);
+    getEmployees();
+  }, [getEmployees]);
 
   return (
     <div className="container mt-5">
@@ -77,22 +78,22 @@ const MyCars = () => {
         <div className="col-md-8">
           <div className="card bg-dark text-light">
             <div className="card-body">
-              <h5 className="card-title text-center mb-4">My Cars</h5>
+              <h5 className="card-title text-center mb-4">Team</h5>
               <button className="btn btn-primary w-100" onClick={() => setShowForm(!showForm)}>
-                Add car
+                Add employee
               </button>
               {showForm && (
                 <span>
-                  <h6 className="text-center mt-5 mb-4">Add Car</h6>
+                  <h6 className="text-center mt-5 mb-4">Add employee</h6>
                   <form onSubmit={onSubmitCreateCar}>
-                    {CAR_FORM_FIELDS.map((field) => (
+                    {EMPLOYEE_FORM_FIELDS.map((field) => (
                       <div className="mb-3" key={field.name}>
                         <TextField
                           label={field.label}
                           type={field.type}
                           name={field.name}
-                          value={carData[field.name] || ''}
-                          onChange={(e) => setCarData({ ...carData, [e.target.name]: e.target.value })}
+                          value={employeeData[field.name] || ''}
+                          onChange={(e) => setEmployeeData({ ...employeeData, [e.target.name]: e.target.value })}
                           sx={{
                             width: '100%',
                             '& .MuiOutlinedInput-root': { color: '#ffffff' },
@@ -113,28 +114,30 @@ const MyCars = () => {
         </div>
       </div>
 
-      <LoadingSpinner statement={cars != null}>
-        {cars != null && (
+      <LoadingSpinner statement={employees != null}>
+        {employees != null && (
           <table className="table table-dark table-striped mt-4">
             <thead>
               <tr>
-                <th>Manufacturer</th>
-                <th>Model</th>
-                <th>Year of Production</th>
-                <th>Actions</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Description</th>
+                <th>Experience</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
-              {cars.map((car) => (
-                <tr key={car._id}>
-                  <td>{car.manufacturer}</td>
-                  <td>{car.model}</td>
-                  <td>{car.year_of_production}</td>
+              {employees.map((employee) => (
+                <tr key={employee._id}>
+                  <td>{employee.first_name}</td>
+                  <td>{employee.last_name}</td>
+                  <td>{employee.description}</td>
+                  <td>{employee.experience}</td>
                   <td>
                     <Button
                       variant="contained"
                       color="error"
-                      onClick={() => removeCar(car._id)}
+                      onClick={() => removeEmployee(employee._id)}
                     >
                       Remove
                     </Button>
@@ -149,4 +152,4 @@ const MyCars = () => {
   );
 };
 
-export default MyCars;
+export default Team;

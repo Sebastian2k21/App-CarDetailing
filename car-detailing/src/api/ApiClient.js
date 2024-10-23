@@ -15,7 +15,7 @@ class ApiClient {
     }
 
     async getServices() {
-        return await this.getList(ENDPOINTS.Services, 'Error getting services')
+        return await this.get(ENDPOINTS.Services, 'Error getting services', [])
     }
 
     async getService(id) { 
@@ -35,7 +35,7 @@ class ApiClient {
     }
 
     async availableSchedules(serviceId, dateFrom, dateTo) {
-        return await this.getList(ENDPOINTS.AvailableSchedules.replace('{id}', serviceId).replace('{dateFrom}', dateFrom).replace('{dateTo}', dateTo), 'Error getting available schedules')
+        return await this.get(ENDPOINTS.AvailableSchedules.replace('{id}', serviceId).replace('{dateFrom}', dateFrom).replace('{dateTo}', dateTo), 'Error getting available schedules', [])
     }
 
     async submitSchedule(formData) {
@@ -43,7 +43,7 @@ class ApiClient {
     }
 
     async getUserSubmits() {
-        return await this.getList(ENDPOINTS.ProfileSubmits, 'Error fetching user submits')
+        return await this.get(ENDPOINTS.ProfileSubmits, 'Error fetching user submits', [])
     }
 
     async getProfileDetails() {
@@ -67,7 +67,7 @@ class ApiClient {
     }
 
     async getDetailerServices() {
-        return await this.getList(ENDPOINTS.DetailerServices, 'Error fetching detailer services')
+        return await this.get(ENDPOINTS.DetailerServices, 'Error fetching detailer services', [])
     }
 
     async addService(formData) {
@@ -75,11 +75,11 @@ class ApiClient {
     }
 
     async getServiceSchedules(serviceId) {
-        return await this.getList(ENDPOINTS.ServiceSchedules.replace("{id}", serviceId), 'Error fetching detailer services')
+        return await this.get(ENDPOINTS.ServiceSchedules.replace("{id}", serviceId), 'Error fetching detailer services', [])
     }
 
     async getCars() {
-        return await this.getList(ENDPOINTS.Cars, 'Error fetching cars')
+        return await this.get(ENDPOINTS.Cars, 'Error fetching cars', [])
     }
 
     async addCar(formData) {
@@ -91,7 +91,7 @@ class ApiClient {
     }
 
     async getDetailerOrders() {
-        return await this.getList(ENDPOINTS.DetailerOrders, 'Error fetching detailer orders')
+        return await this.get(ENDPOINTS.DetailerOrders, 'Error fetching detailer orders', [])
     }
 
     async addEmployee(formData) {
@@ -102,6 +102,18 @@ class ApiClient {
         return await this.get(ENDPOINTS.Employees, "Error fetching employees")
     }
 
+    async removeEmployee(employeeId) {
+        return await this.delete(ENDPOINTS.RemoveEmployee.replace('{employeeId}', employeeId), 'Error removing employee')
+    }
+
+    async attachEmployee(employeeId, orderId) {
+        return await this.post(ENDPOINTS.AttachEmployee.replace('{orderId}', orderId), {employee_id: employeeId}, 'Error attaching employee')
+    }
+
+    async getAllSubmitStatuses() {
+        return await this.get(ENDPOINTS.SubmitStatus, 'Error fetching submit statuses')
+    }
+
     //----------------------------------------------------------------------------------------------------------------------------
     //----------------------------------------------------------------------------------------------------------------------------
     //----------------------------------------------------------------------------------------------------------------------------
@@ -110,50 +122,63 @@ class ApiClient {
         this.client.defaults.headers['Authorization'] = `Bearer ${access}`
     }
 
-    async getList(url, errorMsg="") {
-        try {
-            const response = await this.client.get(url);
-            return response.data
-        }
-        catch (error) {
-            console.error(errorMsg, error);
-            return []
-        }
+    async post(url, formData, errorMsg="") { 
+        var result = await this.postWithResult(url, formData, errorMsg)
+        return result.success
     }
 
-    async post(url, formData, errorMsg="") { 
-        try {
-            const response = await this.client.post(url, formData);
-            if (isSuccessResponse(response)) {
-                return true
+    async sendWithAttempts(requestFunction) {
+        for (let i = 0; i < 3; i++) {
+            try {
+                const response = await requestFunction();
+                if (isSuccessResponse(response)) {
+                    return response
+                }
+                
+            }
+            catch (error) {
+                console.error("error: " + error);
+                if(error.response.status === 401) {
+                    const refresh = localStorage.getItem('refresh');
+                    if (refresh) {
+                        const response = await this.client.post(ENDPOINTS.Refresh, {refresh: refresh});
+                        if (isSuccessResponse(response)) {
+                            localStorage.setItem('access', response.data.access);
+                            this.setToken(response.data.access);
+                        }
+                    }
+                } else {
+                    return error.response
+                }
             }
         }
-        catch (error) {
-            console.error(errorMsg, error);
-            return false;
-        }
+
+        return null
     }
 
     
-    async get(url, errorMsg="") {
+    async get(url, errorMsg="", valueOnError=null) {
         try {
-            const response = await this.client.get(url);
+            const response = await this.sendWithAttempts(async () => await this.client.get(url));
             if (isSuccessResponse(response)) {
                 return response.data
             }
         }
         catch (error) {
             console.error(errorMsg, error);
-            return null
+            return valueOnError
         }
     }
 
     async postWithResult(url, formData, errorMsg="") {
         try {
-            const response = await this.client.post(url, formData);
+            const response = await this.sendWithAttempts(async () => await this.client.post(url, formData));
             if (isSuccessResponse(response)) {
+                console.log("wchodzi")
                 return {success: true, data: response.data, message: null}
             }
+
+            return {success: false, data: response.data, message: null}
         }
         catch (error) {
             console.error(errorMsg, error);
@@ -163,7 +188,7 @@ class ApiClient {
 
     async delete(url, errorMsg="") {
         try {
-            const response = await this.client.delete(url);
+            const response = await this.sendWithAttempts(async () => await this.client.delete(url));
             if (isSuccessResponse(response)) {
                 return {success: true, data: response.data}
             }

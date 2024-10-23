@@ -9,7 +9,7 @@ const EMPLOYEE_FORM_FIELDS = [
   { name: 'first_name', label: 'First Name', type: 'text' },
   { name: 'last_name', label: 'Last Name', type: 'text' },
   { name: 'description', label: 'Description', type: 'text' },
-  { name: 'experience', label: 'Experience', type: 'number'}
+  { name: 'experience', label: 'Experience', type: 'number' }
 ];
 
 const Team = () => {
@@ -73,18 +73,22 @@ const Team = () => {
   }, [getEmployees]);
 
   return (
-    <div className="container mt-5">
+    <div style={{ backgroundColor: '#1a1a1a', color: '#ffffff', padding: '20px', borderRadius: '10px' }}>
       <div className="row justify-content-center">
         <div className="col-md-8">
           <div className="card bg-dark text-light">
             <div className="card-body">
-              <h5 className="card-title text-center mb-4">Team</h5>
-              <button className="btn btn-primary w-100" onClick={() => setShowForm(!showForm)}>
-                Add employee
+              <h5 className="card-title text-center mb-4" style={{ color: '#d4af37' }}>Team</h5>
+              <button
+                className="btn btn-primary w-100"
+                onClick={() => setShowForm(!showForm)}
+                style={{ backgroundColor: '#d4af37', borderColor: '#d4af37', color: '#1a1a1a' }}
+              >
+                Add Employee
               </button>
               {showForm && (
-                <span>
-                  <h6 className="text-center mt-5 mb-4">Add employee</h6>
+                <div>
+                  <h6 className="text-center mt-5 mb-4" style={{ color: '#d4af37' }}>Add Employee</h6>
                   <form onSubmit={onSubmitCreateCar}>
                     {EMPLOYEE_FORM_FIELDS.map((field) => (
                       <div className="mb-3" key={field.name}>
@@ -103,11 +107,17 @@ const Team = () => {
                         />
                       </div>
                     ))}
-                    <Button variant="contained" color="primary" type="submit" className="w-100">
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      type="submit"
+                      className="w-100"
+                      style={{ backgroundColor: '#d4af37', color: '#1a1a1a', marginTop: '10px' }}
+                    >
                       Add
                     </Button>
                   </form>
-                </span>
+                </div>
               )}
             </div>
           </div>
@@ -116,7 +126,7 @@ const Team = () => {
 
       <LoadingSpinner statement={employees != null}>
         {employees != null && (
-          <table className="table table-dark table-striped mt-4">
+          <table className="table table-dark table-striped mt-4" style={{ color: '#ffffff' }}>
             <thead>
               <tr>
                 <th>First Name</th>
@@ -138,6 +148,7 @@ const Team = () => {
                       variant="contained"
                       color="error"
                       onClick={() => removeEmployee(employee._id)}
+                      style={{ backgroundColor: '#b23a3a', color: '#ffffff' }}
                     >
                       Remove
                     </Button>

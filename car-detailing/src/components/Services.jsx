@@ -6,9 +6,8 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { TextField } from "@mui/material";
 import Grid from '@mui/material/Grid2';
 
-
 const INPUT_STYLE = {
-    m: 1, width: '25ch' ,
+    m: 1, width: '25ch',
     '& .MuiOutlinedInput-root': {
         color: '#ffffff', // Kolor czcionki
     },
@@ -16,74 +15,79 @@ const INPUT_STYLE = {
         color: '#ffffff', // Kolor etykiety (label)
     },
     '& .MuiOutlinedInput-notchedOutline': {
-        borderColor: '#ffffff', // Kolor obramowania
+        borderColor: '#d4af37', // Złota ramka
     },
     '& .MuiTypography-root': {
-        color: '#ffffff', // Kolor tekstu zł
+        color: '#ffffff', // Kolor tekstu
     }
 }
 
-
 const Services = () => {
     const orderOptions = [
-        { value: '', label: ''},
+        { value: '', label: '' },
         { value: 'price_asc', label: 'Price ascending' },
         { value: 'price_desc', label: 'Price descending' },
         { value: 'name_asc', label: 'Name ascending' },
         { value: 'name_desc', label: 'Name descending' },
     ]
 
-    const apiClient = useApiClient()
-    const [services, setServices] = useState([])
-    const [filteredServices, setFilteredServices] = useState([])
-    const [order, setOrder] = useState(orderOptions[0].value)
-    const [priceFrom, setPriceFrom] = useState('')
-    const [priceTo, setPriceTo] = useState('')
+    const apiClient = useApiClient();
+    const [services, setServices] = useState([]);
+    const [filteredServices, setFilteredServices] = useState([]);
+    const [order, setOrder] = useState(orderOptions[0].value);
+    const [priceFrom, setPriceFrom] = useState('');
+    const [priceTo, setPriceTo] = useState('');
 
     const getServices = async () => {
-        const services = await apiClient.getServices()
-        setServices(services)
+        const services = await apiClient.getServices();
+        setServices(services);
     }
 
     const getOrderedServices = () => {
-        let orderedServices = [...services]
+        let orderedServices = [...services];
 
-        const form = priceFrom !== '' ? priceFrom : null
-        if(form) {
-            orderedServices = orderedServices.filter(service => service.price >= form)
+        const form = priceFrom !== '' ? priceFrom : null;
+        if (form) {
+            orderedServices = orderedServices.filter(service => service.price >= form);
         }
 
-        const to = priceTo !== '' ? priceTo : null
-        if(to) {
-            orderedServices = orderedServices.filter(service => service.price <= to)
+        const to = priceTo !== '' ? priceTo : null;
+        if (to) {
+            orderedServices = orderedServices.filter(service => service.price <= to);
         }
-        
+
         if (order === 'price_asc') {
-            orderedServices = orderedServices.sort((a, b) => a.price - b.price)
+            orderedServices = orderedServices.sort((a, b) => a.price - b.price);
         } else if (order === 'price_desc') {
-            orderedServices = orderedServices.sort((a, b) => b.price - a.price)
+            orderedServices = orderedServices.sort((a, b) => b.price - a.price);
         } else if (order === 'name_desc') {
-            orderedServices = orderedServices.sort((a, b) => b.name.localeCompare(a.name))
+            orderedServices = orderedServices.sort((a, b) => b.name.localeCompare(a.name));
         } else if (order === 'name_asc') {
-            orderedServices = orderedServices.sort((a, b) => a.name.localeCompare(b.name))
+            orderedServices = orderedServices.sort((a, b) => a.name.localeCompare(b.name));
         }
 
-        return orderedServices
+        return orderedServices;
     }
 
     useEffect(() => {
-        getServices()
-    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+        getServices();
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
-        setFilteredServices(getOrderedServices())
-    }, [services, order, priceFrom, priceTo]) // eslint-disable-line react-hooks/exhaustive-deps
+        setFilteredServices(getOrderedServices());
+    }, [services, order, priceFrom, priceTo]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
-        <div>
-            <h1>Services</h1>
-            <div>
-                <CommonSelect name="order" label="Order" options={orderOptions} onSelect={setOrder} />
+        <div style={{ backgroundColor: '#121212', color: '#d4af37', minHeight: '100vh', padding: '20px' }}>
+            <h1 style={{ color: '#d4af37', textAlign: 'center' }}>Services</h1>
+            <div style={{ marginBottom: '20px', textAlign: 'center' }}>
+                <CommonSelect
+                    name="order"
+                    label="Order"
+                    options={orderOptions}
+                    onSelect={setOrder}
+                    sx={{ width: '250px', color: '#d4af37', marginBottom: '20px' }}
+                />
 
                 <TextField
                     label="Price from"
@@ -94,10 +98,10 @@ const Services = () => {
                     color="primary"
                     sx={INPUT_STYLE}
                     slotProps={{
-                            input: {
+                        input: {
                             startAdornment: <InputAdornment position="start">zł</InputAdornment>,
-                            },
-                        }}
+                        },
+                    }}
                 />
                 <TextField
                     label="Price to"
@@ -106,19 +110,19 @@ const Services = () => {
                     value={priceTo}
                     onChange={e => setPriceTo(e.target.value)}
                     sx={INPUT_STYLE}
-                        slotProps={{
-                            input: {
+                    slotProps={{
+                        input: {
                             startAdornment: <InputAdornment position="start">zł</InputAdornment>,
-                            },
-                        }}
+                        },
+                    }}
                 />
             </div>
-            
-            <div>
-            <Grid container spacing={2}>
-                {filteredServices.map(service => <ServiceItem key={service._id} service={service}/>)}
+
+            <Grid container spacing={2} sx={{ justifyContent: 'center' }}>
+                {filteredServices.map(service => (
+                    <ServiceItem key={service._id} service={service} />
+                ))}
             </Grid>
-            </div>
         </div>
     );
 }

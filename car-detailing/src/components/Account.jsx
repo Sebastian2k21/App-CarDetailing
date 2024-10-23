@@ -88,10 +88,11 @@ const Account = () => {
         <div className="col-md-8">
           <div className="card bg-dark text-light">
             <div className="card-body">
-              <h5 className="card-title text-center mb-4">Account Settings</h5>
-              <h6 className="text-center mb-4">Change Password</h6>
+              <h5 className="card-title text-center mb-4" style={{ color: '#d4af37' }}>Account Settings</h5>
+              
+              <h6 className="text-center mb-4" style={{ color: '#d4af37' }}>Change Password</h6>
               <LoadingSpinner statement={profile != null}>
-                <form onSubmit={(e) => { e.preventDefault(); onSubmitChangePassword(passwordData); }}>
+                <form onSubmit={(e) => { e.preventDefault(); onSubmitChangePassword(passwordData); }} style={{ width: '100%' }}>
                   {CHANGE_PASSWORD_FORM_FIELDS.map((field) => (
                     <div className="mb-3" key={field.name}>
                       <TextField
@@ -104,41 +105,43 @@ const Account = () => {
                           width: '100%',
                           '& .MuiOutlinedInput-root': { color: '#ffffff' },
                           '& .MuiInputLabel-root': { color: '#ffffff' },
-                          '& .MuiOutlinedInput-notchedOutline': { borderColor: '#ffffff' },
+                          '& .MuiOutlinedInput-notchedOutline': { borderColor: '#d4af37' }, // złote obramowanie
                         }}
                       />
                     </div>
                   ))}
-                  <Button variant="contained" color="primary" type="submit" className="w-100">
+                  <Button variant="contained" color="primary" type="submit" className="w-100" sx={{ backgroundColor: '#d4af37', color: '#1a1a1a' }}>
                     Change Password
                   </Button>
                 </form>
               </LoadingSpinner>
 
-              <h6 className="text-center mt-5 mb-4">Update Profile</h6>
+              <h6 className="text-center mt-5 mb-4" style={{ color: '#d4af37' }}>Update Profile</h6>
               <LoadingSpinner statement={profile != null}>
-              {profile != null && <form onSubmit={(e) => { e.preventDefault(); onSubmitUserDetailsChange(profile); }}>
-                {USER_FORM_FIELDS.map((field) => (
-                  <div className="mb-3" key={field.name}>
-                    <TextField
-                      label={field.label}
-                      type={field.type}
-                      name={field.name}
-                      value={profile[field.name] || ''}
-                      onChange={(e) => setProfile({ ...profile, [e.target.name]: e.target.value })}
-                      sx={{
-                        width: '100%',
-                        '& .MuiOutlinedInput-root': { color: '#ffffff' },
-                        '& .MuiInputLabel-root': { color: '#ffffff' },
-                        '& .MuiOutlinedInput-notchedOutline': { borderColor: '#ffffff' },
-                      }}
-                    />
-                  </div>
-                ))}
-                <Button variant="contained" color="primary" type="submit" className="w-100">
-                  Update Profile
-                </Button>
-              </form>}
+                {profile != null && (
+                  <form onSubmit={(e) => { e.preventDefault(); onSubmitUserDetailsChange(profile); }} style={{ width: '100%' }}>
+                    {USER_FORM_FIELDS.map((field) => (
+                      <div className="mb-3" key={field.name}>
+                        <TextField
+                          label={field.label}
+                          type={field.type}
+                          name={field.name}
+                          value={profile[field.name] || ''}
+                          onChange={(e) => setProfile({ ...profile, [e.target.name]: e.target.value })}
+                          sx={{
+                            width: '100%',
+                            '& .MuiOutlinedInput-root': { color: '#ffffff' },
+                            '& .MuiInputLabel-root': { color: '#ffffff' },
+                            '& .MuiOutlinedInput-notchedOutline': { borderColor: '#d4af37' }, // złote obramowanie
+                          }}
+                        />
+                      </div>
+                    ))}
+                    <Button variant="contained" color="primary" type="submit" className="w-100" sx={{ backgroundColor: '#d4af37', color: '#1a1a1a' }}>
+                      Update Profile
+                    </Button>
+                  </form>
+                )}
               </LoadingSpinner>
             </div>
           </div>

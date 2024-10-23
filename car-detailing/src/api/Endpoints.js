@@ -4,6 +4,7 @@ export const MEDIA_URL = 'http://localhost:8000'
 
 export const ENDPOINTS = {
     Login: BASE_URL + '/token',
+    Refresh: BASE_URL + '/token/refresh',
     Register: BASE_URL + '/register',
     ChangePassword: BASE_URL + '/change-password',
     Services: BASE_URL + '/services',
@@ -23,5 +24,8 @@ export const ENDPOINTS = {
     AddCar: BASE_URL + '/cars/add',
     RemoveCar: BASE_URL + '/cars/{carId}/delete',
     AddEmployee: BASE_URL + "/employees/add",
-    Employees: BASE_URL + "/employees"
+    Employees: BASE_URL + "/employees",
+    RemoveEmployee: BASE_URL + "/employees/{employeeId}/delete",
+    AttachEmployee: BASE_URL + "/detailer/orders/{orderId}/attach-employee",
+    SubmitStatus: BASE_URL + "/status"
 }

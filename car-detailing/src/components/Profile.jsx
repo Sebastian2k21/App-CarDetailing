@@ -6,8 +6,38 @@ import toast from "react-hot-toast";
 import Modal from 'react-modal';
 import ServiceCalendar from "./ServiceCalendar";
 import LoadingSpinner from "./common/LoadingSpinner";
-import { Button, Typography, Card, Table } from '@mui/material';
+import { Button, Typography, Card } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 import './style/Profile.css'; 
+
+// Stylowanie tabeli
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: '#333', // ciemne tło dla nagłówka tabeli
+    color: '#d4af37', // złoty tekst
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+    backgroundColor: '#444', // ciemniejszy szary dla wierszy
+    color: '#d1d1d1', // jasnoszary tekst
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  '&:nth-of-type(odd)': {
+    backgroundColor: '#555', // jeszcze ciemniejszy szary dla nieparzystych wierszy
+  },
+  '&:last-child td, &:last-child th': {
+    border: 0,
+  },
+}));
 
 const smallModalStyle = {
     content: {
@@ -94,68 +124,80 @@ const Profile = () => {
 
     return (
         <LoadingSpinner statement={profile}>
-            <div className="container mt-5">
-                <Card className="bg-dark text-light">
+            <div className="profile-container mt-5">
+                <Card className="profile-card bg-dark text-light">
                     <div className="card-header text-center">
-                        <Typography variant="h4" component="h1" className="mb-4">
+                        <Typography variant="h4" component="h1" className="mb-4" style={{ color: '#d4af37' }}>
                             Profile
                         </Typography>
                     </div>
                     <div className="card-body">
-                        <Typography variant="h6" component="h2" className="mb-3">
+                        <Typography variant="h6" component="h2" className="mb-3" style={{ color: '#d4af37' }}>
                             Details
                         </Typography>
-                        <Table className="profile-table" striped bordered hover>
-                            <tbody>
-                                {Object.keys(profile || {}).filter(k => k !== "id").map(key => (
-                                    <tr key={key}>
-                                        <td className="profile-label">{key}:</td>
-                                        <td>{profile[key]}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </Table>
+                        <TableContainer component={Paper} style={{ backgroundColor: '#333' }}>
+                            <Table sx={{ minWidth: 700 }} aria-label="customized table">
+                                <TableHead>
+                                    <TableRow>
+                                        <StyledTableCell>Detail</StyledTableCell>
+                                        <StyledTableCell>Value</StyledTableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {Object.keys(profile || {}).filter(k => k !== "id").map(key => (
+                                        <StyledTableRow key={key}>
+                                            <StyledTableCell component="th" scope="row">
+                                                {key}
+                                            </StyledTableCell>
+                                            <StyledTableCell>{profile[key]}</StyledTableCell>
+                                        </StyledTableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
 
-                        <Typography variant="h6" component="h2" className="mt-4 mb-3">
+                        <Typography variant="h6" component="h2" className="mt-4 mb-3" style={{ color: '#d4af37' }}>
                             Submits
                         </Typography>
                         {submits.length > 0 ? (
-                            <Table className="submits-table" striped bordered hover>
-                                <thead>
-                                    <tr>
-                                        <th>Service Name</th>
-                                        <th>Price</th>
-                                        <th>Date</th>
-                                        <th>Image</th>
-                                        <th>Car</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {submits.map(sub => (
-                                        <tr key={sub.submit_id}>
-                                            <td>{sub.service_name}</td>
-                                            <td>{sub.service_price}</td>
-                                            <td>{sub.date}</td>
-                                            <td>
-                                                <img src={MEDIA_URL + sub.service_image} alt="service" width="150px" />
-                                            </td>
-                                            <td>{sub.car_name}</td>
-                                            <td className="text-center">
-                                                <Button variant="contained" color="primary" onClick={() => navigate(`/services/${sub.service_id}`)}>
-                                                    Details
-                                                </Button>
-                                                <Button variant="contained" color="error" onClick={() => openDeleteConfirmation(sub.submit_id)} className="mx-2">
-                                                    Cancel
-                                                </Button>
-                                                <Button variant="contained" color="info" onClick={() => openCalendarModal(sub.service_id, sub.submit_id)}>
-                                                    Change date
-                                                </Button>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </Table>
+                            <TableContainer component={Paper} style={{ backgroundColor: '#333' }}>
+                                <Table sx={{ minWidth: 700 }} aria-label="customized table">
+                                    <TableHead>
+                                        <TableRow>
+                                            <StyledTableCell>Service Name</StyledTableCell>
+                                            <StyledTableCell align="right">Price</StyledTableCell>
+                                            <StyledTableCell align="right">Date</StyledTableCell>
+                                            <StyledTableCell align="right">Image</StyledTableCell>
+                                            <StyledTableCell align="right">Car</StyledTableCell>
+                                            <StyledTableCell align="right">Actions</StyledTableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {submits.map(sub => (
+                                            <StyledTableRow key={sub.submit_id}>
+                                                <StyledTableCell>{sub.service_name}</StyledTableCell>
+                                                <StyledTableCell align="right">{sub.service_price}</StyledTableCell>
+                                                <StyledTableCell align="right">{sub.date}</StyledTableCell>
+                                                <StyledTableCell align="right">
+                                                    <img src={MEDIA_URL + sub.service_image} alt="service" width="150px" />
+                                                </StyledTableCell>
+                                                <StyledTableCell align="right">{sub.car_name}</StyledTableCell>
+                                                <StyledTableCell align="right">
+                                                    <Button variant="contained" color="primary" onClick={() => navigate(`/services/${sub.service_id}`)} sx={{ backgroundColor: '#d4af37', color: '#1a1a1a', marginRight: '10px' }}>
+                                                        Details
+                                                    </Button>
+                                                    <Button variant="contained" color="error" onClick={() => openDeleteConfirmation(sub.submit_id)} sx={{ marginRight: '10px' }}>
+                                                        Cancel
+                                                    </Button>
+                                                    <Button variant="contained" color="info" onClick={() => openCalendarModal(sub.service_id, sub.submit_id)} sx={{ backgroundColor: '#d4af37', color: '#1a1a1a' }}>
+                                                        Change date
+                                                    </Button>
+                                                </StyledTableCell>
+                                            </StyledTableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
                         ) : (
                             <Typography variant="body1" className="text-center">No submits found</Typography>
                         )}
@@ -165,12 +207,12 @@ const Profile = () => {
 
             <Modal ariaHideApp={false} isOpen={modalIsOpen} style={smallModalStyle}>
                 <div className="text-center">
-                    <Typography variant="h5">Delete confirmation</Typography>
+                    <Typography variant="h5" style={{ color: '#d4af37' }}>Delete confirmation</Typography>
                     <Typography variant="h6">Are you sure?</Typography>
-                    <Button variant="contained" color="primary" onClick={deleteSubmit}>
+                    <Button variant="contained" color="primary" onClick={deleteSubmit} sx={{ backgroundColor: '#d4af37', color: '#1a1a1a' }}>
                         Yes
                     </Button>
-                    <Button variant="contained" color="secondary" onClick={closeModal} className="mx-2">
+                    <Button variant="contained" color="secondary" onClick={closeModal} className="mx-2" sx={{ backgroundColor: '#1a1a1a', color: '#d4af37' }}>
                         No
                     </Button>
                 </div>
@@ -178,13 +220,7 @@ const Profile = () => {
 
             {selectedServiceId && (
                 <Modal ariaHideApp={false} isOpen={calendarModalIsOpen} style={mediumModalStyle}>
-                    <div className="text-center">
-                        <Typography variant="h5">Change service date</Typography>
-                        <ServiceCalendar serviceId={selectedServiceId} onRequest={onChangeSubmit} isUpdate={true} />
-                        <Button variant="contained" color="secondary" onClick={closeCalendarModal}>
-                            Cancel
-                        </Button>
-                    </div>
+                    <ServiceCalendar submitId={selectedSubmitId} serviceId={selectedServiceId} onSubmit={onChangeSubmit} onClose={closeCalendarModal} />
                 </Modal>
             )}
         </LoadingSpinner>

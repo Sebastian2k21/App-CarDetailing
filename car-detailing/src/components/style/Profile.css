@@ -1,53 +1,30 @@
-* General styling for the profile page */
-.card-header, .card-body {
+.profile-container {
+  display: flex;
+  justify-content: center; /* Środkowanie profilu */
+  align-items: center;
+}
+
+.profile-card {
+  width: 80%; /* Ustawienie szerokości */
+  margin: auto;
+  background-color: #222; /* Ciemne tło dla karty */
+  color: #fff; /* Biały tekst */
   padding: 20px;
+  border-radius: 10px;
 }
 
-/* Table styling for profile details */
-.profile-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
+.table-container {
+  width: 100%; /* Tabela na pełną szerokość karty */
 }
 
-.profile-table td {
-  padding: 8px;
-  border-bottom: 1px solid #444;
-}
-
-.profile-label {
-  font-weight: bold;
-  color: #ffffff; /* White text for labels */
-}
-
-/* Table styling for submits */
-.submits-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.submits-table th, .submits-table td {
-  padding: 12px;
-  border-bottom: 1px solid #444;
-  text-align: left;
-}
-
-.submits-table th {
-  font-weight: bold;
-  color: #ffffff; /* White text for headers */
-}
-
-.submits-table td img {
-  max-width: 150px;
-  border-radius: 5px;
-}
-
-.submits-table td .text-center {
+.text-center {
   text-align: center;
 }
 
-/* Modal styling */
-.Modal {
-  background-color: #333;
-  color: #fff;
+.mt-5 {
+  margin-top: 5rem;
+}
+
+.mb-4 {
+  margin-bottom: 4rem;
 }

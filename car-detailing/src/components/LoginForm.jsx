@@ -2,11 +2,9 @@ import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TokenContext from '../context/TokenContext';
 import { useApiClient } from '../api/ApiClientContext';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
+import 'bootstrap/dist/css/bootstrap.min.css'; 
 import { toast } from 'react-hot-toast';
-import { makeStyles, TextField } from '@mui/material';
-import Button from '@mui/material/Button';
-
+import { TextField, Button } from '@mui/material';
 
 const LoginForm = () => {
     const { setAccess, setRefresh } = useContext(TokenContext);
@@ -32,12 +30,13 @@ const LoginForm = () => {
             
         const { success, data, message } = await apiClient.loginUser(formData);
         if (success) {
+            toast.success('Logged in successfully');
             setAccess(data.access);
             setRefresh(data.refresh);
             apiClient.setToken(data.access);
             navigate("/");
         } else {
-            toast.error(message);
+            toast.error( 'Wrong username or password');
         }
     };
 
@@ -47,7 +46,7 @@ const LoginForm = () => {
                 <div className="col-md-8 col-lg-6">
                     <div className="card bg-dark text-light">
                         <div className="card-body">
-                            <h5 className="card-title text-center mb-4">Logowanie</h5>
+                            <h5 className="card-title text-center mb-4" style={{ color: '#d4af37' }}>Logowanie</h5>
                             <form onSubmit={handleSubmit}>
                                 <div className="mb-3">
                                     <TextField 
@@ -62,26 +61,20 @@ const LoginForm = () => {
                                         sx={{
                                             width: '100%',
                                             '& .MuiOutlinedInput-root': {
-                                                color: '#ffffff', // Kolor czcionki
+                                                color: '#ffffff', 
                                             },
                                             '& .MuiInputLabel-root': {
-                                                color: '#ffffff', // Kolor etykiety (label)
+                                                color: '#ffffff', 
                                             },
                                             '& .MuiOutlinedInput-notchedOutline': {
-                                                borderColor: '#ffffff', // Kolor obramowania
+                                                borderColor: '#d4af37',  // Złote obramowanie
                                             },
-                                            
-                                                '&:hover fieldset': {
-                                                    borderColor: '#888',  // Kolor ramki przy najechaniu
-                                                },
-                                                '&.Mui-focused fieldset': {
-                                                    borderColor: '#fff',   // Kolor ramki po zaznaczeniu
-                                                },
-                                                // "&:-webkit-autofill": {
-                                                //     // WebkitBoxShadow: "0 0 0 0 100px " + theme.palette.primary.main + " inset",
-                                                //     backgroundColor: "red !important;",
-                                                //     backgroundClip: "content-box !important",
-                                                //   },
+                                            '&:hover fieldset': {
+                                                borderColor: '#888',  
+                                            },
+                                            '&.Mui-focused fieldset': {
+                                                borderColor: '#d4af37',   // Złote obramowanie przy focusie
+                                            },
                                         }}
                                         required
                                     />
@@ -98,19 +91,37 @@ const LoginForm = () => {
                                         sx={{
                                             width: '100%',
                                             '& .MuiOutlinedInput-root': {
-                                                color: '#ffffff', // Kolor czcionki
+                                                color: '#ffffff', 
                                             },
                                             '& .MuiInputLabel-root': {
-                                                color: '#ffffff', // Kolor etykiety (label)
+                                                color: '#ffffff', 
                                             },
                                             '& .MuiOutlinedInput-notchedOutline': {
-                                                borderColor: '#ffffff', // Kolor obramowania
-                                            }
+                                                borderColor: '#d4af37',  // Złote obramowanie
+                                            },
+                                            '&:hover fieldset': {
+                                                borderColor: '#888',  
+                                            },
+                                            '&.Mui-focused fieldset': {
+                                                borderColor: '#d4af37',   // Złote obramowanie przy focusie
+                                            },
                                         }}
                                         required
                                     />
                                 </div>
-                                <Button variant="contained" color="primary" type="submit" className="w-100">
+                                <Button 
+                                    variant="contained" 
+                                    color="primary" 
+                                    type="submit" 
+                                    className="w-100"
+                                    sx={{
+                                        backgroundColor: '#d4af37', 
+                                        color: '#1a1a1a', 
+                                        '&:hover': {
+                                            backgroundColor: '#b88c2a', 
+                                        },
+                                    }}
+                                >
                                     Zaloguj się
                                 </Button>
                             </form>

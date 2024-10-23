@@ -77,13 +77,13 @@ const MyCars = () => {
         <div className="col-md-8">
           <div className="card bg-dark text-light">
             <div className="card-body">
-              <h5 className="card-title text-center mb-4">My Cars</h5>
-              <button className="btn btn-primary w-100" onClick={() => setShowForm(!showForm)}>
+              <h5 className="card-title text-center mb-4" style={{ color: '#d4af37' }}>My Cars</h5>
+              <button className="btn btn-primary w-100" onClick={() => setShowForm(!showForm)} style={{ backgroundColor: '#d4af37', color: '#1a1a1a', border: 'none', borderRadius: '20px' }}>
                 Add car
               </button>
               {showForm && (
                 <span>
-                  <h6 className="text-center mt-5 mb-4">Add Car</h6>
+                  <h6 className="text-center mt-5 mb-4" style={{ color: '#d4af37' }}>Add Car</h6>
                   <form onSubmit={onSubmitCreateCar}>
                     {CAR_FORM_FIELDS.map((field) => (
                       <div className="mb-3" key={field.name}>
@@ -97,12 +97,12 @@ const MyCars = () => {
                             width: '100%',
                             '& .MuiOutlinedInput-root': { color: '#ffffff' },
                             '& .MuiInputLabel-root': { color: '#ffffff' },
-                            '& .MuiOutlinedInput-notchedOutline': { borderColor: '#ffffff' },
+                            '& .MuiOutlinedInput-notchedOutline': { borderColor: '#d4af37' },
                           }}
                         />
                       </div>
                     ))}
-                    <Button variant="contained" color="primary" type="submit" className="w-100">
+                    <Button variant="contained" color="primary" type="submit" className="w-100" sx={{ backgroundColor: '#d4af37', color: '#1a1a1a' }}>
                       Add
                     </Button>
                   </form>
@@ -115,9 +115,9 @@ const MyCars = () => {
 
       <LoadingSpinner statement={cars != null}>
         {cars != null && (
-          <table className="table table-dark table-striped mt-4">
+          <table className="table table-dark table-striped mt-4" style={{ backgroundColor: '#1a1a1a', color: '#d1d1d1' }}>
             <thead>
-              <tr>
+              <tr style={{ color: '#d4af37' }}>
                 <th>Manufacturer</th>
                 <th>Model</th>
                 <th>Year of Production</th>
@@ -135,6 +135,12 @@ const MyCars = () => {
                       variant="contained"
                       color="error"
                       onClick={() => removeCar(car._id)}
+                      sx={{
+                        backgroundColor: '#d4af37',
+                        color: '#1a1a1a',
+                        '&:hover': { backgroundColor: '#c89f2b' },
+                        borderRadius: '20px',
+                      }}
                     >
                       Remove
                     </Button>

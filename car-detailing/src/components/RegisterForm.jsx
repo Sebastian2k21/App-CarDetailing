@@ -115,13 +115,13 @@ const RegisterForm = () => {
                                                 color: '#ffffff',
                                             },
                                             '& .MuiOutlinedInput-notchedOutline': {
-                                                borderColor: '#d4af37', // Złote obramowanie
+                                                borderColor: '#d4af37', 
                                             },
                                             '&:hover fieldset': {
                                                 borderColor: '#888',  
                                             },
                                             '&.Mui-focused fieldset': {
-                                                borderColor: '#d4af37',   // Złote obramowanie przy focusie
+                                                borderColor: '#d4af37',   
                                             },
                                         }}
                                         required  
@@ -147,13 +147,13 @@ const RegisterForm = () => {
                                                 color: '#ffffff',
                                             },
                                             '& .MuiOutlinedInput-notchedOutline': {
-                                                borderColor: '#d4af37', // Złote obramowanie
+                                                borderColor: '#d4af37', 
                                             },
                                             '&:hover fieldset': {
                                                 borderColor: '#888',  
                                             },
                                             '&.Mui-focused fieldset': {
-                                                borderColor: '#d4af37',   // Złote obramowanie przy focusie
+                                                borderColor: '#d4af37',   
                                             },
                                         }}
                                         required  
@@ -179,13 +179,13 @@ const RegisterForm = () => {
                                                 color: '#ffffff',
                                             },
                                             '& .MuiOutlinedInput-notchedOutline': {
-                                                borderColor: '#d4af37', // Złote obramowanie
+                                                borderColor: '#d4af37', 
                                             },
                                             '&:hover fieldset': {
                                                 borderColor: '#888',  
                                             },
                                             '&.Mui-focused fieldset': {
-                                                borderColor: '#d4af37',   // Złote obramowanie przy focusie
+                                                borderColor: '#d4af37',   
                                             },
                                         }}
                                         required  

@@ -5,15 +5,15 @@ import { Box, Typography, Button, Container } from '@mui/material';
 const Home = () => {
   return (
     <div className="home-page" style={{ backgroundColor: '#121212', color: '#d4af37' }}>
-      {/* Nagłówek strony */}
+      {}
       <Container maxWidth="md" sx={{ textAlign: 'center', paddingTop: 10 }}>
         <Typography
           variant="h2"
           gutterBottom
           sx={{
             fontWeight: 'bold',
-            color: '#d4af37', // Złoty nagłówek
-            textShadow: '2px 2px 4px rgba(0,0,0,0.5)', // Cień dla lepszego efektu
+            color: '#d4af37', 
+            textShadow: '2px 2px 4px rgba(0,0,0,0.5)', 
             fontSize: { xs: '2.5rem', sm: '3rem', md: '4rem' },
           }}
         >
@@ -23,14 +23,14 @@ const Home = () => {
           variant="h6"
           paragraph
           sx={{
-            color: '#d1d1d1', // Jasny szary tekst
+            color: '#d1d1d1', 
             marginBottom: 4,
             lineHeight: 1.8,
             maxWidth: '600px',
             margin: '0 auto',
           }}
         >
-          Witamy w naszym serwisie ProDetailing, gdzie znajdą Państwo najlepsze studia detailingowe! Zaufaj nam, a Twój samochód zyska nowy blask.
+          Witamy w naszym serwisie ProDetailing, gdzie znajdą Państwo najlepsze studia detailingowe!
         </Typography>
 
         <Button
@@ -42,11 +42,11 @@ const Home = () => {
           sx={{
             padding: '12px 24px',
             borderRadius: 3,
-            boxShadow: '0px 4px 15px rgba(212, 175, 55, 0.5)', // Złoty cień
+            boxShadow: '0px 4px 15px rgba(212, 175, 55, 0.5)', 
             fontSize: '1.1rem',
-            backgroundColor: '#d4af37', // Złoty przycisk
+            backgroundColor: '#d4af37',
             '&:hover': {
-              backgroundColor: '#c49c2f', // Ciemniejszy złoty przy hover
+              backgroundColor: '#c49c2f', 
               boxShadow: '0px 6px 20px rgba(212, 175, 55, 0.7)',
               transform: 'scale(1.05)',
             },
@@ -57,19 +57,19 @@ const Home = () => {
         </Button>
       </Container>
 
-      {/* Sekcja stopki */}
+      {}
       <Box
         component="footer"
         sx={{
-          backgroundColor: '#1f1f1f', // Ciemniejsze tło stopki
-          color: '#d4af37', // Złoty tekst
+          backgroundColor: '#1f1f1f',
+          color: '#d4af37', 
           py: 5,
           textAlign: 'center',
           marginTop: 10,
-          boxShadow: '0px -10px 20px rgba(212, 175, 55, 0.3)', // Złoty cień
+          boxShadow: '0px -10px 20px rgba(212, 175, 55, 0.3)', 
           position: 'relative',
-          width: '100%', // Ustawienie na pełną szerokość
-          bottom: 0, // Przypięcie do dolnej części strony
+          width: '100%', 
+          bottom: 0, 
         }}
       >
         <Container maxWidth="lg">
@@ -81,12 +81,12 @@ const Home = () => {
               to="/privacy-policy"
               style={{
                 textDecoration: 'none',
-                color: '#d4af37', // Złoty akcent
+                color: '#d4af37', 
                 fontWeight: 'bold',
                 fontSize: '0.9rem',
                 transition: 'color 0.3s ease-in-out',
               }}
-              onMouseEnter={(e) => (e.target.style.color = '#fff')} // Zmiana koloru przy hover
+              onMouseEnter={(e) => (e.target.style.color = '#fff')} 
               onMouseLeave={(e) => (e.target.style.color = '#d4af37')}
             >
               Polityka prywatności
@@ -96,12 +96,12 @@ const Home = () => {
               to="/terms-of-service"
               style={{
                 textDecoration: 'none',
-                color: '#d4af37', // Złoty akcent
+                color: '#d4af37', 
                 fontWeight: 'bold',
                 fontSize: '0.9rem',
                 transition: 'color 0.3s ease-in-out',
               }}
-              onMouseEnter={(e) => (e.target.style.color = '#fff')} // Zmiana koloru przy hover
+              onMouseEnter={(e) => (e.target.style.color = '#fff')} 
               onMouseLeave={(e) => (e.target.style.color = '#d4af37')}
             >
               Warunki użytkowania

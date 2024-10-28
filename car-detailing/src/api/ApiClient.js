@@ -111,7 +111,11 @@ class ApiClient {
     }
 
     async getAllSubmitStatuses() {
-        return await this.get(ENDPOINTS.SubmitStatus, 'Error fetching submit statuses')
+        return await this.get(ENDPOINTS.SubmitStatus, 'Error fetching submit statuses', [])
+    }
+
+    async setSubmitStatus(statusId, orderId) { 
+        return await this.post(ENDPOINTS.SetSubmitStatus.replace('{orderId}', orderId), {status_id: statusId}, 'Error setting submit status')
     }
 
     //----------------------------------------------------------------------------------------------------------------------------

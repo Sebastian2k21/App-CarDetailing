@@ -1,20 +1,20 @@
 .profile-container {
   display: flex;
-  justify-content: center; /* Środkowanie profilu */
+  justify-content: center; 
   align-items: center;
 }
 
 .profile-card {
-  width: 80%; /* Ustawienie szerokości */
+  width: 80%; 
   margin: auto;
-  background-color: #222; /* Ciemne tło dla karty */
-  color: #fff; /* Biały tekst */
+  background-color: #222; 
+  color: #fff;
   padding: 20px;
   border-radius: 10px;
 }
 
 .table-container {
-  width: 100%; /* Tabela na pełną szerokość karty */
+  width: 100%; 
 }
 
 .text-center {

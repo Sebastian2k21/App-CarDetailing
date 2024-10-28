@@ -5,11 +5,21 @@ import { TextField, Button } from '@mui/material';
 import './style/Account.css';
 import LoadingSpinner from './common/LoadingSpinner';
 
-const USER_FORM_FIELDS = [
+const CLIENT_FORM_FIELDS = [
   { name: 'first_name', label: 'First name', type: 'text' },
   { name: 'last_name', label: 'Last name', type: 'text' },
   { name: 'email', label: 'Email', type: 'email' },
   { name: 'phone', label: 'Phone', type: 'tel' },
+  { name: 'street', label: 'Street', type: 'text' },
+  { name: 'city', label: 'City', type: 'text' },
+  { name: 'zip_code', label: 'Zip code', type: 'text' },
+];
+
+const DETAILER_FORM_FIELDS = [
+  { name: 'email', label: 'Email', type: 'email' },
+  { name: 'phone', label: 'Phone', type: 'tel' },
+  { name: 'name', label: 'Name', type: 'text' },
+  { name: 'nip', label: 'NIP', type: 'text' },
   { name: 'street', label: 'Street', type: 'text' },
   { name: 'city', label: 'City', type: 'text' },
   { name: 'zip_code', label: 'Zip code', type: 'text' },
@@ -66,7 +76,7 @@ const Account = () => {
   };
 
   const validateAccountDetailsForm = (formData) => {
-    return USER_FORM_FIELDS.every(field => formData[field.name]);
+    return CLIENT_FORM_FIELDS.every(field => formData[field.name]);
   };
 
   const getProfile = useCallback(async () => {
@@ -120,7 +130,7 @@ const Account = () => {
               <LoadingSpinner statement={profile != null}>
                 {profile != null && (
                   <form onSubmit={(e) => { e.preventDefault(); onSubmitUserDetailsChange(profile); }} style={{ width: '100%' }}>
-                    {USER_FORM_FIELDS.map((field) => (
+                    {CLIENT_FORM_FIELDS.map((field) => (
                       <div className="mb-3" key={field.name}>
                         <TextField
                           label={field.label}

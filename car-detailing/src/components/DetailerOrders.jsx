@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import CommonTable from "./common/CommonTable";
 import { useApiClient } from "../api/ApiClientContext";
-import { InputLabel, MenuItem, Select } from "@mui/material";
+import {  MenuItem, Select } from "@mui/material";
 import toast from "react-hot-toast";
 
 
@@ -32,10 +32,35 @@ const DetailerOrders = () => {
       </Select>
 }
 
+const getStatuses = (value) => {
+  return <Select
+    sx={{ width: '100%' }}
+      labelId="car-select-label"
+      id="car-select"
+      value={value.row.status_id}
+      label="Car"
+      onChange={async (e) => {
+        console.log(e.target.value)
+         const success = await api.setSubmitStatus(e.target.value, value.id)
+         if(success) {
+            toast.success('Status updated successfully');
+            const fetchOrders = async () => {
+              const data = await api.getDetailerOrders();
+              setOrders(data);
+          }
+          fetchOrders();
+         }
+      }}
+    >
+    
+      {statuses && statuses.map((status) =>   <MenuItem value={status._id}>{status.name}</MenuItem>)}
+    </Select>
+}
+
   const columns = [
     { field: 'id', headerName: 'Order', flex: 1 },
     { field: 'due_date', headerName: 'Due Date', flex: 1  },
-    { field: 'status', headerName: 'Status' , flex: 1 },
+    { field: 'status_id', headerName: 'Status' , flex: 1, renderCell: getStatuses },
     { field: 'car', headerName: 'Car' , flex: 1 },
     { field: 'service_name', headerName: 'Service Name'  , flex: 1 },
     { field: 'client_full_name', headerName: 'Client' , flex: 1  },
@@ -45,6 +70,7 @@ const DetailerOrders = () => {
   ];
   const api = useApiClient()
   const [orders, setOrders] = useState([]);
+  const [statuses, setStatuses] = useState([]);
   const [employees, setEmployees] = useState(null);
 
 
@@ -64,8 +90,18 @@ const DetailerOrders = () => {
           }
         };
 
+        const getStatuses = async () => {
+          try {
+            const statuses = await api.getAllSubmitStatuses();
+            setStatuses(statuses)
+          } catch (error) {
+            console.error('Error fetching statuses:', error);
+          }
+        }
+
         fetchOrders();
         getEmployees()
+        getStatuses();
     }, []);
 
     return (

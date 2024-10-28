@@ -2,23 +2,10 @@ import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useApiClient } from "../api/ApiClientContext";
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import { useRole } from "../context/RoleContext";
 
 const Navbar = ({ access }) => {
-    const [role, setRole] = useState(null);
-    const apiClient = useApiClient();
-
-    const getRole = useCallback(async () => {
-        if (access) {
-            const data = await apiClient.getUserRole();
-            if (data) {
-                setRole(data);
-            }
-        }
-    }, [access, setRole]);
-
-    useEffect(() => {
-        getRole();
-    }, [getRole]);
+    const role = useRole()
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark" style={{ backgroundColor: '#1a1a1a' }}>

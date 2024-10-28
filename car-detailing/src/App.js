@@ -23,6 +23,7 @@ import '@fontsource/roboto/700.css';
 import MyCars from './components/MyCars';
 import DetailerOrders from './components/DetailerOrders';
 import Team from './components/Team';
+import RoleWrapper from './context/RoleContext';
 
 
 function App() {
@@ -53,25 +54,27 @@ function App() {
         <div className="App">
             <TokenContext.Provider value={{ access, refresh, setAccess, setRefresh }}>
                 <ApiClientWrapper>
-                    <header className="App-header">
-                        <Navbar access={access} />
-                        <Routes>
-                            <Route path="/register" element={<RegisterForm />} />
-                            <Route path="/login" element={<LoginForm />} />
-                            <Route path="/account" element={<Account />} />
-                            <Route path="/services" element={<Services/>} />
-                            <Route path="/services/:id" element={<ServiceDetails/>} />
-                            <Route path="/services/:id/update" element={<ServiceUpdate/>}/>
-                            <Route path="/profile" element={<Profile/>} />
-                            <Route path="/my-cars" element={<MyCars/>} />
-                            <Route path="/detailer" element={<Detailer/>} />
-                            <Route path="/detailer/orders" element={<DetailerOrders/>} />
-                            <Route path="/team" element={<Team/>} />
-                            <Route path="/logout" element={<Logout/>} />
-                            <Route path="/" element={<Home />} /> {/* Użyj komponentu HomePage */}
-                        </Routes>
-                    </header>
-                    <Toaster />
+                    <RoleWrapper>
+                        <header className="App-header">
+                            <Navbar access={access} />
+                            <Routes>
+                                <Route path="/register" element={<RegisterForm />} />
+                                <Route path="/login" element={<LoginForm />} />
+                                <Route path="/account" element={<Account />} />
+                                <Route path="/services" element={<Services/>} />
+                                <Route path="/services/:id" element={<ServiceDetails/>} />
+                                <Route path="/services/:id/update" element={<ServiceUpdate/>}/>
+                                <Route path="/profile" element={<Profile/>} />
+                                <Route path="/my-cars" element={<MyCars/>} />
+                                <Route path="/detailer" element={<Detailer/>} />
+                                <Route path="/detailer/orders" element={<DetailerOrders/>} />
+                                <Route path="/team" element={<Team/>} />
+                                <Route path="/logout" element={<Logout/>} />
+                                <Route path="/" element={<Home />} /> {/* Użyj komponentu HomePage */}
+                            </Routes>
+                        </header>
+                        <Toaster />
+                    </RoleWrapper>
                 </ApiClientWrapper>
             </TokenContext.Provider>
         </div>

@@ -27,5 +27,6 @@ export const ENDPOINTS = {
     Employees: BASE_URL + "/employees",
     RemoveEmployee: BASE_URL + "/employees/{employeeId}/delete",
     AttachEmployee: BASE_URL + "/detailer/orders/{orderId}/attach-employee",
-    SubmitStatus: BASE_URL + "/status"
+    SubmitStatus: BASE_URL + "/status",
+    SetSubmitStatus: BASE_URL + "/detailer/orders/{orderId}/set-status",
 }

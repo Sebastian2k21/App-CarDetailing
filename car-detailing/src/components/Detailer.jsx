@@ -6,7 +6,7 @@ import LoadingSpinner from "./common/LoadingSpinner";
 import CommonForm from "./common/CommonForm";
 import ServiceDaysInput from "./ServiceDaysInput";
 import Grid from '@mui/material/Grid2';
-import Button from '@mui/material/Button';  // Import for button component
+import Button from '@mui/material/Button';  
 
 const ADD_SERVICE_FORM_FIELDS = [
     {"name": "name", "label": "Name", "type": "text"},
@@ -26,7 +26,7 @@ const Detailer = () => {
         if(services) {
             setServices(services);
         }
-    }, [setServices]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [setServices]); 
 
     useEffect(() => {
         getServices();

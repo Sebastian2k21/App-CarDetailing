@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import { TextField, Button } from '@mui/material';
 import './style/Account.css';
 import LoadingSpinner from './common/LoadingSpinner';
+import { useRole } from '../context/RoleContext';
 
 const CLIENT_FORM_FIELDS = [
   { name: 'first_name', label: 'First name', type: 'text' },
@@ -18,7 +19,7 @@ const CLIENT_FORM_FIELDS = [
 const DETAILER_FORM_FIELDS = [
   { name: 'email', label: 'Email', type: 'email' },
   { name: 'phone', label: 'Phone', type: 'tel' },
-  { name: 'name', label: 'Name', type: 'text' },
+  { name: 'company_name', label: 'Company name', type: 'text' },
   { name: 'nip', label: 'NIP', type: 'text' },
   { name: 'street', label: 'Street', type: 'text' },
   { name: 'city', label: 'City', type: 'text' },
@@ -34,6 +35,8 @@ const Account = () => {
   const [passwordData, setPasswordData] = useState({ password: '', passwordConfirm: '' });
   const [profile, setProfile] = useState(null);
   const apiClient = useApiClient();
+  const role = useRole()
+  const [accountFormFields, setAccountFormFields] = useState([]);
 
   const onSubmitChangePassword = async (formData) => {
     if (validatePasswordForm(formData)) {
@@ -76,7 +79,7 @@ const Account = () => {
   };
 
   const validateAccountDetailsForm = (formData) => {
-    return CLIENT_FORM_FIELDS.every(field => formData[field.name]);
+    return accountFormFields.every(field => formData[field.name]);
   };
 
   const getProfile = useCallback(async () => {
@@ -91,6 +94,17 @@ const Account = () => {
   useEffect(() => {
     getProfile();
   }, [getProfile]);
+
+  useEffect(() => {
+    if(role == null) {
+      return
+    }
+    if (role.role_name === 'client') {
+      setAccountFormFields(CLIENT_FORM_FIELDS);
+    } else if (role.role_name === 'detailer') {
+      setAccountFormFields(DETAILER_FORM_FIELDS);
+    }
+  }, [role]);
 
   return (
     <div className="container mt-5">
@@ -130,7 +144,7 @@ const Account = () => {
               <LoadingSpinner statement={profile != null}>
                 {profile != null && (
                   <form onSubmit={(e) => { e.preventDefault(); onSubmitUserDetailsChange(profile); }} style={{ width: '100%' }}>
-                    {CLIENT_FORM_FIELDS.map((field) => (
+                    {accountFormFields.map((field) => (
                       <div className="mb-3" key={field.name}>
                         <TextField
                           label={field.label}

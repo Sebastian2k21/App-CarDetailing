@@ -24,6 +24,9 @@ import MyCars from './components/MyCars';
 import DetailerOrders from './components/DetailerOrders';
 import Team from './components/Team';
 import RoleWrapper from './context/RoleContext';
+import HomePage from './components/HomePage';
+import AuthorizedView from './components/AuthorizedView';
+import Error404 from './components/Error404';
 
 
 function App() {
@@ -60,17 +63,18 @@ function App() {
                             <Routes>
                                 <Route path="/register" element={<RegisterForm />} />
                                 <Route path="/login" element={<LoginForm />} />
-                                <Route path="/account" element={<Account />} />
+                                <Route path="/account" element={<AuthorizedView><Account /></AuthorizedView>} />
                                 <Route path="/services" element={<Services/>} />
-                                <Route path="/services/:id" element={<ServiceDetails/>} />
+                                <Route path="/services/:id" element={<AuthorizedView><ServiceDetails/></AuthorizedView>} />
                                 <Route path="/services/:id/update" element={<ServiceUpdate/>}/>
-                                <Route path="/profile" element={<Profile/>} />
-                                <Route path="/my-cars" element={<MyCars/>} />
-                                <Route path="/detailer" element={<Detailer/>} />
-                                <Route path="/detailer/orders" element={<DetailerOrders/>} />
-                                <Route path="/team" element={<Team/>} />
-                                <Route path="/logout" element={<Logout/>} />
-                                <Route path="/" element={<Home />} /> {/* Użyj komponentu HomePage */}
+                                <Route path="/profile" element={<AuthorizedView><Profile/></AuthorizedView>} />
+                                <Route path="/my-cars" element={<AuthorizedView><MyCars/></AuthorizedView>} />
+                                <Route path="/detailer" element={<AuthorizedView><Detailer/></AuthorizedView>} />
+                                <Route path="/detailer/orders" element={<AuthorizedView><DetailerOrders/></AuthorizedView>} />
+                                <Route path="/team" element={<AuthorizedView><Team/></AuthorizedView>} />
+                                <Route path="/logout" element={<AuthorizedView><Logout/></AuthorizedView>} />
+                                <Route path="/" element={access != null ? <Home/> : <HomePage />} />
+                                <Route path="*" element={<Error404/>} />
                             </Routes>
                         </header>
                         <Toaster />

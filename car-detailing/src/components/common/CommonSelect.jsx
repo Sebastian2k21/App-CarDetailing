@@ -14,11 +14,11 @@ const CommonSelect = ({name, label, options, onSelect=()=>{}, selectedValue=null
                     m: 1, minWidth: 240,
   
                     '& .MuiSelect-select': {
-                        color: '#ffffff', // Kolor tekstu wybranej wartości na biały
+                        color: '#ffffff', 
                     },
                     '& .MuiOutlinedInput-notchedOutline': {
-                        borderColor: '#ffffff', // Kolor obramowania na biały
-                        color: '#ffffff', // Kolor czcionki
+                        borderColor: '#ffffff', 
+                        color: '#ffffff', 
                     },             
 
                 }}

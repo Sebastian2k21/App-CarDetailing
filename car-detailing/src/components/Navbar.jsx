@@ -24,9 +24,9 @@ const Navbar = ({ access }) => {
                 </button>
                 <div className="collapse navbar-collapse justify-content-center" id="navbarNav">
                     <ul className="navbar-nav">
-                        <li className="nav-item">
+                    {/* <li className="nav-item">
                             <Link className="nav-link bi bi-tools" to="/services" style={{ color: '#d4af37' }}>Services</Link>
-                        </li>
+                        </li> */}
                         {access != null ? (
                             <>
                                 <li className="nav-item">
@@ -64,9 +64,13 @@ const Navbar = ({ access }) => {
                             </>
                         ) : (
                             <>
+                             <li className="nav-item">
+                                    <Link className="nav-link bi bi-house-door-fill" to="/" style={{ color: '#d4af37' }}>Home</Link>
+                                </li>
                                 <li className="nav-item">
                                     <Link className="nav-link bi bi-r-square-fill" to="/register" style={{ color: '#d4af37' }}>Register</Link>
                                 </li>
+                            
                                 <li className="nav-item">
                                     <Link className="nav-link bi bi-box-arrow-in-right" to="/login" style={{ color: '#d4af37' }}>Login</Link>
                                 </li>

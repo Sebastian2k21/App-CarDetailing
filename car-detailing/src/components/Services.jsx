@@ -9,16 +9,16 @@ import Grid from '@mui/material/Grid2';
 const INPUT_STYLE = {
     m: 1, width: '25ch',
     '& .MuiOutlinedInput-root': {
-        color: '#ffffff', // Kolor czcionki
+        color: '#ffffff', 
     },
     '& .MuiInputLabel-root': {
-        color: '#ffffff', // Kolor etykiety (label)
+        color: '#ffffff', 
     },
     '& .MuiOutlinedInput-notchedOutline': {
-        borderColor: '#d4af37', // Złota ramka
+        borderColor: '#d4af37', 
     },
     '& .MuiTypography-root': {
-        color: '#ffffff', // Kolor tekstu
+        color: '#ffffff', 
     }
 }
 
@@ -71,11 +71,11 @@ const Services = () => {
 
     useEffect(() => {
         getServices();
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    }, []); 
 
     useEffect(() => {
         setFilteredServices(getOrderedServices());
-    }, [services, order, priceFrom, priceTo]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [services, order, priceFrom, priceTo]); 
 
     return (
         <div style={{ backgroundColor: '#121212', color: '#d4af37', minHeight: '100vh', padding: '20px' }}>

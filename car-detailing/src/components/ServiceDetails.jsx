@@ -1,8 +1,8 @@
+import { Avatar, Box, Grid, Typography } from '@mui/material';
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useApiClient } from "../api/ApiClientContext";
-import { useEffect, useState } from "react";
 import ServiceCalendar from "./ServiceCalendar";
-import { Box, Typography, Avatar, Grid, Button } from '@mui/material';
 
 
 const ServiceDetails = () => {
@@ -21,7 +21,7 @@ const ServiceDetails = () => {
 
     useEffect(() => {
         getService()
-    }, []) // eslint-disable-line react-hooks/exhaustive-deps
+    }, []) 
 
     if(!service) {
         return <div>Loading...</div>
@@ -32,12 +32,12 @@ const ServiceDetails = () => {
       <div className="row justify-content-center">
       <Box className="col-md-8" sx={{ p: 4, margin: 'auto', boxShadow: 3, borderRadius: 2 }}>
   <Grid container spacing={2} alignItems="center" justifyContent="space-around">
-    {/* Service Image */}
+  
     <Grid 
       item xs={12} sm={4} 
       container
-      alignItems="center"  // Vertical centering
-      justifyContent="center" // Horizontal centering
+      alignItems="center"  
+      justifyContent="center"
     >
               <Typography variant="h4" component="h1" gutterBottom>
         {service.name}
@@ -50,13 +50,13 @@ const ServiceDetails = () => {
       />
     </Grid>
 
-    {/* Service Details */}
+    
     <Grid 
       item xs={12} sm={4} 
       container
       direction="column"
-      alignItems="center"  // Vertical centering
-      justifyContent="center" // Horizontal centering
+      alignItems="center"  
+      justifyContent="center" 
     >
 
       <Typography variant="body1" gutterBottom>
@@ -70,7 +70,7 @@ const ServiceDetails = () => {
       </Typography>
     </Grid>
 
-    {/* Service Calendar */}
+ 
     <Grid item xs={12}>
       <ServiceCalendar serviceId={service._id} onRequest={submitService} />
     </Grid>

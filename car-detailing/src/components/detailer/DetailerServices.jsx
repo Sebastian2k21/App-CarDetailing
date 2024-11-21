@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
-import { useApiClient } from "../api/ApiClientContext";
-import CommonList from "./common/CommonList";
-import ServiceItem from "./ServiceItem";
-import LoadingSpinner from "./common/LoadingSpinner";
-import CommonForm from "./common/CommonForm";
-import ServiceDaysInput from "./ServiceDaysInput";
+import { useApiClient } from "../../api/ApiClientContext";
+import CommonList from "../common/CommonList";
+import ServiceItem from "../ServiceItem";
+import LoadingSpinner from "../common/LoadingSpinner";
+import CommonForm from "../common/CommonForm";
+import ServiceDaysInput from "../ServiceDaysInput";
 import Grid from '@mui/material/Grid2';
 import Button from '@mui/material/Button';  
 
@@ -16,7 +16,7 @@ const ADD_SERVICE_FORM_FIELDS = [
     {"name": "image", "label": "Image", "type": "file"},
 ]
 
-const Detailer = () => {
+const DetailerServices = () => {
     const [services, setServices] = useState([]);
     const [serviceFormShow, setServiceFormShow] = useState(false);
     const apiClient = useApiClient();
@@ -111,4 +111,4 @@ const Detailer = () => {
     );
 };
 
-export default Detailer;
+export default DetailerServices;

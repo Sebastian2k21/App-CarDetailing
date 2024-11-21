@@ -1,11 +1,11 @@
-import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useApiClient } from "../api/ApiClientContext";
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { useRole } from "../context/RoleContext";
+import { useLeftNav } from "../context/LeftNavContext";
 
 const Navbar = ({ access }) => {
     const role = useRole()
+    const {setIsOpenLeftNav} = useLeftNav()
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark" style={{ backgroundColor: '#1a1a1a' }}>
@@ -24,9 +24,9 @@ const Navbar = ({ access }) => {
                 </button>
                 <div className="collapse navbar-collapse justify-content-center" id="navbarNav">
                     <ul className="navbar-nav">
-                    {/* <li className="nav-item">
+                    <li className="nav-item">
                             <Link className="nav-link bi bi-tools" to="/services" style={{ color: '#d4af37' }}>Services</Link>
-                        </li> */}
+                        </li>
                         {access != null ? (
                             <>
                                 <li className="nav-item">
@@ -46,17 +46,9 @@ const Navbar = ({ access }) => {
                                 {role != null && role.role_name === "detailer" && (
                                     <>
                                         <li className="nav-item">
-                                            <Link className="nav-link" to="/detailer" style={{ color: '#d4af37' }}>Detailer</Link>
-                                        </li>
-                                        <li className="nav-item">
-                                            <Link className="nav-link" to="/team" style={{ color: '#d4af37' }}>Team</Link>
+                                            <button onClick={() => setIsOpenLeftNav(true)} className="nav-link" to="/team" style={{ color: '#d4af37' }}>Detailer</button>
                                         </li>
                                     </>
-                                )}
-                                {role != null && role.role_name === "detailer" && (
-                                    <li className="nav-item">
-                                        <Link className="nav-link bi bi-basket2-fill" to="/detailer/orders" style={{ color: '#d4af37' }}>Orders</Link>
-                                    </li>
                                 )}
                                 <li className="nav-item">
                                     <Link className="nav-link bi bi-door-open-fill" to="/logout" style={{ color: '#d4af37' }}>Logout</Link>

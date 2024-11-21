@@ -29,4 +29,6 @@ export const ENDPOINTS = {
     AttachEmployee: BASE_URL + "/detailer/orders/{orderId}/attach-employee",
     SubmitStatus: BASE_URL + "/status",
     SetSubmitStatus: BASE_URL + "/detailer/orders/{orderId}/set-status",
+    DetailerStats: BASE_URL + "/detailer/stats",
+    DetailerAnalytics: BASE_URL + "/detailer/analytics/{dateFrom}/{dateTo}",
 }

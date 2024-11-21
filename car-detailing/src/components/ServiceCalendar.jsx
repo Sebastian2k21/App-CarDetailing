@@ -2,41 +2,10 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useApiClient } from "../api/ApiClientContext";
 import {DayPilotCalendar} from "@daypilot/daypilot-lite-react";
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography, MenuItem, InputLabel, Select } from '@mui/material';
+import { getOffsetDate, getCurrentDate, getCurrentDateMonday } from "../utils/TimeUtils";
 import toast from 'react-hot-toast';
 import "../App.css"
 import "./style/Calendar.css"
-
-
-const getCurrentDate = () => {
-    var today = new Date();
-    var dd = String(today.getDate()).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    var yyyy = today.getFullYear();
-    today =yyyy + '-' + mm + '-' + dd;
-    return today
-}
-
-const getCurrentDateMonday = () => { 
-    var today = new Date();
-    var day = today.getDay();
-    var diff = today.getDate() - day + (day === 0 ? -6:1); // adjust when day is sunday
-    today = new Date(today.setDate(diff));
-    var dd = String(today.getDate()).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    var yyyy = today.getFullYear();
-    today =yyyy + '-' + mm + '-' + dd;
-    return today
-}
-
-const getOffsetDate = (date, offset) => {
-    var today = new Date(date);
-    today.setDate(today.getDate() + offset);
-    var dd = String(today.getDate()).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    var yyyy = today.getFullYear();
-    today =yyyy + '-' + mm + '-' + dd;
-    return today
-}
   
 
   const ServiceCalendar = ({ serviceId, onRequest, isUpdate = false }) => {

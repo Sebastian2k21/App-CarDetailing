@@ -118,6 +118,10 @@ class ApiClient {
         return await this.post(ENDPOINTS.SetSubmitStatus.replace('{orderId}', orderId), {status_id: statusId}, 'Error setting submit status')
     }
 
+    async getDetailerStats() {
+        return await this.get(ENDPOINTS.DetailerStats, 'Error fetching detailer stats')
+    }
+
     //----------------------------------------------------------------------------------------------------------------------------
     //----------------------------------------------------------------------------------------------------------------------------
     //----------------------------------------------------------------------------------------------------------------------------

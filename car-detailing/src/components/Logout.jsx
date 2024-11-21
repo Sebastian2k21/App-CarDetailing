@@ -13,7 +13,7 @@ const Logout = () => {
         setRefresh(null);
         apiClient.setToken(null)
         navigate('/login');
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    }, []); 
 
     return null;
 }

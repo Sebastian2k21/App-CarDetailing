@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useApiClient } from '../api/ApiClientContext';
+import { useApiClient } from '../../api/ApiClientContext';
 import toast from 'react-hot-toast';
 import { TextField, Button } from '@mui/material';
-import './style/Account.css'; //TODO: zmienic na nowy plik
-import LoadingSpinner from './common/LoadingSpinner';
+import '../style/Account.css'; //TODO: zmienic na nowy plik
+import LoadingSpinner from '../common/LoadingSpinner';
 
 const EMPLOYEE_FORM_FIELDS = [
   { name: 'first_name', label: 'First Name', type: 'text' },
@@ -12,7 +12,7 @@ const EMPLOYEE_FORM_FIELDS = [
   { name: 'experience', label: 'Experience', type: 'number' }
 ];
 
-const Team = () => {
+const DetailerTeam = () => {
   const [showForm, setShowForm] = useState(false);
   const [employees, setEmployees] = useState(null);
   const [employeeData, setEmployeeData] = useState({ first_name: '', last_name: '', description: '', experience: '' });
@@ -163,4 +163,4 @@ const Team = () => {
   );
 };
 
-export default Team;
+export default DetailerTeam;

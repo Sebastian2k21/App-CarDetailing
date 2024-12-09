@@ -31,4 +31,6 @@ export const ENDPOINTS = {
     SetSubmitStatus: BASE_URL + "/detailer/orders/{orderId}/set-status",
     DetailerStats: BASE_URL + "/detailer/stats",
     DetailerAnalytics: BASE_URL + "/detailer/analytics/{dateFrom}/{dateTo}",
+    DetailerClients: BASE_URL + "/detailer/clients",
+    DetailerClientSubmits: BASE_URL + "/detailer/clients/{clientId}/submits",
 }

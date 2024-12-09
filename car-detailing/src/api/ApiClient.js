@@ -126,6 +126,13 @@ class ApiClient {
         return await this.get(ENDPOINTS.DetailerAnalytics.replace("{dateFrom}", dateFrom).replace("{dateTo}", dateTo), 'Error fetching detailer analytics')
     }
 
+    async getDetailerClients() {
+        return await this.get(ENDPOINTS.DetailerClients)
+    }
+
+    async getDetailerClientSubmits(clientId) {
+        return await this.get(ENDPOINTS.DetailerClientSubmits.replace("{clientId}", clientId))
+    }
     //----------------------------------------------------------------------------------------------------------------------------
     //----------------------------------------------------------------------------------------------------------------------------
     //----------------------------------------------------------------------------------------------------------------------------

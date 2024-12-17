@@ -19,6 +19,14 @@ const DetailerClients = () => {
         setClients(data);
     };
 
+    const getSelectedClientFullName = () => {
+        if(selectedClientId) {
+            const client = clients.find(c => c.id === selectedClientId)
+            return client.first_name + " " + client.last_name
+        }
+        return ""
+    }
+
     const getClientSubmits = async (clientId) => {
         const data = await api.getDetailerClientSubmits(clientId);
         setClientSubmits(data);
@@ -109,7 +117,7 @@ const DetailerClients = () => {
             onClose={closeModal}
             aria-labelledby="booking-dialog-title"
         >
-            <DialogTitle id="booking-dialog-title">Client orders</DialogTitle>
+            <DialogTitle id="booking-dialog-title">{getSelectedClientFullName()}'s orders</DialogTitle>
             <DialogContent>
 
                 <LoadingSpinner statement={selectedClientId != null}>

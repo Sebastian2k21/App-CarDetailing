@@ -24,6 +24,7 @@ const DETAILER_OPTIONS = [
         {label: "Team", url: "/detailer/team", icon: <GroupsIcon/>},
         {label: "Orders", url: "/detailer/orders", icon: <ReceiptIcon/>},
         {label: "Clients", url: "/detailer/clients", icon: <ReceiptIcon/>},
+        {label: "Create Invoice", url: "detailer/invoices/create", icon: <ReceiptIcon/>},
         {label: "Invoices", url: "detailer/invoices", icon: <ReceiptIcon/>}
       ]
     },

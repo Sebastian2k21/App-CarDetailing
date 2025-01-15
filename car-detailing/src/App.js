@@ -34,6 +34,7 @@ import DetailerTeam from './components/detailer/DetailerTeam';
 import LeftNavContext from './context/LeftNavContext';
 import RoleWrapper from './context/RoleContext';
 import TokenContext from './context/TokenContext';
+import DetailerCreateInvoice from './components/detailer/DetailerCreateInvoice';
 
 
 TimeAgo.addDefaultLocale(pl)
@@ -88,7 +89,9 @@ function App() {
                                     <Route path="detailer/team" element={<AuthorizedView><DetailerTeam/></AuthorizedView>} />
                                     <Route path="detailer/clients" element={<AuthorizedView><DetailerClients/></AuthorizedView>} />
                                     <Route path="detailer/analytics" element={<AuthorizedView><DetailerAnalytics/></AuthorizedView>} />
+
                                     <Route path="detailer/invoices" element={<AuthorizedView><DetailerInvoices/></AuthorizedView>} />
+                                    <Route path="detailer/invoices/create" element={<AuthorizedView><DetailerCreateInvoice/></AuthorizedView>} />
 
                                     <Route path="/logout" element={<AuthorizedView><Logout/></AuthorizedView>} />
                                     <Route path="/" element={access != null ? <Home/> : <HomePage />} />

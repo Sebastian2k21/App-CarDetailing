@@ -133,6 +133,21 @@ class ApiClient {
     async getDetailerClientSubmits(clientId) {
         return await this.get(ENDPOINTS.DetailerClientSubmits.replace("{clientId}", clientId))
     }
+
+    async createInvoice(formData) {
+        return await this.post(ENDPOINTS.DetailerCreateInvoice, formData, 'Error creating invoice')
+    } 
+
+    async getDetailerInvoices(invoiceId) {
+        return await this.get(ENDPOINTS.DetailerInvoices.replace("{invoiceId}", invoiceId), "Error fetching detailer invoices", [])
+    }
+
+    async getDetailerInvoiceFile(invoiceId) {
+        const response = await this.client.get(ENDPOINTS.DetailerDownloadInvoice.replace("{invoiceId}", invoiceId), {
+            responseType: 'blob',
+        });
+        return response.data
+    }
     //----------------------------------------------------------------------------------------------------------------------------
     //----------------------------------------------------------------------------------------------------------------------------
     //----------------------------------------------------------------------------------------------------------------------------

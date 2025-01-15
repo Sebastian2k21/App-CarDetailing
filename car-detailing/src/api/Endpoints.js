@@ -33,4 +33,7 @@ export const ENDPOINTS = {
     DetailerAnalytics: BASE_URL + "/detailer/analytics/{dateFrom}/{dateTo}",
     DetailerClients: BASE_URL + "/detailer/clients",
     DetailerClientSubmits: BASE_URL + "/detailer/clients/{clientId}/submits",
+    DetailerCreateInvoice: BASE_URL + "/detailer/invoices/create",
+    DetailerInvoices: BASE_URL + "/detailer/invoices",
+    DetailerDownloadInvoice: BASE_URL + "/detailer/invoices/{invoiceId}/download",
 }

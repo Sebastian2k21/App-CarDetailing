@@ -146,7 +146,27 @@ class ApiClient {
         const response = await this.client.get(ENDPOINTS.DetailerDownloadInvoice.replace("{invoiceId}", invoiceId), {
             responseType: 'blob',
         });
-        return response.data
+    
+
+        const contentDisposition = response.headers['Content-Disposition'];
+        let fileName = `invoice_${invoiceId}.pdf`;
+    
+        if (contentDisposition && contentDisposition.includes('filename=')) {
+            const fileNameMatch = contentDisposition.match(/filename="([^"]+)"/);
+            if (fileNameMatch && fileNameMatch[1]) {
+                fileName = fileNameMatch[1];
+            }
+        }
+    
+        return {
+            data: response.data,
+            fileName,
+        };
+    }
+    
+
+    async removeDetailerInvoice(invoiceId) {
+        return await this.delete(ENDPOINTS.DetailerRemoveInvoice.replace("{invoiceId}", invoiceId), "Error removing detailer invoice")
     }
     //----------------------------------------------------------------------------------------------------------------------------
     //----------------------------------------------------------------------------------------------------------------------------

@@ -36,4 +36,5 @@ export const ENDPOINTS = {
     DetailerCreateInvoice: BASE_URL + "/detailer/invoices/create",
     DetailerInvoices: BASE_URL + "/detailer/invoices",
     DetailerDownloadInvoice: BASE_URL + "/detailer/invoices/{invoiceId}/download",
+    DetailerRemoveInvoice: BASE_URL + "/detailer/invoices/{invoiceId}/delete",
 }

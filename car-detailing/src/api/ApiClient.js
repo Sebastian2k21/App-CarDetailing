@@ -143,21 +143,11 @@ class ApiClient {
     }
 
     async getDetailerInvoiceFile(invoiceId) {
-        const response = await this.client.get(ENDPOINTS.DetailerDownloadInvoice.replace("{invoiceId}", invoiceId), {
+        const response = await this.sendWithAttempts(async () => await this.client.get(ENDPOINTS.DetailerDownloadInvoice.replace("{invoiceId}", invoiceId), {
             responseType: 'blob',
-        });
+        }));
     
-
-        const contentDisposition = response.headers['Content-Disposition'];
         let fileName = `invoice_${invoiceId}.pdf`;
-    
-        if (contentDisposition && contentDisposition.includes('filename=')) {
-            const fileNameMatch = contentDisposition.match(/filename="([^"]+)"/);
-            if (fileNameMatch && fileNameMatch[1]) {
-                fileName = fileNameMatch[1];
-            }
-        }
-    
         return {
             data: response.data,
             fileName,

@@ -67,7 +67,7 @@ const DetailerServices = () => {
             >
                 New Service
             </Button>
-
+                    
             {serviceFormShow &&
                 <div style={{ marginBottom: '20px' }}>
                     <CommonForm 
@@ -88,9 +88,9 @@ const DetailerServices = () => {
                 </div>
             }
 
-            <div>
+           
                 <LoadingSpinner statement={services}>
-                    <Grid container spacing={2}>
+                    <Grid container spacing={2} sx={{ width: '100%', justifyContent: 'center' }}>
                         {services.map(service => (
                             <ServiceItem 
                                 key={service._id} 
@@ -106,7 +106,7 @@ const DetailerServices = () => {
                         ))}
                     </Grid>
                 </LoadingSpinner>
-            </div>
+      
         </div>
     );
 };

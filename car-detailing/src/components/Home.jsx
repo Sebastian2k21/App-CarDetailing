@@ -5,7 +5,8 @@ import { Box, Typography, Button, Container } from '@mui/material';
 const Home = () => {
   return (
     <div className="home-page" style={{ backgroundColor: '#121212', color: '#d4af37' }}>
-      {}
+    
+    <div style={{width: "100%"}}>
       <Container maxWidth="md" sx={{ textAlign: 'center', paddingTop: 10 }}>
         <Typography
           variant="h2"
@@ -57,7 +58,9 @@ const Home = () => {
         </Button>
       </Container>
 
-      {}
+      </div>
+
+      <div style={{width: "100%"}}>
       <Box
         component="footer"
         sx={{
@@ -65,7 +68,6 @@ const Home = () => {
           color: '#d4af37', 
           py: 5,
           textAlign: 'center',
-          marginTop: 10,
           boxShadow: '0px -10px 20px rgba(212, 175, 55, 0.3)', 
           position: 'relative',
           width: '100%', 
@@ -109,6 +111,7 @@ const Home = () => {
           </Box>
         </Container>
       </Box>
+      </div>
     </div>
   );
 };

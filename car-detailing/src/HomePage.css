@@ -1,8 +1,27 @@
 /* HomePage.css */
-.home-page {
+html, body {
+    height: 100vh;
+    background-color: rgb(18, 18, 18)!important;
+  }
+
+  .App {
     text-align: center;
-    padding: 50px;
-    background-color: #393436;}
+
+  }
+
+  
+.home-page {
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 50px;
+    padding-left: 50px;
+    padding-right: 50px;
+    height: 92vh;
+    background-color: rgb(18, 18, 18);}
 
 .home-page h1 {
     font-size: 48px;

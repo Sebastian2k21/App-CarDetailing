@@ -35,6 +35,7 @@ import LeftNavContext from './context/LeftNavContext';
 import RoleWrapper from './context/RoleContext';
 import TokenContext from './context/TokenContext';
 import DetailerCreateInvoice from './components/detailer/DetailerCreateInvoice';
+import Footer from './components/common/Footer';
 
 
 TimeAgo.addDefaultLocale(pl)
@@ -44,7 +45,7 @@ function App() {
     const [refresh, setRefreshState] = useState(localStorage.getItem('refresh'));
     const [isOpenLeftNav, setIsOpenLeftNav] = useState(false)
 
-    const setAccess = (access) => { 
+    const setAccess = (access) => {
         if (access == null) {
             setAccessState(null);
             localStorage.removeItem('access');
@@ -54,8 +55,8 @@ function App() {
         }
     }
 
-    const setRefresh = (refresh) => { 
-        if (refresh == null) { 
+    const setRefresh = (refresh) => {
+        if (refresh == null) {
             setRefreshState(null);
             localStorage.removeItem('refresh');
         } else {
@@ -69,35 +70,39 @@ function App() {
             <TokenContext.Provider value={{ access, refresh, setAccess, setRefresh }}>
                 <ApiClientWrapper>
                     <RoleWrapper>
-                        <LeftNavContext.Provider value={{isOpenLeftNav: isOpenLeftNav, setIsOpenLeftNav: setIsOpenLeftNav}}>
+                        <LeftNavContext.Provider value={{ isOpenLeftNav: isOpenLeftNav, setIsOpenLeftNav: setIsOpenLeftNav }}>
                             <header className="App-header">
                                 <Navbar access={access} />
-                                <LeftNav/>
-                                <Routes>
-                                    <Route path="/register" element={<RegisterForm />} />
-                                    <Route path="/login" element={<LoginForm />} />
+                                <LeftNav />
+                                <div className='content'>
+                                    <Routes>
+                                        <Route path="/register" element={<RegisterForm />} />
+                                        <Route path="/login" element={<LoginForm />} />
 
-                                    <Route path="/account" element={<AuthorizedView><Account /></AuthorizedView>} />
-                                    <Route path="/services" element={<Services/>} />
-                                    <Route path="/services/:id" element={<AuthorizedView><ServiceDetails/></AuthorizedView>} />
-                                    <Route path="/services/:id/update" element={<ServiceUpdate/>}/>
-                                    <Route path="/profile" element={<AuthorizedView><Profile/></AuthorizedView>} />
-                                    <Route path="/my-cars" element={<AuthorizedView><MyCars/></AuthorizedView>} />
+                                        <Route path="/account" element={<AuthorizedView><Account /></AuthorizedView>} />
+                                        <Route path="/services" element={<Services />} />
+                                        <Route path="/services/:id" element={<AuthorizedView><ServiceDetails /></AuthorizedView>} />
+                                        <Route path="/services/:id/update" element={<ServiceUpdate />} />
+                                        <Route path="/profile" element={<AuthorizedView><Profile /></AuthorizedView>} />
+                                        <Route path="/my-cars" element={<AuthorizedView><MyCars /></AuthorizedView>} />
 
-                                    <Route path="/detailer/services" element={<AuthorizedView><DetailerServices/></AuthorizedView>} />
-                                    <Route path="/detailer/orders" element={<AuthorizedView><DetailerOrders/></AuthorizedView>} />
-                                    <Route path="detailer/team" element={<AuthorizedView><DetailerTeam/></AuthorizedView>} />
-                                    <Route path="detailer/clients" element={<AuthorizedView><DetailerClients/></AuthorizedView>} />
-                                    <Route path="detailer/analytics" element={<AuthorizedView><DetailerAnalytics/></AuthorizedView>} />
+                                        <Route path="/detailer/services" element={<AuthorizedView><DetailerServices /></AuthorizedView>} />
+                                        <Route path="/detailer/orders" element={<AuthorizedView><DetailerOrders /></AuthorizedView>} />
+                                        <Route path="detailer/team" element={<AuthorizedView><DetailerTeam /></AuthorizedView>} />
+                                        <Route path="detailer/clients" element={<AuthorizedView><DetailerClients /></AuthorizedView>} />
+                                        <Route path="detailer/analytics" element={<AuthorizedView><DetailerAnalytics /></AuthorizedView>} />
 
-                                    <Route path="detailer/invoices" element={<AuthorizedView><DetailerInvoices/></AuthorizedView>} />
-                                    <Route path="detailer/invoices/create" element={<AuthorizedView><DetailerCreateInvoice/></AuthorizedView>} />
+                                        <Route path="detailer/invoices" element={<AuthorizedView><DetailerInvoices /></AuthorizedView>} />
+                                        <Route path="detailer/invoices/create" element={<AuthorizedView><DetailerCreateInvoice /></AuthorizedView>} />
 
-                                    <Route path="/logout" element={<AuthorizedView><Logout/></AuthorizedView>} />
-                                    <Route path="/" element={access != null ? <Home/> : <HomePage />} />
-                                    <Route path="*" element={<Error404/>} />
-                                </Routes>
+                                        <Route path="/logout" element={<AuthorizedView><Logout /></AuthorizedView>} />
+                                        <Route path="/" element={access != null ? <Home /> : <HomePage />} />
+                                        <Route path="*" element={<Error404 />} />
+                                    </Routes>
+                                </div>
+
                             </header>
+                            <Footer />
                         </LeftNavContext.Provider>
                         <Toaster />
                     </RoleWrapper>

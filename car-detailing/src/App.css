@@ -10,8 +10,12 @@
   }
 }
 
+.content {
+  margin-bottom: 50px;
+}
+
 .App-header {
-  background-color: #282c34;
+    /* background-color: var(--bs-body-color) !important; */
 
   font-size: calc(10px + 2vmin);
   color: white;

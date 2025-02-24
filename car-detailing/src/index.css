@@ -17,3 +17,20 @@ code {
   padding: 10px;
   margin: 10px;
 }
+
+.css-81qg8w {
+  /* color: white!important;
+  overflow: auto!important;*/
+  height: 20px!important; 
+  max-width: inherit!important;
+  visibility: visible!important;
+  overflow-y: hidden!important;
+
+}
+
+.css-81qg8w>span {
+  color: white!important;
+  opacity: 1!important; 
+  z-index: 9999!important;
+  margin-bottom: 2px!important;
+}

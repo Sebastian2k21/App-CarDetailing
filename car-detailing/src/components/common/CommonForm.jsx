@@ -73,7 +73,7 @@ const CommonForm = ({fields, data, onSubmit, title="", validator=null, otherComp
                     <label>
                         {field.label}:
                         <input type={field.type} name={field.name} value={formData[field.name]}
-                            onChange={handleChange} required />
+                            onChange={handleChange} required={field.required} />
                     </label>
                 </div> )}
                 {formData && otherComponents.map(Comp => <div>

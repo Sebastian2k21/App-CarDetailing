@@ -45,8 +45,8 @@ const ServiceItem = ({ service, editable = false }) => {
     <StyledCard sx={{ width: 345, margin: '16px' }}>
       <CardMedia
         sx={{ height: 140, borderRadius: '12px 12px 0 0' }}
-        image={service.image}
-        title={service.name}
+        image={service.image ? service.image : '/gear.png'}
+        title={service.name ? service.name : 'Service'}
       />
       <CardContent>
         <StyledTypography gutterBottom variant="h5" component="div">
